@@ -4,13 +4,43 @@
 #include<cstdlib> 
 #include<algorithm>
 #include<SFML/System/Clock.hpp>
+#include<regex>
+
+bool vector_contains(std::vector<int> vector, int searched_num)
+{
+    for(int num:vector)
+        if(searched_num==num)
+            return true;
+    return false;
+}
 
 int main(int argc, char *argv[])
 {
     int width;
     int height;
+    std::vector<int> survive = {3};
+    std::vector<int> birth = {2,3};
     switch(argc)
     {
+        case 4:
+        {
+            std::string type_string=argv[3];
+            std::smatch base_match;
+            const std::regex base_regex("([0-9]*)/([0-9]*)");
+            if(std::regex_match(type_string, base_match, base_regex))
+            {
+                std::string survive_string=base_match[1];
+                std::string birth_string=base_match[2];
+                
+                survive={};
+                for(char num:survive_string)
+                    survive.push_back(std::atoi(&num));
+
+                birth={};
+                for(char num:birth_string)
+                    birth.push_back(std::atoi(&num));
+            }
+        }
         case 3:
         {
             std::string width_string, height_string;
@@ -43,6 +73,21 @@ int main(int argc, char *argv[])
             game_board_2[x][y]=game_board_1[x][y];
         }
     }
+//     for(int y = 0;y<height;y++){
+//         for(int x = 0;x<width;x++)
+//         {
+//             game_board_1[x][y]=0;
+//             game_board_2[x][y]=0;
+//         }
+//     }
+//     game_board_1[5][5]=1;
+//     game_board_2[5][5]=1;
+//     game_board_1[5][6]=1;
+//     game_board_2[5][6]=1;
+//     game_board_1[6][5]=1;
+//     game_board_2[6][5]=1;
+//     game_board_1[6][6]=1;
+//     game_board_2[6][6]=1;
     int block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
     sf::RectangleShape block(sf::Vector2f(block_size,block_size));
     sf::Clock clock;
@@ -83,10 +128,17 @@ int main(int argc, char *argv[])
                             }
                         }
                     }
-                    if(living_neighbours==3&&!game_board_1[x][y])
-                        game_board_2[x][y]=true;
-                    else if(!(living_neighbours==2||living_neighbours==3)&&game_board_1[x][y])
-                        game_board_2[x][y]=false;
+                    switch(game_board_1[x][y])
+                    {
+                        case true:
+                            if(!vector_contains(survive,living_neighbours))
+                                game_board_2[x][y]=false;
+                            break;
+                        case false:
+                            if(vector_contains(birth,living_neighbours))
+                                game_board_2[x][y]=true;
+                            break;
+                    }
                 }
             }
             for(int y = 0;y<height;y++)
