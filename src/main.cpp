@@ -36,28 +36,13 @@ int main(int argc, char *argv[])
     bool game_board_2[width][height];
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
     srand(time(NULL));
-//     for(int y = 0;y<height;y++){
-//         for(int x = 0;x<width;x++)
-//         {
-//             game_board_1[x][y]=(std::rand()%30)%2;
-//             game_board_2[x][y]=game_board_1[x][y];
-//         }
-//     }
     for(int y = 0;y<height;y++){
         for(int x = 0;x<width;x++)
         {
-            game_board_1[x][y]=0;
-            game_board_2[x][y]=0;
+            game_board_1[x][y]=(std::rand()%30)%2;
+            game_board_2[x][y]=game_board_1[x][y];
         }
     }
-    game_board_1[5][5]=1;
-    game_board_2[5][5]=1;
-    game_board_1[5][6]=1;
-    game_board_2[5][6]=1;
-    game_board_1[6][5]=1;
-    game_board_2[6][5]=1;
-    game_board_1[6][6]=1;
-    game_board_2[6][6]=1;
     int block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
     sf::RectangleShape block(sf::Vector2f(block_size,block_size));
     sf::Clock clock;
@@ -91,7 +76,7 @@ int main(int argc, char *argv[])
                     {
                         for(int i=x-1;i<=x+1;i++)
                         {
-                            if(i>=0&&i<width&&j>=0&&j<height&&i!=x&&j!=y)
+                            if(i>=0&&i<width&&j>=0&&j<height&&!(i==x&&j==y))
                             {
                                 if(game_board_1[i][j])
                                     living_neighbours++;
@@ -100,7 +85,7 @@ int main(int argc, char *argv[])
                     }
                     if(living_neighbours==3&&!game_board_1[x][y])
                         game_board_2[x][y]=true;
-                    if(living_neighbours!=2&&living_neighbours!=3&&game_board_1[x][y])
+                    else if(!(living_neighbours==2||living_neighbours==3)&&game_board_1[x][y])
                         game_board_2[x][y]=false;
                 }
             }
