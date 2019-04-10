@@ -20,8 +20,15 @@ int main(int argc, char *argv[])
     int height;
     std::vector<int> survive = {3};
     std::vector<int> birth = {2,3};
+    bool draw=false;
     switch(argc)
     {
+        case 5:
+        {
+            std::string string=argv[4];
+            if(string=="true")
+                draw=true;
+        }
         case 4:
         {
             std::string type_string=argv[3];
@@ -65,31 +72,74 @@ int main(int argc, char *argv[])
     bool game_board_1[width][height];
     bool game_board_2[width][height];
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
-    srand(time(NULL));
-    for(int y = 0;y<height;y++){
-        for(int x = 0;x<width;x++)
-        {
-            game_board_1[x][y]=(std::rand()%30)%2;
-            game_board_2[x][y]=game_board_1[x][y];
-        }
-    }
-//     for(int y = 0;y<height;y++){
-//         for(int x = 0;x<width;x++)
-//         {
-//             game_board_1[x][y]=0;
-//             game_board_2[x][y]=0;
-//         }
-//     }
-//     game_board_1[5][5]=1;
-//     game_board_2[5][5]=1;
-//     game_board_1[5][6]=1;
-//     game_board_2[5][6]=1;
-//     game_board_1[6][5]=1;
-//     game_board_2[6][5]=1;
-//     game_board_1[6][6]=1;
-//     game_board_2[6][6]=1;
     int block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
     sf::RectangleShape block(sf::Vector2f(block_size,block_size));
+    
+    if(draw)
+    {
+        window.clear(sf::Color(150, 150, 150));
+        for(int y = 0;y<height;y++){
+            for(int x = 0;x<width;x++)
+            {
+                game_board_1[x][y]=0;
+                game_board_2[x][y]=0;
+                block.setPosition(x*block_size,y*block_size);
+                block.setFillColor(sf::Color::Black);
+                window.draw(block);
+            }
+        }
+        window.display();
+        while(true)
+        {
+            sf::Event event;
+            if (window.pollEvent(event))
+            {
+                if(event.type == sf::Event::MouseButtonPressed)
+                {
+                    if(event.mouseButton.button==sf::Mouse::Button::Left)
+                    {
+                        int positionX = event.mouseButton.x/block_size;
+                        int positionY = event.mouseButton.y/block_size;
+                        game_board_1[positionX][positionY]=1;
+                        game_board_2[positionX][positionY]=1;
+                    }
+                    else if(event.mouseButton.button==sf::Mouse::Button::Right)
+                    {
+                        int positionX = event.mouseButton.x/block_size;
+                        int positionY = event.mouseButton.y/block_size;
+                        
+                        game_board_1[positionX][positionY]=0;
+                        game_board_2[positionX][positionY]=0;
+                    }
+                }
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+                    break;
+            }
+            window.clear(sf::Color(150, 150, 150));
+            for(int y = 0;y<height;y++){
+                for(int x = 0;x<width;x++)
+                {
+                    block.setPosition(x*block_size,y*block_size);
+                    if(game_board_1[x][y]) block.setFillColor(sf::Color::White);
+                    else block.setFillColor(sf::Color::Black);
+                    window.draw(block);
+                }
+            }
+            window.display();
+        }
+    }
+    else
+    {
+        srand(time(NULL));
+        for(int y = 0;y<height;y++){
+            for(int x = 0;x<width;x++)
+            {
+                game_board_1[x][y]=(std::rand()%30)%2;
+                game_board_2[x][y]=game_board_1[x][y];
+            }
+        }
+    }
+    
     sf::Clock clock;
     window.clear(sf::Color(150, 150, 150));
     for(int y = 0;y<height;y++){
@@ -110,7 +160,7 @@ int main(int argc, char *argv[])
             if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
                 window.close();
         }
-        if(clock.getElapsedTime().asMilliseconds()>=500)
+        if(clock.getElapsedTime().asMilliseconds()>=250)
         {
             clock.restart();
             for(int y = 0;y<height;y++){
