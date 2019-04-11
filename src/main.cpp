@@ -15,7 +15,7 @@ sf::RectangleShape board_shape;
 int width;
 int height;
 
-void draw_board()
+void show_board()
 {
     window.clear(sf::Color(150, 150, 150));
     window.draw(board_shape);
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
             std::cout<<"Size of game board will be default:"<<width<<"x"<<height<<std::endl;
     }
     game_board_1=new bool*[width];
-    for(int x = 0;x<height;x++)
+    for(int x = 0;x<width;x++)
     {
         game_board_1[x] = new bool[height];
     }
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
                 int positionY = position.y/block_size;
                 game_board_1[positionX][positionY]=1;
                 game_board_2[positionX][positionY]=1;
-                draw_board();
+                show_board();
             }
             else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
             {
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
                 
                 game_board_1[positionX][positionY]=0;
                 game_board_2[positionX][positionY]=0;
-                draw_board();
+                show_board();
             }
             sf::Event event;
             if (window.pollEvent(event)&&(event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     }
     
     sf::Clock clock;
-    draw_board();
+    show_board();
     while (window.isOpen())
     {
         sf::Event event;
@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
                 for(int x = 0;x<width;x++)
                     game_board_1[x][y]=game_board_2[x][y];
                 
-            draw_board();
+            show_board();
         }
     }
     return 0;
