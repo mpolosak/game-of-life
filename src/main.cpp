@@ -6,6 +6,32 @@
 #include<SFML/System/Clock.hpp>
 #include<regex>
 
+bool **game_board_1;
+bool **game_board_2;
+sf::RenderWindow window;
+int block_size;
+sf::RectangleShape block;
+sf::RectangleShape board_shape;
+int width;
+int height;
+
+void draw_board()
+{
+    window.clear(sf::Color(150, 150, 150));
+    window.draw(board_shape);
+    for(int y = 0;y<height;y++){
+        for(int x = 0;x<width;x++)
+        {
+            if(game_board_1[x][y])
+            {
+                block.setPosition(x*block_size,y*block_size);
+                window.draw(block);
+            }
+        }
+    }
+    window.display();
+}
+
 bool vector_contains(std::vector<int> vector, int searched_num)
 {
     for(int num:vector)
@@ -16,10 +42,8 @@ bool vector_contains(std::vector<int> vector, int searched_num)
 
 int main(int argc, char *argv[])
 {
-    int width;
-    int height;
-    std::vector<int> survive = {3};
-    std::vector<int> birth = {2,3};
+    std::vector<int> survive = {2,3};
+    std::vector<int> birth = {3};
     bool draw=false;
     switch(argc)
     {
@@ -69,13 +93,21 @@ int main(int argc, char *argv[])
             height=50;
             std::cout<<"Size of game board will be default:"<<width<<"x"<<height<<std::endl;
     }
-    bool game_board_1[width][height];
-    bool game_board_2[width][height];
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
-    int block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
-    sf::RectangleShape block(sf::Vector2f(block_size,block_size));
+    game_board_1=new bool*[width];
+    for(int x = 0;x<height;x++)
+    {
+        game_board_1[x] = new bool[height];
+    }
+    game_board_2=new bool*[width];
+    for(int x = 0;x<width;x++)
+    {
+        game_board_2[x] = new bool[height];
+    }
+    window.create(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
+    block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
+    block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
     block.setFillColor(sf::Color::White);
-    sf::RectangleShape board_shape(sf::Vector2f(block_size*width,block_size*height));
+    board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
     board_shape.setFillColor(sf::Color::Black);
     if(draw)
     {
@@ -89,45 +121,30 @@ int main(int argc, char *argv[])
         }
         window.draw(board_shape);
         window.display();
-        while(true)
+        while(draw)
         {
-            sf::Event event;
-            if (window.pollEvent(event))
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                if(event.type == sf::Event::MouseButtonPressed)
-                {
-                    if(event.mouseButton.button==sf::Mouse::Button::Left)
-                    {
-                        int positionX = event.mouseButton.x/block_size;
-                        int positionY = event.mouseButton.y/block_size;
-                        game_board_1[positionX][positionY]=1;
-                        game_board_2[positionX][positionY]=1;
-                    }
-                    else if(event.mouseButton.button==sf::Mouse::Button::Right)
-                    {
-                        int positionX = event.mouseButton.x/block_size;
-                        int positionY = event.mouseButton.y/block_size;
-                        
-                        game_board_1[positionX][positionY]=0;
-                        game_board_2[positionX][positionY]=0;
-                    }
-                }
-                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
-                    break;
+                sf::Vector2i position = sf::Mouse::getPosition();
+                int positionX = position.x/block_size;
+                int positionY = position.y/block_size;
+                game_board_1[positionX][positionY]=1;
+                game_board_2[positionX][positionY]=1;
+                draw_board();
             }
-            window.clear(sf::Color(150, 150, 150));
-            window.draw(board_shape);
-            for(int y = 0;y<height;y++){
-                for(int x = 0;x<width;x++)
-                {
-                    if(game_board_1[x][y])
-                    {
-                        block.setPosition(x*block_size,y*block_size);
-                        window.draw(block);
-                    }
-                }
+            else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+            {
+                sf::Vector2i position = sf::Mouse::getPosition();
+                int positionX = position.x/block_size;
+                int positionY = position.y/block_size;
+                
+                game_board_1[positionX][positionY]=0;
+                game_board_2[positionX][positionY]=0;
+                draw_board();
             }
-            window.display();
+            sf::Event event;
+            if (window.pollEvent(event)&&(event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+                draw=false;
         }
     }
     else
@@ -143,19 +160,7 @@ int main(int argc, char *argv[])
     }
     
     sf::Clock clock;
-    window.clear(sf::Color(150, 150, 150));
-    window.draw(board_shape);
-    for(int y = 0;y<height;y++){
-        for(int x = 0;x<width;x++)
-        {
-            if(game_board_1[x][y])
-            {
-                block.setPosition(x*block_size,y*block_size);
-                window.draw(block);
-            }
-        }
-    }
-    window.display();
+    draw_board();
     while (window.isOpen())
     {
         sf::Event event;
@@ -199,19 +204,7 @@ int main(int argc, char *argv[])
                 for(int x = 0;x<width;x++)
                     game_board_1[x][y]=game_board_2[x][y];
                 
-            window.clear(sf::Color(150, 150, 150));
-            window.draw(board_shape);
-            for(int y = 0;y<height;y++){
-                for(int x = 0;x<width;x++)
-                {
-                    if(game_board_1[x][y])
-                    {
-                        block.setPosition(x*block_size,y*block_size);
-                        window.draw(block);
-                    }
-                }
-            }
-            window.display();
+            draw_board();
         }
     }
     return 0;
