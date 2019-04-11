@@ -74,7 +74,9 @@ int main(int argc, char *argv[])
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
     int block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
     sf::RectangleShape block(sf::Vector2f(block_size,block_size));
-    
+    block.setFillColor(sf::Color::White);
+    sf::RectangleShape board_shape(sf::Vector2f(block_size*width,block_size*height));
+    board_shape.setFillColor(sf::Color::Black);
     if(draw)
     {
         window.clear(sf::Color(150, 150, 150));
@@ -83,11 +85,9 @@ int main(int argc, char *argv[])
             {
                 game_board_1[x][y]=0;
                 game_board_2[x][y]=0;
-                block.setPosition(x*block_size,y*block_size);
-                block.setFillColor(sf::Color::Black);
-                window.draw(block);
             }
         }
+        window.draw(board_shape);
         window.display();
         while(true)
         {
@@ -116,13 +116,15 @@ int main(int argc, char *argv[])
                     break;
             }
             window.clear(sf::Color(150, 150, 150));
+            window.draw(board_shape);
             for(int y = 0;y<height;y++){
                 for(int x = 0;x<width;x++)
                 {
-                    block.setPosition(x*block_size,y*block_size);
-                    if(game_board_1[x][y]) block.setFillColor(sf::Color::White);
-                    else block.setFillColor(sf::Color::Black);
-                    window.draw(block);
+                    if(game_board_1[x][y])
+                    {
+                        block.setPosition(x*block_size,y*block_size);
+                        window.draw(block);
+                    }
                 }
             }
             window.display();
@@ -142,13 +144,15 @@ int main(int argc, char *argv[])
     
     sf::Clock clock;
     window.clear(sf::Color(150, 150, 150));
+    window.draw(board_shape);
     for(int y = 0;y<height;y++){
         for(int x = 0;x<width;x++)
         {
-            block.setPosition(x*block_size,y*block_size);
-            if(game_board_1[x][y]) block.setFillColor(sf::Color::White);
-            else block.setFillColor(sf::Color::Black);
-            window.draw(block);
+            if(game_board_1[x][y])
+            {
+                block.setPosition(x*block_size,y*block_size);
+                window.draw(block);
+            }
         }
     }
     window.display();
@@ -196,13 +200,15 @@ int main(int argc, char *argv[])
                     game_board_1[x][y]=game_board_2[x][y];
                 
             window.clear(sf::Color(150, 150, 150));
+            window.draw(board_shape);
             for(int y = 0;y<height;y++){
                 for(int x = 0;x<width;x++)
                 {
-                    block.setPosition(x*block_size,y*block_size);
-                    if(game_board_1[x][y]) block.setFillColor(sf::Color::White);
-                    else block.setFillColor(sf::Color::Black);
-                    window.draw(block);
+                    if(game_board_1[x][y])
+                    {
+                        block.setPosition(x*block_size,y*block_size);
+                        window.draw(block);
+                    }
                 }
             }
             window.display();
