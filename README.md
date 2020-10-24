@@ -9,4 +9,7 @@ ninja -C build
 sudo ninja -C build install
 ```
 ## Running
-Run by typing game-of-life into terminal
+Run by typing *game-of-life* into terminal.  
+Type in *game-of-life* to see allowed options.  
+When drawing a board press Enter to start simulation.  
+End simulation by pressing Escape.
