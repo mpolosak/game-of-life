@@ -40,6 +40,45 @@ bool vector_contains(std::vector<int> vector, int searched_num)
     return false;
 }
 
+void draw_board()
+{
+    window.clear(sf::Color(150, 150, 150));
+    for(int y = 0;y<height;y++){
+        for(int x = 0;x<width;x++)
+        {
+            game_board_1[x][y]=0;
+            game_board_2[x][y]=0;
+        }
+    }
+    window.draw(board_shape);
+    window.display();
+    while(true)
+    {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            sf::Vector2i position = sf::Mouse::getPosition();
+            int positionX = position.x/block_size;
+            int positionY = position.y/block_size;
+            game_board_1[positionX][positionY]=1;
+            game_board_2[positionX][positionY]=1;
+            show_board();
+        }
+        else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        {
+            sf::Vector2i position = sf::Mouse::getPosition();
+            int positionX = position.x/block_size;
+            int positionY = position.y/block_size;
+            
+            game_board_1[positionX][positionY]=0;
+            game_board_2[positionX][positionY]=0;
+            show_board();
+        }
+        sf::Event event;
+        if (window.pollEvent(event)&&(event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+            break;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     std::vector<int> survive = {2,3};
@@ -110,43 +149,7 @@ int main(int argc, char *argv[])
     board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
     board_shape.setFillColor(sf::Color::Black);
     if(draw)
-    {
-        window.clear(sf::Color(150, 150, 150));
-        for(int y = 0;y<height;y++){
-            for(int x = 0;x<width;x++)
-            {
-                game_board_1[x][y]=0;
-                game_board_2[x][y]=0;
-            }
-        }
-        window.draw(board_shape);
-        window.display();
-        while(draw)
-        {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                sf::Vector2i position = sf::Mouse::getPosition();
-                int positionX = position.x/block_size;
-                int positionY = position.y/block_size;
-                game_board_1[positionX][positionY]=1;
-                game_board_2[positionX][positionY]=1;
-                show_board();
-            }
-            else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-            {
-                sf::Vector2i position = sf::Mouse::getPosition();
-                int positionX = position.x/block_size;
-                int positionY = position.y/block_size;
-                
-                game_board_1[positionX][positionY]=0;
-                game_board_2[positionX][positionY]=0;
-                show_board();
-            }
-            sf::Event event;
-            if (window.pollEvent(event)&&(event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
-                draw=false;
-        }
-    }
+        draw_board();
     else
     {
         srand(time(NULL));
