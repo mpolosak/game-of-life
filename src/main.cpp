@@ -90,7 +90,7 @@ void draw_board()
     }
 }
 
-void create_random_board()
+void fill_board_with_random_values()
 {
     srand(time(NULL));
     for(int y = 0;y<height;y++){
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
     if(draw)
         draw_board();
     else
-        create_random_board();
+        fill_board_with_random_values();
     
     sf::Clock clock;
     show_board();
