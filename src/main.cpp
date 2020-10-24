@@ -15,6 +15,17 @@ sf::RectangleShape board_shape;
 int width;
 int height;
 
+void create_board()
+{
+    game_board_1=new bool*[width];
+    game_board_2=new bool*[width];
+    for(int x = 0;x<width;x++)
+    {
+        game_board_1[x] = new bool[height];
+        game_board_2[x] = new bool[height];
+    }
+}
+
 void show_board()
 {
     window.clear(sf::Color(150, 150, 150));
@@ -144,16 +155,7 @@ int main(int argc, char *argv[])
             height=50;
             std::cout<<"Size of game board will be default:"<<width<<"x"<<height<<std::endl;
     }
-    game_board_1=new bool*[width];
-    for(int x = 0;x<width;x++)
-    {
-        game_board_1[x] = new bool[height];
-    }
-    game_board_2=new bool*[width];
-    for(int x = 0;x<width;x++)
-    {
-        game_board_2[x] = new bool[height];
-    }
+    create_board();
     window.create(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
     block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
     block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
