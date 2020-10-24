@@ -5,6 +5,9 @@
 #include<algorithm>
 #include<SFML/System/Clock.hpp>
 #include<regex>
+#include<boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 bool **game_board_1;
 bool **game_board_2;
@@ -12,8 +15,8 @@ sf::RenderWindow window;
 int block_size;
 sf::RectangleShape block;
 sf::RectangleShape board_shape;
-int width;
-int height;
+int width=50;
+int height=50;
 
 void create_board()
 {
@@ -132,59 +135,79 @@ int main(int argc, char *argv[])
 {
     std::vector<int> survive = {2,3};
     std::vector<int> birth = {3};
-    bool draw=false;
-    switch(argc)
-    {
-        case 5:
-        {
-            std::string string=argv[4];
-            if(string=="true")
-                draw=true;
-        }
-        case 4:
-        {
-            std::string type_string=argv[3];
-            std::smatch base_match;
-            const std::regex base_regex("([0-9]*)/([0-9]*)");
-            if(std::regex_match(type_string, base_match, base_regex))
-            {
-                std::string survive_string=base_match[1];
-                std::string birth_string=base_match[2];
-                
-                survive={};
-                for(char num:survive_string)
-                    survive.push_back(std::atoi(&num));
 
-                birth={};
-                for(char num:birth_string)
-                    birth.push_back(std::atoi(&num));
-            }
-        }
-        case 3:
-        {
-            std::string width_string, height_string;
-            width_string=argv[1];
-            height_string=argv[2];
-            try
-            {
-                width=std::stoi(width_string);
-                height=std::stoi(height_string);
-                break;
-            }
-            catch(std::logic_error)
-            {
-                std::cout<<"1st and 2nd arguments should be numbers"<<std::endl;
-            }
-        }
-        default:
-            width=50;
-            height=50;
-            std::cout<<"Size of game board will be default:"<<width<<"x"<<height<<std::endl;
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help,h", "show this description and return")
+        ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
+        ("rules,r", po::value<std::string>(), "set rules to arg, the rules must be written as survive/birth i.e. 123/45, if not present the rules are set to standard(23/3)")
+        ("size,s", po::value<std::string>(), "set size of board to arg, the size must be written as widthxheight i.e. 192x108, if not present the size is set to 50x50")
+    ;
+    po::variables_map vm;
+    try
+    {
+        po::store(po::parse_command_line(argc, argv, desc), vm);   
+        po::notify(vm);
     }
+    catch(boost::wrapexcept<boost::program_options::unknown_option> &error)
+    {
+        std::cerr<<error.get_option_name()<<" isn't correct option"<<std::endl;
+        std::cerr<<"Type in 'game-of-live -h' to get list of allowed options"<<std::endl;
+        return 1;
+    }
+    if (vm.count("help")) {
+        std::cout << desc << "\n";
+        return 0;
+    }
+    if(vm.count("rules"))
+    {
+        std::string rules = vm["rules"].as<std::string>();
+        std::smatch base_match;
+        const std::regex base_regex("([0-9]*)/([0-9]*)");
+        if(std::regex_match(rules, base_match, base_regex))
+        {
+            std::string survive_string=base_match[1];
+            std::string birth_string=base_match[2];
+            
+            survive={};
+            for(char num:survive_string)
+                survive.push_back(std::atoi(&num));
+
+            birth={};
+            for(char num:birth_string)
+                birth.push_back(std::atoi(&num));
+            std::cout<<"Rules set to "<<rules<<std::endl;
+        }
+        else{
+            std::cerr<<"Rules must be written as survive/birth i.e. 123/45"<<std::endl;
+            return 1;
+        }
+    }
+    if(vm.count("size"))
+    {
+        std::string size = vm["size"].as<std::string>();
+        std::smatch base_match;
+        const std::regex base_regex("([0-9]*)x([0-9]*)");
+        if(std::regex_match(size, base_match, base_regex))
+        {
+            std::string width_string=base_match[1];
+            std::string height_string=base_match[2];
+
+            width = std::stoi(width_string);
+            height = std::stoi(height_string);
+
+            std::cout<<"Size set to "<<size<<std::endl;
+        }
+        else{
+            std::cerr<<"Size must be written as widthxheight i.e. 192x108"<<std::endl;
+            return 1;
+        }
+    }
+
     create_board();
     window.create(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
     init_shapes();
-    if(draw)
+    if(vm.count("draw"))
         draw_board();
     else
         fill_board_with_random_values();

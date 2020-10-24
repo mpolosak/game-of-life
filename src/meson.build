@@ -1,1 +1,1 @@
-executable('game-of-life','main.cpp', dependencies:[sfml_graphics, sfml_system, sfml_window],install: true)
+executable('game-of-life','main.cpp', dependencies:[sfml_graphics, sfml_system, sfml_window, boost],install: true)

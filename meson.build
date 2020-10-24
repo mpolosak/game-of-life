@@ -8,4 +8,5 @@ project(
 sfml_graphics = dependency('sfml-graphics')
 sfml_system = dependency('sfml-system')
 sfml_window = dependency('sfml-window')
+boost = dependency('boost', modules :['program_options'])
 subdir('src')
