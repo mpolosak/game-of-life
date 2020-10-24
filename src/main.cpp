@@ -26,6 +26,15 @@ void create_board()
     }
 }
 
+void init_shapes()
+{
+    block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
+    block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
+    block.setFillColor(sf::Color::White);
+    board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
+    board_shape.setFillColor(sf::Color::Black);
+}
+
 void show_board()
 {
     window.clear(sf::Color(150, 150, 150));
@@ -174,11 +183,7 @@ int main(int argc, char *argv[])
     }
     create_board();
     window.create(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
-    block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
-    block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
-    block.setFillColor(sf::Color::White);
-    board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
-    board_shape.setFillColor(sf::Color::Black);
+    init_shapes();
     if(draw)
         draw_board();
     else
