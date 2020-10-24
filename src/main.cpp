@@ -40,9 +40,8 @@ bool vector_contains(std::vector<int> vector, int searched_num)
     return false;
 }
 
-void draw_board()
+void clear_board()
 {
-    window.clear(sf::Color(150, 150, 150));
     for(int y = 0;y<height;y++){
         for(int x = 0;x<width;x++)
         {
@@ -50,29 +49,30 @@ void draw_board()
             game_board_2[x][y]=0;
         }
     }
+}
+
+void set_hovered_block_value(bool value)
+{
+    sf::Vector2i position = sf::Mouse::getPosition();
+    int positionX = position.x/block_size;
+    int positionY = position.y/block_size;
+    game_board_1[positionX][positionY]=value;
+    game_board_2[positionX][positionY]=value;
+    show_board();
+}
+
+void draw_board()
+{
+    window.clear(sf::Color(150, 150, 150));
+    clear_board();
     window.draw(board_shape);
     window.display();
     while(true)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        {
-            sf::Vector2i position = sf::Mouse::getPosition();
-            int positionX = position.x/block_size;
-            int positionY = position.y/block_size;
-            game_board_1[positionX][positionY]=1;
-            game_board_2[positionX][positionY]=1;
-            show_board();
-        }
+            set_hovered_block_value(true);
         else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        {
-            sf::Vector2i position = sf::Mouse::getPosition();
-            int positionX = position.x/block_size;
-            int positionY = position.y/block_size;
-            
-            game_board_1[positionX][positionY]=0;
-            game_board_2[positionX][positionY]=0;
-            show_board();
-        }
+            set_hovered_block_value(false);
         sf::Event event;
         if (window.pollEvent(event)&&(event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
             break;
