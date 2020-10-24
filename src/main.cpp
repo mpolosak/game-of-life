@@ -79,6 +79,18 @@ void draw_board()
     }
 }
 
+void create_random_board()
+{
+    srand(time(NULL));
+    for(int y = 0;y<height;y++){
+        for(int x = 0;x<width;x++)
+        {
+            game_board_1[x][y]=(std::rand()%30)%2;
+            game_board_2[x][y]=game_board_1[x][y];
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     std::vector<int> survive = {2,3};
@@ -151,16 +163,7 @@ int main(int argc, char *argv[])
     if(draw)
         draw_board();
     else
-    {
-        srand(time(NULL));
-        for(int y = 0;y<height;y++){
-            for(int x = 0;x<width;x++)
-            {
-                game_board_1[x][y]=(std::rand()%30)%2;
-                game_board_2[x][y]=game_board_1[x][y];
-            }
-        }
-    }
+        create_random_board();
     
     sf::Clock clock;
     show_board();
