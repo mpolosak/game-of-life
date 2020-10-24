@@ -102,6 +102,23 @@ void fill_board_with_random_values()
     }
 }
 
+int count_living_neighbours(int x, int y)
+{
+    int living_neighbours=0;
+    for(int j=y-1;j<=y+1;j++)
+    {
+        for(int i=x-1;i<=x+1;i++)
+        {
+            if(i>=0&&i<width&&j>=0&&j<height&&!(i==x&&j==y))
+            {
+                if(game_board_1[i][j])
+                    living_neighbours++;
+            }
+        }
+    }
+    return living_neighbours;
+}
+
 int main(int argc, char *argv[])
 {
     std::vector<int> survive = {2,3};
@@ -183,29 +200,13 @@ int main(int argc, char *argv[])
             for(int y = 0;y<height;y++){
                 for(int x = 0;x<width;x++)
                 {
-                    int living_neighbours=0;
-                    for(int j=y-1;j<=y+1;j++)
-                    {
-                        for(int i=x-1;i<=x+1;i++)
-                        {
-                            if(i>=0&&i<width&&j>=0&&j<height&&!(i==x&&j==y))
-                            {
-                                if(game_board_1[i][j])
-                                    living_neighbours++;
-                            }
-                        }
-                    }
-                    switch(game_board_1[x][y])
-                    {
-                        case true:
-                            if(!vector_contains(survive,living_neighbours))
-                                game_board_2[x][y]=false;
-                            break;
-                        case false:
-                            if(vector_contains(birth,living_neighbours))
-                                game_board_2[x][y]=true;
-                            break;
-                    }
+                    if(game_board_1[x][y])
+                        if(!vector_contains(survive,count_living_neighbours(x,y)))
+                            game_board_2[x][y]=false;
+                    else
+                        if(vector_contains(birth,count_living_neighbours(x,y)))
+                            game_board_2[x][y]=true;
+
                 }
             }
             for(int y = 0;y<height;y++)
