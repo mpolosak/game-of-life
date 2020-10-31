@@ -57,6 +57,16 @@ void show_board()
     window.display();
 }
 
+void handle_event(sf::Event &event)
+{
+    if (
+        event.type == sf::Event::KeyPressed 
+        && event.key.code == sf::Keyboard::Escape
+        || event.type == sf::Event::Closed
+    )
+        window.close();
+}
+
 bool vector_contains(std::vector<int> vector, int searched_num)
 {
     for(int num:vector)
@@ -95,7 +105,7 @@ void draw_board()
     clear_board();
     window.draw(board_shape);
     window.display();
-    while(true)
+    while(window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))
@@ -105,15 +115,8 @@ void draw_board()
                 && event.key.code == sf::Keyboard::Enter
             )
                 return;
-            else if (
-                (event.type == sf::Event::KeyPressed 
-                && event.key.code == sf::Keyboard::Escape)
-                || event.type == sf::Event::Closed
-            )
-            {
-                window.close();
-                return;
-            }
+            else
+                handle_event(event);
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             set_hovered_block_value(true);
@@ -257,14 +260,8 @@ int main(int argc, char *argv[])
     {
         sf::Event event;
         while (window.pollEvent(event))
-        {
-            if (
-                event.type == sf::Event::KeyPressed 
-                && event.key.code == sf::Keyboard::Escape
-                || event.type == sf::Event::Closed
-            )
-                window.close();
-        }
+            handle_event(event);
+
         if(clock.getElapsedTime().asMilliseconds()>=250)
         {
             clock.restart();
