@@ -94,13 +94,28 @@ void draw_board()
     window.display();
     while(true)
     {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (
+                event.type == sf::Event::KeyPressed 
+                && event.key.code == sf::Keyboard::Enter
+            )
+                return;
+            else if (
+                (event.type == sf::Event::KeyPressed 
+                && event.key.code == sf::Keyboard::Escape)
+                || event.type == sf::Event::Closed
+            )
+            {
+                window.close();
+                return;
+            }
+        }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             set_hovered_block_value(true);
         else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
             set_hovered_block_value(false);
-        sf::Event event;
-        if (window.pollEvent(event)&&(event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
-            break;
     }
 }
 
@@ -240,7 +255,8 @@ int main(int argc, char *argv[])
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::KeyPressed 
+            if (
+                event.type == sf::Event::KeyPressed 
                 && event.key.code == sf::Keyboard::Escape
                 || event.type == sf::Event::Closed
             )
