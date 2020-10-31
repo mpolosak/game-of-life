@@ -78,7 +78,9 @@ void clear_board()
 
 void set_hovered_block_value(bool value)
 {
-    sf::Vector2i position = sf::Mouse::getPosition();
+    sf::Vector2i position = sf::Mouse::getPosition(window);
+    if(position.x<0||position.y<0)
+        return;
     int positionX = position.x/block_size;
     int positionY = position.y/block_size;
     game_board_1[positionX][positionY]=value;
