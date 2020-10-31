@@ -17,6 +17,8 @@ sf::RectangleShape block;
 sf::RectangleShape board_shape;
 int width=50;
 int height=50;
+sf::VideoMode video_mode;
+
 
 void create_board()
 {
@@ -31,7 +33,7 @@ void create_board()
 
 void init_shapes()
 {
-    block_size=std::min(sf::VideoMode::getDesktopMode().width/width,sf::VideoMode::getDesktopMode().height/height);
+    block_size=std::min(video_mode.width/width,video_mode.height/height);
     block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
     block.setFillColor(sf::Color::White);
     board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
@@ -176,13 +178,14 @@ int main(int argc, char *argv[])
             birth={};
             for(char num:birth_string)
                 birth.push_back(std::atoi(&num));
-            std::cout<<"Rules set to "<<rules<<std::endl;
+            std::cout<<"The rules set to "<<rules<<std::endl;
         }
         else{
             std::cerr<<"Rules must be written as survive/birth i.e. 123/45"<<std::endl;
             return 1;
         }
     }
+    video_mode = sf::VideoMode::getDesktopMode();
     if(vm.count("size"))
     {
         std::string size = vm["size"].as<std::string>();
@@ -196,16 +199,22 @@ int main(int argc, char *argv[])
             width = std::stoi(width_string);
             height = std::stoi(height_string);
 
-            std::cout<<"Size set to "<<size<<std::endl;
+            if(width>video_mode.width||height>video_mode.height)
+            {
+                std::cerr<<"The size cannot be bigger than screen resolution"<<std::endl;
+                return 1;
+            }
+
+            std::cout<<"The size set to "<<size<<std::endl;
         }
         else{
-            std::cerr<<"Size must be written as widthxheight i.e. 192x108"<<std::endl;
+            std::cerr<<"The size must be written as widthxheight i.e. 192x108"<<std::endl;
             return 1;
         }
     }
 
     create_board();
-    window.create(sf::VideoMode::getDesktopMode(),"Game in life",sf::Style::Fullscreen);
+    window.create(video_mode,"Game of life",sf::Style::Fullscreen);
     init_shapes();
     if(vm.count("draw"))
         draw_board();
