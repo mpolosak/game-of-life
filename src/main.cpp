@@ -191,6 +191,7 @@ int main(int argc, char *argv[])
     {
         video_mode = sf::VideoMode::getDesktopMode();
         style = sf::Style::Fullscreen;
+        std::cout<<"Running in fullscreen"<<std::endl;
     }
     else
     {
