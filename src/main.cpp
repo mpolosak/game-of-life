@@ -15,10 +15,11 @@ sf::RenderWindow window;
 int block_size;
 sf::RectangleShape block;
 sf::RectangleShape board_shape;
-int width=50;
-int height=50;
+unsigned int width=50;
+unsigned int height=50;
 sf::VideoMode video_mode;
 int style = sf::Style::Default;
+sf::View view;
 
 void create_board()
 {
@@ -31,9 +32,18 @@ void create_board()
     }
 }
 
+void set_view_size(int width, int height)
+{
+    sf::FloatRect rect=sf::FloatRect(sf::Vector2f(0,0),sf::Vector2f(width,height));
+    view.reset(rect);
+    window.setView(view);
+}
+
 void init_shapes()
 {
-    block_size=std::min(video_mode.width/width,video_mode.height/height);
+    block_size=std::min(view.getSize().x/width,view.getSize().y/height);
+    if(block_size==0)
+        block_size=1;
     block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
     block.setFillColor(sf::Color::White);
     board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
@@ -65,6 +75,12 @@ void handle_event(sf::Event &event)
         || event.type == sf::Event::Closed
     )
         window.close();
+    else if(event.type == sf::Event::Resized)
+    {
+        set_view_size(event.size.width,event.size.height);
+        init_shapes();
+        show_board();
+    }
 }
 
 bool vector_contains(std::vector<int> vector, int searched_num)
@@ -213,10 +229,12 @@ int main(int argc, char *argv[])
         video_mode = sf::VideoMode::getDesktopMode();
         style = sf::Style::Fullscreen;
         std::cout<<"Running in fullscreen"<<std::endl;
+        set_view_size(video_mode.width, video_mode.height);
     }
     else
     {
         video_mode = sf::VideoMode(500,500);
+        set_view_size(500,500);
     }
 
     if(vm.count("size"))
