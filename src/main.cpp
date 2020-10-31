@@ -240,7 +240,10 @@ int main(int argc, char *argv[])
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+            if (event.type == sf::Event::KeyPressed 
+                && event.key.code == sf::Keyboard::Escape
+                || event.type == sf::Event::Closed
+            )
                 window.close();
         }
         if(clock.getElapsedTime().asMilliseconds()>=250)
