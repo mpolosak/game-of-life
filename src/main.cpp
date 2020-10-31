@@ -18,7 +18,7 @@ sf::RectangleShape board_shape;
 int width=50;
 int height=50;
 sf::VideoMode video_mode;
-
+int style = sf::Style::Default;
 
 void create_board()
 {
@@ -144,6 +144,7 @@ int main(int argc, char *argv[])
         ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
         ("rules,r", po::value<std::string>(), "set rules to arg, the rules must be written as survive/birth i.e. 123/45, if not present the rules are set to standard(23/3)")
         ("size,s", po::value<std::string>(), "set size of board to arg, the size must be written as widthxheight i.e. 192x108, if not present the size is set to 50x50")
+        ("fullscreen,f", "run in fullscreen mode")
     ;
     po::variables_map vm;
     try
@@ -185,7 +186,17 @@ int main(int argc, char *argv[])
             return 1;
         }
     }
-    video_mode = sf::VideoMode::getDesktopMode();
+
+    if(vm.count("fullscreen"))
+    {
+        video_mode = sf::VideoMode::getDesktopMode();
+        style = sf::Style::Fullscreen;
+    }
+    else
+    {
+        video_mode = sf::VideoMode(500,500);
+    }
+
     if(vm.count("size"))
     {
         std::string size = vm["size"].as<std::string>();
@@ -214,7 +225,7 @@ int main(int argc, char *argv[])
     }
 
     create_board();
-    window.create(video_mode,"Game of life",sf::Style::Fullscreen);
+    window.create(video_mode,"Game of life",style);
     init_shapes();
     if(vm.count("draw"))
         draw_board();
