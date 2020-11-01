@@ -250,12 +250,6 @@ int main(int argc, char *argv[])
             width = std::stoi(width_string);
             height = std::stoi(height_string);
 
-            if(width>video_mode.width||height>video_mode.height)
-            {
-                std::cerr<<"The size cannot be bigger than screen resolution"<<std::endl;
-                return 1;
-            }
-
             std::cout<<"The size set to "<<size<<std::endl;
         }
         else{
