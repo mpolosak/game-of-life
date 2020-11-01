@@ -75,6 +75,26 @@ void handle_event(sf::Event &event)
         || event.type == sf::Event::Closed
     )
         window.close();
+    else if(
+        event.type==sf::Event::KeyPressed
+        && event.key.code == sf::Keyboard::F11
+    )
+    {
+        if(style==sf::Style::Fullscreen)
+        {
+            video_mode=sf::VideoMode(500,500);
+            style=sf::Style::Default;
+        }
+        else
+        {
+            video_mode=sf::VideoMode::getDesktopMode();
+            style=sf::Style::Fullscreen;
+        }
+        window.create(video_mode,"Game of life",style);
+        set_view_size(video_mode.width,video_mode.height);
+        init_shapes();
+        show_board();
+    }
     else if(event.type == sf::Event::Resized)
     {
         set_view_size(event.size.width,event.size.height);
