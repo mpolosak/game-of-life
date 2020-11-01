@@ -1,73 +1,98 @@
 #include<iostream>
 #include<string>
-#include<SFML/Graphics.hpp>
-#include<cstdlib> 
-#include<algorithm>
 #include<SFML/System/Clock.hpp>
-#include<regex>
-#include<boost/program_options.hpp>
+#include"board.hpp"
+#include"parsing.hpp"
 
-namespace po = boost::program_options;
-
-bool **game_board_1;
-bool **game_board_2;
 sf::RenderWindow window;
-unsigned int block_size;
-unsigned int min_block_size;
-sf::RectangleShape block;
-sf::RectangleShape board_shape;
-unsigned int width=50;
-unsigned int height=50;
-sf::VideoMode video_mode;
+sf::VideoMode videoMode;
 int style = sf::Style::Default;
 sf::View view;
+Board *board;
 
-void create_board()
+void init(int argc, char *argv[]);
+void setViewSize(int width, int height);
+void draw();
+void handleEvent(sf::Event &event);
+void setHoveredBlockValue(bool value);
+void drawBoard();
+void setFullscreen(bool fullscreen);
+
+int main(int argc, char *argv[])
 {
-    game_board_1=new bool*[width];
-    game_board_2=new bool*[width];
-    for(int x = 0;x<width;x++)
-    {
-        game_board_1[x] = new bool[height];
-        game_board_2[x] = new bool[height];
+    try{
+        init(argc, argv);
     }
+    catch(char const* error)
+    {
+        std::cerr<<error<<std::endl;
+        return 1;
+    }
+    catch(int error)
+    {
+        return 0;
+    }
+    
+    sf::Clock clock;
+    draw();
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+            handleEvent(event);
+
+        if(clock.getElapsedTime().asMilliseconds()>=250)
+        {
+            clock.restart();
+            
+            board->step();
+                
+            draw();
+        }
+    }
+    return 0;
+}
+void init(int argc, char *argv[])
+{
+    Config config;
+    try
+    {
+        config = parseComandLine(argc,argv);
+    }
+    catch(...)
+    {
+        throw;
+    }
+
+    board = new Board(config.width, config.height, config.minBlockSize);
+
+    board->survive=config.survive;
+    board->birth=config.birth;
+    
+    setFullscreen(config.fullscreen);
+
+    if(config.draw)
+        drawBoard();
+    else
+        board->fillWithRandomValues();
 }
 
-void set_view_size(int width, int height)
+void setViewSize(int width, int height)
 {
     sf::FloatRect rect=sf::FloatRect(sf::Vector2f(0,0),sf::Vector2f(width,height));
     view.reset(rect);
     window.setView(view);
+    board->setBlockSize(std::min(width/board->getWidth(),height/board->getHeight()));
 }
 
-void init_shapes()
-{
-    block_size=std::min(view.getSize().x/width,view.getSize().y/height);
-    block_size=std::max(block_size,min_block_size);
-    block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
-    block.setFillColor(sf::Color::White);
-    board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
-    board_shape.setFillColor(sf::Color::Black);
-}
-
-void show_board()
+void draw()
 {
     window.clear(sf::Color(150, 150, 150));
-    window.draw(board_shape);
-    for(int y = 0;y<height;y++){
-        for(int x = 0;x<width;x++)
-        {
-            if(game_board_1[x][y])
-            {
-                block.setPosition(x*block_size,y*block_size);
-                window.draw(block);
-            }
-        }
-    }
+    window.draw(*board);
     window.display();
 }
 
-void handle_event(sf::Event &event)
+void handleEvent(sf::Event &event)
 {
     if (
         event.type == sf::Event::KeyPressed 
@@ -80,67 +105,30 @@ void handle_event(sf::Event &event)
         && event.key.code == sf::Keyboard::F11
     )
     {
-        if(style==sf::Style::Fullscreen)
-        {
-            video_mode=sf::VideoMode(500,500);
-            style=sf::Style::Default;
-        }
+        if(style==sf::Style::Default)
+            setFullscreen(true);
         else
-        {
-            video_mode=sf::VideoMode::getDesktopMode();
-            style=sf::Style::Fullscreen;
-        }
-        window.create(video_mode,"Game of life",style);
-        set_view_size(video_mode.width,video_mode.height);
-        init_shapes();
-        show_board();
+            setFullscreen(false);
+        draw();
     }
     else if(event.type == sf::Event::Resized)
     {
-        set_view_size(event.size.width,event.size.height);
-        init_shapes();
-        show_board();
+        setViewSize(event.size.width,event.size.height);
+        draw();
     }
 }
 
-bool vector_contains(std::vector<int> vector, int searched_num)
-{
-    for(int num:vector)
-        if(searched_num==num)
-            return true;
-    return false;
-}
-
-void clear_board()
-{
-    for(int y = 0;y<height;y++){
-        for(int x = 0;x<width;x++)
-        {
-            game_board_1[x][y]=0;
-            game_board_2[x][y]=0;
-        }
-    }
-}
-
-void set_hovered_block_value(bool value)
+void setHoveredBlockValue(bool value)
 {
     sf::Vector2i position = sf::Mouse::getPosition(window);
-    sf::Vector2f board_size = board_shape.getSize();
-    if(position.x<0||position.y<0||position.x>=board_size.x||position.y>=board_size.y)
-        return;
-    int positionX = position.x/block_size;
-    int positionY = position.y/block_size;
-    game_board_1[positionX][positionY]=value;
-    game_board_2[positionX][positionY]=value;
-    show_board();
+    board->setBlockValue(position.x/board->getBlockSize(),position.y/board->getBlockSize(),value);
+    draw();
 }
 
-void draw_board()
+void drawBoard()
 {
-    window.clear(sf::Color(150, 150, 150));
-    clear_board();
-    window.draw(board_shape);
-    window.display();
+    board->clear();
+    draw();
     while(window.isOpen())
     {
         sf::Event event;
@@ -152,170 +140,27 @@ void draw_board()
             )
                 return;
             else
-                handle_event(event);
+                handleEvent(event);
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            set_hovered_block_value(true);
+            setHoveredBlockValue(true);
         else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-            set_hovered_block_value(false);
+            setHoveredBlockValue(false);
     }
 }
 
-void fill_board_with_random_values()
+void setFullscreen(bool fullscreen)
 {
-    srand(time(NULL));
-    for(int y = 0;y<height;y++){
-        for(int x = 0;x<width;x++)
-        {
-            game_board_1[x][y]=(std::rand()%30)%2;
-            game_board_2[x][y]=game_board_1[x][y];
-        }
-    }
-}
-
-int count_living_neighbours(int x, int y)
-{
-    int living_neighbours=0;
-    for(int j=y-1;j<=y+1;j++)
+    if(fullscreen)
     {
-        for(int i=x-1;i<=x+1;i++)
-        {
-            if(i>=0&&i<width&&j>=0&&j<height&&!(i==x&&j==y))
-            {
-                if(game_board_1[i][j])
-                    living_neighbours++;
-            }
-        }
-    }
-    return living_neighbours;
-}
-
-int main(int argc, char *argv[])
-{
-    std::vector<int> survive = {2,3};
-    std::vector<int> birth = {3};
-
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h", "show this description and return")
-        ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
-        ("rules,r", po::value<std::string>(), "set rules to arg, the rules must be written as survive/birth i.e. 123/45, if not present the rules are set to standard(23/3)")
-        ("size,s", po::value<std::string>(), "set size of board to arg, the size must be written as widthxheight i.e. 192x108, if not present the size is set to 50x50")
-        ("block_size,b", po::value<unsigned int>(&min_block_size)->default_value(1), "set minimal size of block to arg, if not present the minimal size of a block equals 1")
-        ("fullscreen,f", "run in fullscreen mode")
-    ;
-    po::variables_map vm;
-    try
-    {
-        po::store(po::parse_command_line(argc, argv, desc), vm);   
-        po::notify(vm);
-    }
-    catch(boost::wrapexcept<boost::program_options::unknown_option> &error)
-    {
-        std::cerr<<error.get_option_name()<<" isn't correct option"<<std::endl;
-        std::cerr<<"Type in 'game-of-live -h' to get list of allowed options"<<std::endl;
-        return 1;
-    }
-    if (vm.count("help")) {
-        std::cout << desc << "\n";
-        return 0;
-    }
-    if(vm.count("rules"))
-    {
-        std::string rules = vm["rules"].as<std::string>();
-        std::smatch base_match;
-        const std::regex base_regex("([0-9]*)/([0-9]*)");
-        if(std::regex_match(rules, base_match, base_regex))
-        {
-            std::string survive_string=base_match[1];
-            std::string birth_string=base_match[2];
-            
-            survive={};
-            for(char num:survive_string)
-                survive.push_back(std::atoi(&num));
-
-            birth={};
-            for(char num:birth_string)
-                birth.push_back(std::atoi(&num));
-            std::cout<<"The rules set to "<<rules<<std::endl;
-        }
-        else{
-            std::cerr<<"Rules must be written as survive/birth i.e. 123/45"<<std::endl;
-            return 1;
-        }
-    }
-
-    if(vm.count("fullscreen"))
-    {
-        video_mode = sf::VideoMode::getDesktopMode();
-        style = sf::Style::Fullscreen;
-        std::cout<<"Running in fullscreen"<<std::endl;
-        set_view_size(video_mode.width, video_mode.height);
+        videoMode=sf::VideoMode::getDesktopMode();
+        style=sf::Style::Fullscreen;
     }
     else
     {
-        video_mode = sf::VideoMode(500,500);
-        set_view_size(500,500);
+        videoMode=sf::VideoMode(500,500);
+        style=sf::Style::Default;
     }
-
-    if(vm.count("size"))
-    {
-        std::string size = vm["size"].as<std::string>();
-        std::smatch base_match;
-        const std::regex base_regex("([0-9]*)x([0-9]*)");
-        if(std::regex_match(size, base_match, base_regex))
-        {
-            std::string width_string=base_match[1];
-            std::string height_string=base_match[2];
-
-            width = std::stoi(width_string);
-            height = std::stoi(height_string);
-
-            std::cout<<"The size set to "<<size<<std::endl;
-        }
-        else{
-            std::cerr<<"The size must be written as widthxheight i.e. 192x108"<<std::endl;
-            return 1;
-        }
-    }
-
-    create_board();
-    window.create(video_mode,"Game of life",style);
-    init_shapes();
-    if(vm.count("draw"))
-        draw_board();
-    else
-        fill_board_with_random_values();
-    
-    sf::Clock clock;
-    show_board();
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-            handle_event(event);
-
-        if(clock.getElapsedTime().asMilliseconds()>=250)
-        {
-            clock.restart();
-            for(int y = 0;y<height;y++){
-                for(int x = 0;x<width;x++)
-                {
-                    if(game_board_1[x][y])
-                        if(!vector_contains(survive,count_living_neighbours(x,y)))
-                            game_board_2[x][y]=false;
-                    else
-                        if(vector_contains(birth,count_living_neighbours(x,y)))
-                            game_board_2[x][y]=true;
-
-                }
-            }
-            for(int y = 0;y<height;y++)
-                for(int x = 0;x<width;x++)
-                    game_board_1[x][y]=game_board_2[x][y];
-                
-            show_board();
-        }
-    }
-    return 0;
+    window.create(videoMode,"Game of life",style);
+    setViewSize(videoMode.width,videoMode.height);
 }
