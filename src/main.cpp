@@ -12,7 +12,8 @@ namespace po = boost::program_options;
 bool **game_board_1;
 bool **game_board_2;
 sf::RenderWindow window;
-int block_size;
+unsigned int block_size;
+unsigned int min_block_size;
 sf::RectangleShape block;
 sf::RectangleShape board_shape;
 unsigned int width=50;
@@ -42,8 +43,7 @@ void set_view_size(int width, int height)
 void init_shapes()
 {
     block_size=std::min(view.getSize().x/width,view.getSize().y/height);
-    if(block_size==0)
-        block_size=1;
+    block_size=std::max(block_size,min_block_size);
     block = sf::RectangleShape(sf::Vector2f(block_size,block_size));
     block.setFillColor(sf::Color::White);
     board_shape= sf::RectangleShape(sf::Vector2f(block_size*width,block_size*height));
@@ -201,6 +201,7 @@ int main(int argc, char *argv[])
         ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
         ("rules,r", po::value<std::string>(), "set rules to arg, the rules must be written as survive/birth i.e. 123/45, if not present the rules are set to standard(23/3)")
         ("size,s", po::value<std::string>(), "set size of board to arg, the size must be written as widthxheight i.e. 192x108, if not present the size is set to 50x50")
+        ("block_size,b", po::value<unsigned int>(&min_block_size)->default_value(1), "set minimal size of block to arg, if not present the minimal size of a block equals 1")
         ("fullscreen,f", "run in fullscreen mode")
     ;
     po::variables_map vm;
