@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     try{
         init(argc, argv);
     }
-    catch(char const* error)
+    catch(std::string &error)
     {
         std::cerr<<error<<std::endl;
         return 1;

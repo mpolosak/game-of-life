@@ -32,8 +32,13 @@ Config parseComandLine(int argc, char *argv[])
     }
     catch(boost::wrapexcept<po::unknown_option> &error)
     {
-        throw error.get_option_name()+" isn't correct option\n"
+        std::string error_string=error.get_option_name() + " isn't correct option\n"
             + "Type in 'game-of-live -h' to get list of allowed options";
+        throw error_string;
+    }
+    catch(boost::wrapexcept<po::invalid_command_line_syntax> &error)
+    {
+        throw std::string("Invalid syntax\nType in 'game-of-live -h' to get help");
     }
 
     if (vm.count("help")) {
@@ -96,7 +101,7 @@ std::pair<std::unordered_set<char>, std::unordered_set<char>> parseRules(const s
 
     }
     else
-        throw "Rules must be written as survive/birth i.e. 123/45";
+        throw std::string("Rules must be written as survive/birth i.e. 123/45");
     
     return std::make_pair(survive,birth);
 }
@@ -115,11 +120,11 @@ std::pair<unsigned int,unsigned int> parseSize(const std::string &size)
         height = std::stoi(height_string);
         if(width==0||height==0)
         {
-            throw "Neither height nor width cannot be equal to zero";
+            throw std::string("Neither height nor width cannot be equal to zero");
         }
     }
     else
-        throw "The size must be written as widthxheight i.e. 192x108";
+        throw std::string("The size must be written as widthxheight i.e. 192x108");
     
     return std::make_pair(width,height); 
 }
