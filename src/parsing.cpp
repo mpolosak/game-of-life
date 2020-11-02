@@ -10,6 +10,7 @@ Config parseComandLine(int argc, char *argv[])
     Config config;
     std::string rules_string;
     std::string size_string;
+    std::string window_size_string;
 
     po::options_description desc("Allowed options");
 
@@ -20,6 +21,7 @@ Config parseComandLine(int argc, char *argv[])
         ("size,s", po::value<std::string>(&size_string)->default_value("50x50"), "set size of board to arg, the size must be written as widthxheight i.e. 192x108")
         ("block_size,b", po::value<unsigned int>(&config.minBlockSize)->default_value(1), "set minimal size of block to arg")
         ("fullscreen,f", "run in fullscreen mode")
+        ("window_size,w", po::value<std::string>(&window_size_string)->default_value("500x500"), "set size of window to arg, the size must be written as widthxheight i.e. 800x600")
     ;
     po::variables_map vm;
 
@@ -53,6 +55,16 @@ Config parseComandLine(int argc, char *argv[])
         auto size = parseSize(size_string);
         config.width = size.first;
         config.height = size.second;
+    }
+    catch(...)
+    {
+        throw;
+    }
+
+    try{
+        auto window_size = parseSize(window_size_string);
+        config.windowWidth = window_size.first;
+        config.windowHeight = window_size.second;
     }
     catch(...)
     {

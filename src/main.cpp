@@ -5,7 +5,7 @@
 #include"parsing.hpp"
 
 sf::RenderWindow window;
-sf::VideoMode videoMode;
+sf::VideoMode windowVideoMode;
 int style = sf::Style::Default;
 sf::View view;
 Board *board;
@@ -69,6 +69,7 @@ void init(int argc, char *argv[])
     board->survive=config.survive;
     board->birth=config.birth;
     
+    windowVideoMode=sf::VideoMode(config.windowWidth, config.windowHeight);
     setFullscreen(config.fullscreen);
 
     if(config.draw)
@@ -153,14 +154,15 @@ void setFullscreen(bool fullscreen)
 {
     if(fullscreen)
     {
-        videoMode=sf::VideoMode::getDesktopMode();
         style=sf::Style::Fullscreen;
+        auto fullscreenMode = sf::VideoMode::getDesktopMode();
+        window.create(fullscreenMode,"Game of life",style);
+        setViewSize(fullscreenMode.width,fullscreenMode.height);
     }
     else
     {
-        videoMode=sf::VideoMode(500,500);
         style=sf::Style::Default;
+        window.create(windowVideoMode,"Game of life",style);
+        setViewSize(windowVideoMode.width,windowVideoMode.height);
     }
-    window.create(videoMode,"Game of life",style);
-    setViewSize(videoMode.width,videoMode.height);
 }

@@ -10,6 +10,8 @@ struct Config
     unsigned int height;
     unsigned int minBlockSize;
     bool fullscreen;
+    unsigned int windowWidth;
+    unsigned int windowHeight;
 };
 
 Config parseComandLine(int argc, char *argv[]);
