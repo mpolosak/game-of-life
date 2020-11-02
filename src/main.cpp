@@ -64,6 +64,8 @@ void init(int argc, char *argv[])
         throw;
     }
 
+    config.print();
+
     board = new Board(config.width, config.height, config.minBlockSize);
 
     board->survive=config.survive;

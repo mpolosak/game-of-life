@@ -1,14 +1,23 @@
 #include "parsing.hpp"
 #include<boost/program_options.hpp>
 #include<regex>
-#include<iostream>
 
 namespace po = boost::program_options;
+
+void Config::print()
+{
+    std::cout << std::boolalpha;
+    printLine("Draw board", draw);
+    printLine("Rules", rules_string);
+    printLine("Minimum block size", minBlockSize);
+    printLine("Board size", std::to_string(width) + "x" + std::to_string(height));
+    printLine("Window size", std::to_string(windowWidth) + "x" + std::to_string(windowHeight));
+    printLine("Fullscreen", fullscreen);
+}
 
 Config parseComandLine(int argc, char *argv[])
 {
     Config config;
-    std::string rules_string;
     std::string size_string;
     std::string window_size_string;
 
@@ -17,7 +26,7 @@ Config parseComandLine(int argc, char *argv[])
     desc.add_options()
         ("help,h", "show this description and return")
         ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
-        ("rules,r", po::value<std::string>(&rules_string)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
+        ("rules,r", po::value<std::string>(&config.rules_string)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
         ("size,s", po::value<std::string>(&size_string)->default_value("50x50"), "set size of board to arg, the size must be written as widthxheight i.e. 192x108")
         ("block_size,b", po::value<unsigned int>(&config.minBlockSize)->default_value(1), "set minimal size of block to arg")
         ("fullscreen,f", "run in fullscreen mode")
@@ -47,7 +56,7 @@ Config parseComandLine(int argc, char *argv[])
     }
 
     try{
-        auto rules = parseRules(rules_string);
+        auto rules = parseRules(config.rules_string);
         config.survive=rules.first;
         config.birth=rules.second;
     }
