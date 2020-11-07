@@ -3,9 +3,14 @@
 #include<iostream>
 #include<iomanip>
 
-struct Config
+class Config
 {
+public:
     static Config fromCommandLine(int argc, char *argv[]);
+    void setRules(const std::string &rulesString);
+    std::string getRules()const{return rulesString;};
+    void setBoardSize(const std::string &size);
+    void setWindowSize(const std::string &size);
     bool draw;
     std::unordered_set<char> survive;
     std::unordered_set<char> birth;
@@ -15,11 +20,10 @@ struct Config
     bool fullscreen;
     unsigned int windowWidth;
     unsigned int windowHeight;
-    std::string rules_string;
+private:
+    std::string rulesString;
 };
 
 std::ostream& operator<<(std::ostream& os, const Config& config);
 
-Config parseComandLine(int argc, char *argv[]);
-std::pair<std::unordered_set<char>, std::unordered_set<char>> parseRules(const std::string &rules);
 std::pair<unsigned int,unsigned int> parseSize(const std::string &size);
