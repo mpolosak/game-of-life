@@ -5,6 +5,7 @@
 
 struct Config
 {
+    static Config fromCommandLine(int argc, char *argv[]);
     void print();
     bool draw;
     std::unordered_set<char> survive;

@@ -4,18 +4,7 @@
 
 namespace po = boost::program_options;
 
-void Config::print()
-{
-    std::cout << std::boolalpha;
-    printLine("Draw board", draw);
-    printLine("Rules", rules_string);
-    printLine("Minimum block size", minBlockSize);
-    printLine("Board size", std::to_string(width) + "x" + std::to_string(height));
-    printLine("Window size", std::to_string(windowWidth) + "x" + std::to_string(windowHeight));
-    printLine("Fullscreen", fullscreen);
-}
-
-Config parseComandLine(int argc, char *argv[])
+Config Config::fromCommandLine(int argc, char *argv[])
 {
     Config config;
     std::string size_string;
@@ -89,6 +78,17 @@ Config parseComandLine(int argc, char *argv[])
     config.fullscreen=vm.count("fullscreen");
 
     return config;
+}
+
+void Config::print()
+{
+    std::cout << std::boolalpha;
+    printLine("Draw board", draw);
+    printLine("Rules", rules_string);
+    printLine("Minimum block size", minBlockSize);
+    printLine("Board size", std::to_string(width) + "x" + std::to_string(height));
+    printLine("Window size", std::to_string(windowWidth) + "x" + std::to_string(windowHeight));
+    printLine("Fullscreen", fullscreen);
 }
 
 std::pair<std::unordered_set<char>, std::unordered_set<char>> parseRules(const std::string &rules)

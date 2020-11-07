@@ -57,7 +57,7 @@ void init(int argc, char *argv[])
     Config config;
     try
     {
-        config = parseComandLine(argc,argv);
+        config = Config::fromCommandLine(argc,argv);
     }
     catch(...)
     {
