@@ -6,7 +6,6 @@
 struct Config
 {
     static Config fromCommandLine(int argc, char *argv[]);
-    void print();
     bool draw;
     std::unordered_set<char> survive;
     std::unordered_set<char> birth;
@@ -17,13 +16,9 @@ struct Config
     unsigned int windowWidth;
     unsigned int windowHeight;
     std::string rules_string;
-    
-    template <typename T>
-    static void printLine (const std::string &desc, const T &value)
-    { 
-        std::cout << std::setw(20) << desc << " : " << value << std::endl;
-    }
 };
+
+std::ostream& operator<<(std::ostream& os, const Config& config);
 
 Config parseComandLine(int argc, char *argv[]);
 std::pair<std::unordered_set<char>, std::unordered_set<char>> parseRules(const std::string &rules);

@@ -64,7 +64,7 @@ void init(int argc, char *argv[])
         throw;
     }
 
-    config.print();
+    std::cout<<config;
 
     board = new Board(config.width, config.height, config.minBlockSize);
 

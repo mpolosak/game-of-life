@@ -80,15 +80,18 @@ Config Config::fromCommandLine(int argc, char *argv[])
     return config;
 }
 
-void Config::print()
+std::ostream& operator<<(std::ostream& os, const Config& config)
 {
-    std::cout << std::boolalpha;
-    printLine("Draw board", draw);
-    printLine("Rules", rules_string);
-    printLine("Minimum block size", minBlockSize);
-    printLine("Board size", std::to_string(width) + "x" + std::to_string(height));
-    printLine("Window size", std::to_string(windowWidth) + "x" + std::to_string(windowHeight));
-    printLine("Fullscreen", fullscreen);
+    return os << std::boolalpha
+        << std::setw(20) << "Draw board" << " : " << config.draw << std::endl
+        << std::setw(20) << "Rules" << " : " << config.rules_string << std::endl
+        << std::setw(20) << "Minimum block size" << " : " 
+            << config.minBlockSize << std::endl
+        << std::setw(20) << "Board size" << " : " 
+            << config.width << "x" << config.height<< std::endl
+        << std::setw(20) << "Window size" << " : " 
+            << config.windowWidth << "x" << config.windowHeight << std::endl
+        << std::setw(20) << "Fullscreen" << " : " << config.fullscreen << std::endl;
 }
 
 std::pair<std::unordered_set<char>, std::unordered_set<char>> parseRules(const std::string &rules)
