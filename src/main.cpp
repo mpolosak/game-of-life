@@ -20,19 +20,7 @@ void setFullscreen(bool fullscreen);
 
 int main(int argc, char *argv[])
 {
-    try{
-        init(argc, argv);
-    }
-    catch(std::string &error)
-    {
-        std::cerr<<error<<std::endl;
-        return 1;
-    }
-    catch(int error)
-    {
-        return 0;
-    }
-    
+    init(argc, argv);    
     sf::Clock clock;
     draw();
     while (window.isOpen())
@@ -59,9 +47,14 @@ void init(int argc, char *argv[])
     {
         config = Config::fromCommandLine(argc,argv);
     }
-    catch(...)
+    catch(std::string &error)
     {
-        throw;
+        std::cerr<<error<<std::endl;
+        std::exit(1);
+    }
+    catch(int error)
+    {
+        std::exit(0);
     }
 
     std::cout<<config;
