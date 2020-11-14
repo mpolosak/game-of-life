@@ -9,6 +9,7 @@ sf::VideoMode windowVideoMode;
 int style = sf::Style::Default;
 sf::View view;
 Board *board;
+bool inDrawingMode = false;
 
 void init(int argc, char *argv[]);
 void run();
@@ -134,6 +135,9 @@ void handleKeyPress(sf::Keyboard::Key key)
         case  sf::Keyboard::F11:
             toggleFullscreen(); 
             break;
+        case sf::Keyboard::Enter:
+            inDrawingMode = false;
+            break;
         default:
             break;
     }
@@ -151,21 +155,12 @@ void setHoveredBlockValue(bool value)
 
 void drawBoard()
 {
+    inDrawingMode = true;
     board->clear();
     draw();
-    while(window.isOpen())
+    while(window.isOpen()&&inDrawingMode)
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (
-                event.type == sf::Event::KeyPressed 
-                && event.key.code == sf::Keyboard::Enter
-            )
-                return;
-            else
-                handleEvent(event);
-        }
+        processEvents();
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             setHoveredBlockValue(true);
         else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
