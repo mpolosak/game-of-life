@@ -117,7 +117,10 @@ void handleEvent(sf::Event &event)
 void setHoveredBlockValue(bool value)
 {
     sf::Vector2i position = sf::Mouse::getPosition(window);
-    board->setBlockValue(position.x/board->getBlockSize(),position.y/board->getBlockSize(),value);
+    int blockSize = board->getBlockSize();
+    int x = position.x/blockSize;
+    int y = position.y/blockSize;
+    board->setBlockValue(x, y, value);
     draw();
 }
 
