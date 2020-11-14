@@ -11,6 +11,8 @@ sf::View view;
 Board *board;
 
 void init(int argc, char *argv[]);
+void run();
+void processEvents();
 void setViewSize(int width, int height);
 void draw();
 void handleEvent(sf::Event &event);
@@ -21,25 +23,10 @@ void setFullscreen(bool fullscreen);
 int main(int argc, char *argv[])
 {
     init(argc, argv);    
-    sf::Clock clock;
-    draw();
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-            handleEvent(event);
-
-        if(clock.getElapsedTime().asMilliseconds()>=250)
-        {
-            clock.restart();
-            
-            board->step();
-                
-            draw();
-        }
-    }
+    run();
     return 0;
 }
+
 void init(int argc, char *argv[])
 {
     Config config;
@@ -71,6 +58,34 @@ void init(int argc, char *argv[])
         drawBoard();
     else
         board->fillWithRandomValues();
+}
+
+void run()
+{
+    sf::Clock clock;
+    draw();
+    while (window.isOpen())
+    {
+        processEvents();
+
+        auto miliseconds = clock.getElapsedTime().asMilliseconds();
+        if(miliseconds>=250)
+        {
+            clock.restart();
+            
+            board->step();
+                
+            draw();
+        }
+    }
+}
+
+void processEvents()
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+        handleEvent(event);
+
 }
 
 void setViewSize(int width, int height)
