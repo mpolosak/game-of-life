@@ -16,9 +16,11 @@ void processEvents();
 void setViewSize(int width, int height);
 void draw();
 void handleEvent(sf::Event &event);
+void handleKeyPress(sf::Keyboard::Key key);
 void setHoveredBlockValue(bool value);
 void drawBoard();
 void setFullscreen(bool fullscreen);
+void toggleFullscreen();
 
 int main(int argc, char *argv[])
 {
@@ -105,27 +107,35 @@ void draw()
 
 void handleEvent(sf::Event &event)
 {
-    if (
-        event.type == sf::Event::KeyPressed 
-        && event.key.code == sf::Keyboard::Escape
-        || event.type == sf::Event::Closed
-    )
-        window.close();
-    else if(
-        event.type==sf::Event::KeyPressed
-        && event.key.code == sf::Keyboard::F11
-    )
+    switch(event.type)
     {
-        if(style==sf::Style::Default)
-            setFullscreen(true);
-        else
-            setFullscreen(false);
-        draw();
-    }
-    else if(event.type == sf::Event::Resized)
+        case sf::Event::Closed:
+            window.close();
+            break;
+        case sf::Event::KeyPressed:
+            handleKeyPress(event.key.code);
+            break;
+        case sf::Event::Resized:
+            setViewSize(event.size.width,event.size.height);
+            break;
+        default:
+            break;
+    } 
+    draw();
+}
+
+void handleKeyPress(sf::Keyboard::Key key)
+{
+    switch(key)
     {
-        setViewSize(event.size.width,event.size.height);
-        draw();
+        case sf::Keyboard::Escape:
+            window.close();
+            break;
+        case  sf::Keyboard::F11:
+            toggleFullscreen(); 
+            break;
+        default:
+            break;
     }
 }
 
@@ -178,4 +188,12 @@ void setFullscreen(bool fullscreen)
     }
     window.create(newVideoMode,"Game of life",style);
     setViewSize(newVideoMode.width,newVideoMode.height);
+}
+
+void toggleFullscreen()
+{
+    if(style==sf::Style::Default)
+        setFullscreen(true);
+    else
+        setFullscreen(false);
 }
