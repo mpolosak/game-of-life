@@ -147,17 +147,17 @@ void drawBoard()
 
 void setFullscreen(bool fullscreen)
 {
+    sf::VideoMode newVideoMode;
     if(fullscreen)
     {
-        style=sf::Style::Fullscreen;
-        auto fullscreenMode = sf::VideoMode::getDesktopMode();
-        window.create(fullscreenMode,"Game of life",style);
-        setViewSize(fullscreenMode.width,fullscreenMode.height);
+        style = sf::Style::Fullscreen;
+        newVideoMode = sf::VideoMode::getDesktopMode();
     }
     else
     {
         style=sf::Style::Default;
-        window.create(windowVideoMode,"Game of life",style);
-        setViewSize(windowVideoMode.width,windowVideoMode.height);
+        newVideoMode = windowVideoMode;
     }
+    window.create(newVideoMode,"Game of life",style);
+    setViewSize(newVideoMode.width,newVideoMode.height);
 }
