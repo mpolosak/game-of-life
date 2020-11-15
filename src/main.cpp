@@ -2,7 +2,7 @@
 #include<string>
 #include<SFML/System/Clock.hpp>
 #include"board.hpp"
-#include"parsing.hpp"
+#include"config.hpp"
 
 sf::RenderWindow window;
 sf::VideoMode windowVideoMode;
@@ -49,12 +49,9 @@ void init(int argc, char *argv[])
 
     std::cout<<config;
 
-    board = new Board(config.width, config.height, config.minBlockSize);
-
-    board->survive=config.survive;
-    board->birth=config.birth;
+    board = new Board(config.board);
     
-    windowVideoMode=sf::VideoMode(config.windowWidth, config.windowHeight);
+    windowVideoMode=sf::VideoMode(config.width, config.height);
     setFullscreen(config.fullscreen);
 
     if(config.draw)
