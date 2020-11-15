@@ -30,15 +30,9 @@ Config Config::fromCommandLine(int argc, char *argv[])
         po::store(po::parse_command_line(argc, argv, desc), vm);   
         po::notify(vm);
     }
-    catch(boost::wrapexcept<po::unknown_option> &error)
+    catch(std::logic_error &error)
     {
-        std::string error_string=error.get_option_name() + " isn't correct option\n"
-            + "Type in 'game-of-live -h' to get list of allowed options";
-        throw error_string;
-    }
-    catch(boost::wrapexcept<po::invalid_command_line_syntax> &error)
-    {
-        throw std::string("Invalid syntax\nType in 'game-of-live -h' to get help");
+        throw std::string(error.what())+"\nType in 'game-of-life -h' to get help";
     }
 
     if (vm.count("help")) {
