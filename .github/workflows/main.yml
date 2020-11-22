@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: "Build on Ubuntu"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install meson
+        run: apt install meson
+        
+      - name: Install dependencies
+        run: apt install libsfml-dev libboost-all-dev
+        
+      - name: Configure the project with meson
+        run: meson build
+        
+      - name: Compile
+        run: ninja -vC build
