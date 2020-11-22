@@ -132,7 +132,7 @@ void handleKeyPress(sf::Keyboard::Key key)
         case  sf::Keyboard::F11:
             toggleFullscreen(); 
             break;
-        case sf::Keyboard::Enter:
+        case sf::Keyboard::Return:
             inDrawingMode = false;
             break;
         default:
