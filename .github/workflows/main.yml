@@ -39,8 +39,8 @@ jobs:
       - name: Install meson and ninja
         run: choco install meson ninja
 
-      - name: Set Path environment variable
-        run: set Path=%Path%;C:\Program Files\Meson
+      - name: Refresh environment variables
+        run: refreshenv
 
       - name: Install dependencies
         run: vcpkg install sfml
@@ -52,4 +52,3 @@ jobs:
 
       - name: Compile
         run: ninja -vC build    
-        
