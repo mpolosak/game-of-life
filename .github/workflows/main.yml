@@ -48,7 +48,7 @@ jobs:
       - run: set BOOST_ROOT=BOOST_ROOT_1_72_0
 
       - name: Configure the project with meson
-        run: meson build
+        run: meson.py build
 
       - name: Compile
         run: ninja -vC build    
