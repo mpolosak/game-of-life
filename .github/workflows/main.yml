@@ -8,12 +8,11 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-ubuntu:
     name: "Build on Ubuntu"
     runs-on: ubuntu-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - run: sudo apt update
@@ -29,3 +28,22 @@ jobs:
         
       - name: Compile
         run: ninja -vC build
+
+  build-windows:
+    name: "Build on Windows"
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install meson and ninja
+        run: choco install meson ninja
+
+      - name: Install dependencies
+        run: vcpkg install boost sfml
+
+      - name: Configure the project with meson
+        run: meson build
+
+      - name: Compile
+        run: ninja -vC build    
