@@ -38,6 +38,8 @@ jobs:
 
       - name: Install meson and ninja
         run: choco install meson ninja
+
+      - name: Set Path environment variable
         run: set Path=%Path%;C:\Program Files\Meson
 
       - name: Install dependencies
@@ -50,3 +52,4 @@ jobs:
 
       - name: Compile
         run: ninja -vC build    
+        
