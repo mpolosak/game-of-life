@@ -38,6 +38,7 @@ jobs:
 
       - name: Install meson and ninja
         run: choco install meson ninja
+        run: set Path=%Path%;C:\Program Files\Meson
 
       - name: Install dependencies
         run: vcpkg install sfml
