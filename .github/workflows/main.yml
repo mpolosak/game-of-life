@@ -40,7 +40,9 @@ jobs:
         run: choco install meson ninja
 
       - name: Install dependencies
-        run: vcpkg install boost sfml
+        run: vcpkg install sfml
+
+      - run: set BOOST_ROOT=BOOST_ROOT_1_72_0
 
       - name: Configure the project with meson
         run: meson build
