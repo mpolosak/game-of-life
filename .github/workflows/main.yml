@@ -36,6 +36,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: set PATH=%PATH%;C:\Users\runneradmin\AppData\Roaming\Python\Python37\Scripts
+
       - name: Install meson
         run: python -m pip install --user meson
 
@@ -48,7 +50,7 @@ jobs:
       - run: set BOOST_ROOT=BOOST_ROOT_1_72_0
 
       - name: Setup the project with meson
-        run: python -m meson build
+        run: meson build
 
       - name: Compile
         run: ninja -vC build    
