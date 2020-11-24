@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set Path
-        run: env:Path+=\u0027;C:\Users\runneradmin\AppData\Roaming\Python\Python37\Scripts\u0027
+        run: "env:Path+=\u0027;C:\Users\runneradmin\AppData\Roaming\Python\Python37\Scripts\u0027"
 
       - name: Install meson
         run: python -m pip install --user meson
