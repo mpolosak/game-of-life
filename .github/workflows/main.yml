@@ -52,7 +52,7 @@ jobs:
             $dir = "c:\sfml"
 
             Invoke-WebRequest -Uri $url -OutFile $archive
-            Expand-Archive -LiteralPath $output -DestinationPath $dir
+            Expand-Archive -LiteralPath $archive -DestinationPath $dir
 
       - run: set BOOST_ROOT=BOOST_ROOT_1_72_0
 
