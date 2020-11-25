@@ -48,8 +48,8 @@ jobs:
       - name: Install sfml
         run: |
             $url = "https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip"
-            $archive = "sfml.zip"
-            $dir = "sfml"
+            $archive = (Get-Location)+"sfml.zip"
+            $dir = (Get-Location)+"sfml"
 
             $wc = New-Object System.Net.WebClient
             $wc.DownloadFile($url, $output)
