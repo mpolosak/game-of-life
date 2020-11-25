@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set Path
-        run: 'env:Path+=";C:\Users\runneradmin\AppData\Roaming\Python\Python37\Scripts"'
+        run: echo "C:\Users\runneradmin\AppData\Roaming\Python\Python37\Scripts" >> $GITHUB_PATH
 
       - name: Install meson
         run: python -m pip install --user meson
