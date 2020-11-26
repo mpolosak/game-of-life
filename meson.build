@@ -5,8 +5,6 @@ project(
 	license: 'GPLv3',
 	meson_version: '>=0.45.0',
 )
-sfml_graphics = dependency('sfml-graphics')
-sfml_system = dependency('sfml-system')
-sfml_window = dependency('sfml-window')
+sfml = dependency('sfml')
 boost = dependency('boost', modules :['program_options'])
 subdir('src')
