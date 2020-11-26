@@ -54,7 +54,7 @@ jobs:
             Invoke-WebRequest -Uri $url -OutFile $archive
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
             Rename-Item "$dir\SFML-2.5.1" "$dir\SFML"
-            echo "CMAKE_PREFIX_PATH=$dir" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            echo "CMAKE_PREFIX_PATH=$dir\SFML\lib\cmake\SFML" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - run: set BOOST_ROOT=BOOST_ROOT_1_72_0
 
       - name: Setup the project with meson
