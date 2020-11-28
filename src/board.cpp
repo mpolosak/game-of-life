@@ -121,7 +121,7 @@ void Board::initGameBoardTables()
 
 void Board::loadFromFile()
 {
-    std::fstream file(config.path, std::ios::in | std::ios::out);
+    std::fstream file(config.path, std::ios::in);
     if(!file)
         throw std::string("Failed to open file "+config.path);
     file.close();
