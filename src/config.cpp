@@ -11,11 +11,13 @@ Config Config::fromCommandLine(int argc, char *argv[])
     std::string rulesString;
     std::string boardSize;
     std::string windowSize;
+    std::string boardFilePath="";
 
     po::options_description desc("Allowed options");
 
     desc.add_options()
         ("help,h", "show this description and return")
+        ("board_file, f", po::value<std::string>(&boardFilePath), "read initial board from file 'arg'")
         ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
         ("rules,r", po::value<std::string>(&rulesString)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
         ("size,s", po::value<std::string>(&boardSize)->default_value("50x50"), "set size of board to arg, the size must be written as widthxheight i.e. 192x108")
@@ -33,6 +35,11 @@ Config Config::fromCommandLine(int argc, char *argv[])
     catch(std::logic_error &error)
     {
         throw std::string(error.what())+"\nType in 'game-of-life -h' to get help";
+    }
+
+    if(boardFilePath!="")
+    {
+        //Here call function to read board from file
     }
 
     if (vm.count("help")) {
