@@ -9,17 +9,14 @@ Board::Board(BoardConfig &config)
     switch(config.method)
     {
         case BoardMethod::Random:
+            initGameBoardTables();
             fillWithRandomValues();
+            break;
+        case BoardMethod::Draw:
+            initGameBoardTables();
             break;
     }
 
-    gameBoard1 = new bool*[config.width];
-    gameBoard2 = new bool*[config.width];
-    for(int x = 0;x<config.width;x++)
-    {
-        gameBoard1[x] = new bool[config.height];
-        gameBoard2[x] = new bool[config.height];
-    }
     background.setFillColor(sf::Color::Black);
     block.setFillColor(sf::Color::White);
 }
@@ -97,6 +94,17 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
                 target.draw(block);
             }
         }
+    }
+}
+
+void Board::initGameBoardTables()
+{
+    gameBoard1 = new bool*[config.width];
+    gameBoard2 = new bool*[config.width];
+    for(int x = 0;x<config.width;x++)
+    {
+        gameBoard1[x] = new bool[config.height];
+        gameBoard2[x] = new bool[config.height];
     }
 }
 

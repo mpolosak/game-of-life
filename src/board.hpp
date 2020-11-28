@@ -24,6 +24,7 @@ private:
     bool **gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
+    void initGameBoardTables();
     void fillWithRandomValues();
     int countLivingNeighbours(int x, int y);
 };
