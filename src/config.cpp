@@ -40,7 +40,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
     if(boardFilePath!="")
     {
         config.board.method=BoardMethod::LoadFromFile;
-        config.board.file = boardFilePath;
+        config.board.path = boardFilePath;
     }
 
     if (vm.count("help")) {
