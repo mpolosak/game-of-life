@@ -9,7 +9,6 @@ public:
     Board(BoardConfig &config);
     ~Board();
     void clear();
-    void fillWithRandomValues();
     void setBlockValue(int x, int y, bool value);
     void setBlockSize(unsigned int size);
     void step();
@@ -25,5 +24,6 @@ private:
     bool **gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
+    void fillWithRandomValues();
     int countLivingNeighbours(int x, int y);
 };

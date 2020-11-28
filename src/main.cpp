@@ -56,8 +56,6 @@ void init(int argc, char *argv[])
 
     if(config.board.method==BoardMethod::Draw)
         drawBoard();
-    else
-        board->fillWithRandomValues();
 }
 
 void run()

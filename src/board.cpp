@@ -5,6 +5,14 @@
 Board::Board(BoardConfig &config)
 {
     this->config = config;
+
+    switch(config.board.method)
+    {
+        case BoardMethod::Random:
+            fillWithRandomValues();
+            break;
+    }
+
     gameBoard1 = new bool*[config.width];
     gameBoard2 = new bool*[config.width];
     for(int x = 0;x<config.width;x++)
