@@ -39,7 +39,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     if(boardFilePath!="")
     {
-        //Here call function to read board from file
+        config.board.method=BoardMethod::LoadFromFile;
     }
 
     if (vm.count("help")) {
@@ -57,7 +57,9 @@ Config Config::fromCommandLine(int argc, char *argv[])
         throw;
     }
 
-    config.draw=vm.count("draw");
+    if(vm.count("draw"))
+        config.board.method=BoardMethod::Draw;
+
     config.fullscreen=vm.count("fullscreen");
 
     return config;
@@ -66,7 +68,6 @@ Config Config::fromCommandLine(int argc, char *argv[])
 std::ostream& operator<<(std::ostream& os, const Config& config)
 {
     return os << std::boolalpha
-        << std::setw(20) << "Draw board" << " : " << config.draw << std::endl
         << config.board
         << std::setw(20) << "Window size" << " : " 
             << config.width << "x" << config.height << std::endl

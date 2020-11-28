@@ -2,6 +2,8 @@
 #include<string>
 #include<unordered_set>
 
+enum BoardMethod{Random, Draw, LoadFromFile};
+
 class BoardConfig
 {
 public:
@@ -13,6 +15,7 @@ public:
     std::unordered_set<char> survive;
     std::unordered_set<char> birth;
     unsigned int minBlockSize;
+    BoardMethod method = Random;
 private:
     std::string rulesString;
 };

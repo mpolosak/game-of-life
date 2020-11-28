@@ -54,7 +54,7 @@ void init(int argc, char *argv[])
     windowVideoMode=sf::VideoMode(config.width, config.height);
     setFullscreen(config.fullscreen);
 
-    if(config.draw)
+    if(config.board.method==BoardMethod::Draw)
         drawBoard();
     else
         board->fillWithRandomValues();
