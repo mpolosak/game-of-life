@@ -6,7 +6,7 @@ Board::Board(BoardConfig &config)
 {
     this->config = config;
 
-    switch(config.board.method)
+    switch(config.method)
     {
         case BoardMethod::Random:
             fillWithRandomValues();
