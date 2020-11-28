@@ -1,6 +1,7 @@
 #include"board.hpp"
 #include<algorithm>
 #include<iostream>
+#include<fstream>
 
 Board::Board(BoardConfig &config)
 {
@@ -14,6 +15,16 @@ Board::Board(BoardConfig &config)
             break;
         case BoardMethod::Draw:
             initGameBoardTables();
+            break;
+        case BoardMethod::LoadFromFile:
+            try
+            {
+               loadFromFile();
+            }
+            catch(...)
+            {
+                throw;
+            }
             break;
     }
 
@@ -106,6 +117,14 @@ void Board::initGameBoardTables()
         gameBoard1[x] = new bool[config.height];
         gameBoard2[x] = new bool[config.height];
     }
+}
+
+void Board::loadFromFile()
+{
+    std::fstream file(config.path, std::ios::in | std::ios::out);
+    if(!file)
+        throw std::string("Failed to open file "+config.path);
+    file.close();
 }
 
 int Board::countLivingNeighbours(int x, int y)
