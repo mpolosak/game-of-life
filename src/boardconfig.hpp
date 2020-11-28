@@ -16,6 +16,7 @@ public:
     std::unordered_set<char> birth;
     unsigned int minBlockSize;
     BoardMethod method = Random;
+    std::string path = "";
 private:
     std::string rulesString;
 };
