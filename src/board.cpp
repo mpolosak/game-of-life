@@ -119,6 +119,11 @@ void Board::loadFromFile()
     while(getline(file, line))
         lines.push_back(line);
 
+    if(lines.empty())
+        throw std::string("The board file is empty");
+    else if(line.empty())
+        throw std::string("The board file contains an empty line");
+
     config->width = line.length();
     config->height = lines.size();
 
