@@ -1,7 +1,13 @@
 # game-of-life
-This is  my implementation on Conway's Game of Life
+Conway's Game of Life in C++.  
+Allows:
+* setting custom rules
+* drawing a board using a mouse
+* saving a board to a file
+* loading a board from a file  
 ## Dependencies
 * [sfml](https://www.sfml-dev.org/)
+* [boost](https://www.boost.org/)
 ## Building and installation
 ```
 meson build
