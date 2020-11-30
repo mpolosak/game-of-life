@@ -11,9 +11,15 @@ Board::Board(BoardConfig *config)
     if(config->inputFilePath!="")
         loadFromFile();
     else if(config->draw)
+    {
+        initGameBoardTables();
         clear();
+    }
     else
+    {
+        initGameBoardTables();
         fillWithRandomValues();
+    }
 
     background.setFillColor(sf::Color::Black);
     block.setFillColor(sf::Color::White);
