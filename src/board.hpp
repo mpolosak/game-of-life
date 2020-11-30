@@ -25,5 +25,9 @@ private:
     void initGameBoardTables();
     void fillWithRandomValues();
     void loadFromFile();
+    void saveToFile();
     int countLivingNeighbours(int x, int y);
+    friend std::fstream& operator<<(std::fstream& os, const Board& board);
 };
+
+std::fstream& operator<<(std::fstream& os, const Board& board);

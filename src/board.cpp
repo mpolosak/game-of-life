@@ -35,6 +35,8 @@ Board::Board(BoardConfig *config)
 
 Board::~Board()
 {
+    if(config->outputFilePath!="")
+        saveToFile();
     for(int x = 0;x<config->width;x++)
     {
         delete gameBoard1[x];
@@ -161,6 +163,17 @@ void Board::loadFromFile()
     file.close();
 }
 
+void Board::saveToFile()
+{
+    std::fstream file(config->outputFilePath, std::ios::out);
+    if(!file)
+        std::cerr << "Failed to save to file " << config->path << std::endl;
+    
+    file<<*this;
+
+    file.close();
+}
+
 int Board::countLivingNeighbours(int x, int y)
 {
     int livingNeighbours=0;
@@ -172,4 +185,21 @@ int Board::countLivingNeighbours(int x, int y)
                     livingNeighbours++;
 
     return livingNeighbours;
+}
+
+std::fstream& operator<<(std::fstream& os, const Board& board)
+{
+    for(int y = 0;y<board.config->height;y++)
+    {
+        for(int x = 0; x<board.config->width; x++)
+        {
+            if(board.gameBoard1[x][y])
+                os<<'X';
+            else
+                os<<' ';
+        }
+        if(y!=(board.config->height-1))
+            os<<"\n";
+    }
+    return os;
 }

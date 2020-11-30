@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
 {
     init(argc, argv);    
     run();
+    delete board;
     return 0;
 }
 
@@ -48,7 +49,7 @@ void init(int argc, char *argv[])
     }
     
     std::cout<<config;
-    
+
     setFullscreen(config.fullscreen);
 
     if(config.board.method==BoardMethod::Draw)
