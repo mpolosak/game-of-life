@@ -2,6 +2,7 @@
 #include<algorithm>
 #include<iostream>
 #include<fstream>
+#include<vector>
 
 Board::Board(BoardConfig &config)
 {
@@ -124,6 +125,39 @@ void Board::loadFromFile()
     std::fstream file(config.path, std::ios::in);
     if(!file)
         throw std::string("Failed to open file "+config.path);
+    
+    std::vector<std::string> lines;
+    std::string line;
+    while(getline(file, line))
+        lines.push_back(line);
+
+    config.width = line.length();
+    config.height = lines.size();
+
+    initGameBoardTables();
+
+    for(int y=0; y<config.height; y++)
+    {
+        std::string line = lines[y];
+        if(line.length()!=config.width)
+            throw std::string("All lines in the board file must be the same lenght");
+        for(int x=0; x<config.width; x++)
+        {
+            switch(line[x])
+            {
+                case 'X':
+                    setBlockValue(x, y, true);
+                    break;
+                case ' ':
+                    setBlockValue(x, y, false);
+                    break;
+                default:
+                    throw "The board file should only contain 'X's and spaces";
+                    break;
+            }
+        }
+    }
+
     file.close();
 }
 
