@@ -16,7 +16,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     desc.add_options()
         ("help,h", "show this description and return")
-        ("load,l", po::value<std::string>(&config.board.inputFilePath), "load board from file arg")
+        ("load,l", po::value<std::string>(&config.board.inputFilePath), "load a board from file arg")
         ("save,S", po::value<std::string>(&config.board.outputFilePath), "save the board to file arg")
         ("draw,d", "use mouse to draw a board")
         ("rules,r", po::value<std::string>(&rulesString)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
@@ -39,6 +39,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     if (vm.count("help")) {
         std::cout << desc << std::endl;
+        std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly";
         throw 0;
     }
 
