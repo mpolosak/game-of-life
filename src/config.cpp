@@ -62,11 +62,11 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
 std::ostream& operator<<(std::ostream& os, const Config& config)
 {
-    return os << std::boolalpha
+    return os
         << config.board
         << std::setw(20) << "Window size" << " : " 
             << config.width << "x" << config.height << std::endl
-        << std::setw(20) << "Fullscreen" << " : " << config.fullscreen << std::endl;
+        << std::setw(20) << "Fullscreen" << " : " << (config.fullscreen ? "yes" : "no") << std::endl;
 }
 
 void Config::setSize(const std::string &size)
