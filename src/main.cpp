@@ -52,7 +52,7 @@ void init(int argc, char *argv[])
 
     setFullscreen(config.fullscreen);
 
-    if(config.board.method==BoardMethod::Draw)
+    if(config.board.draw)
         drawBoard();
 }
 
@@ -149,7 +149,6 @@ void setHoveredBlockValue(bool value)
 void drawBoard()
 {
     inDrawingMode = true;
-    board->clear();
     draw();
     while(window.isOpen()&&inDrawingMode)
     {

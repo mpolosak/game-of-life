@@ -7,27 +7,13 @@
 Board::Board(BoardConfig *config)
 {
     this->config = config;
-
-    switch(config->method)
-    {
-        case BoardMethod::Random:
-            initGameBoardTables();
-            fillWithRandomValues();
-            break;
-        case BoardMethod::Draw:
-            initGameBoardTables();
-            break;
-        case BoardMethod::LoadFromFile:
-            try
-            {
-               loadFromFile();
-            }
-            catch(...)
-            {
-                throw;
-            }
-            break;
-    }
+    
+    if(config->inputFilePath!="")
+        loadFromFile();
+    else if(config->draw)
+        clear();
+    else
+        fillWithRandomValues();
 
     background.setFillColor(sf::Color::Black);
     block.setFillColor(sf::Color::White);
@@ -124,9 +110,9 @@ void Board::initGameBoardTables()
 
 void Board::loadFromFile()
 {
-    std::fstream file(config->path, std::ios::in);
+    std::fstream file(config->inputFilePath, std::ios::in);
     if(!file)
-        throw std::string("Failed to open file "+config->path);
+        throw std::string("Failed to open file "+config->inputFilePath);
     
     std::vector<std::string> lines;
     std::string line;
@@ -167,7 +153,7 @@ void Board::saveToFile()
 {
     std::fstream file(config->outputFilePath, std::ios::out);
     if(!file)
-        std::cerr << "Failed to save to file " << config->path << std::endl;
+        std::cerr << "Failed to save to file " << config->outputFilePath << std::endl;
     
     file<<*this;
 

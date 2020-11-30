@@ -11,13 +11,12 @@ Config Config::fromCommandLine(int argc, char *argv[])
     std::string rulesString;
     std::string boardSize;
     std::string windowSize;
-    std::string boardFilePath="";
 
     po::options_description desc("Allowed options");
 
     desc.add_options()
         ("help,h", "show this description and return")
-        ("load,l", po::value<std::string>(&boardFilePath), "load board from file arg")
+        ("load,l", po::value<std::string>(&config.board.inputFilePath), "load board from file arg")
         ("save,S", po::value<std::string>(&config.board.outputFilePath), "save the board to file arg")
         ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
         ("rules,r", po::value<std::string>(&rulesString)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
@@ -38,12 +37,6 @@ Config Config::fromCommandLine(int argc, char *argv[])
         throw std::string(error.what())+"\nType in 'game-of-life -h' to get help";
     }
 
-    if(boardFilePath!="")
-    {
-        config.board.method=BoardMethod::LoadFromFile;
-        config.board.path = boardFilePath;
-    }
-
     if (vm.count("help")) {
         std::cout << desc << std::endl;
         throw 0;
@@ -59,8 +52,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
         throw;
     }
 
-    if(vm.count("draw"))
-        config.board.method=BoardMethod::Draw;
+    config.board.draw = vm.count("draw");
 
     config.fullscreen=vm.count("fullscreen");
 
