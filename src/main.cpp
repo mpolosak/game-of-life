@@ -5,7 +5,7 @@
 #include"config.hpp"
 
 sf::RenderWindow window;
-sf::VideoMode windowVideoMode;
+Config config;
 int style = sf::Style::Default;
 sf::View view;
 Board *board;
@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 
 void init(int argc, char *argv[])
 {
-    Config config;
     try
     {
         config = Config::fromCommandLine(argc,argv);
@@ -49,7 +48,6 @@ void init(int argc, char *argv[])
         std::exit(0);
     }
     
-    windowVideoMode=sf::VideoMode(config.width, config.height);
     setFullscreen(config.fullscreen);
 
     if(config.board.method==BoardMethod::Draw)
@@ -172,7 +170,7 @@ void setFullscreen(bool fullscreen)
     else
     {
         style=sf::Style::Default;
-        newVideoMode = windowVideoMode;
+        newVideoMode = sf::VideoMode(config.width, config.height);
     }
     window.create(newVideoMode,"Game of life",style);
     setViewSize(newVideoMode.width,newVideoMode.height);
