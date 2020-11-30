@@ -16,7 +16,9 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     desc.add_options()
         ("help,h", "show this description and return")
-        ("draw,d", "use mouse to draw a board, if not present the board is filled randomly")
+        ("load,l", po::value<std::string>(&config.board.inputFilePath), "load a board from file arg")
+        ("save,S", po::value<std::string>(&config.board.outputFilePath), "save the board to file arg")
+        ("draw,d", "use mouse to draw a board")
         ("rules,r", po::value<std::string>(&rulesString)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
         ("size,s", po::value<std::string>(&boardSize)->default_value("50x50"), "set size of board to arg, the size must be written as widthxheight i.e. 192x108")
         ("block_size,b", po::value<unsigned int>(&config.board.minBlockSize)->default_value(1), "set minimal size of block to arg")
@@ -37,6 +39,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     if (vm.count("help")) {
         std::cout << desc << std::endl;
+        std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly";
         throw 0;
     }
 
@@ -50,7 +53,8 @@ Config Config::fromCommandLine(int argc, char *argv[])
         throw;
     }
 
-    config.draw=vm.count("draw");
+    config.board.draw = vm.count("draw");
+
     config.fullscreen=vm.count("fullscreen");
 
     return config;
@@ -58,12 +62,11 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
 std::ostream& operator<<(std::ostream& os, const Config& config)
 {
-    return os << std::boolalpha
-        << std::setw(20) << "Draw board" << " : " << config.draw << std::endl
+    return os
         << config.board
         << std::setw(20) << "Window size" << " : " 
             << config.width << "x" << config.height << std::endl
-        << std::setw(20) << "Fullscreen" << " : " << config.fullscreen << std::endl;
+        << std::setw(20) << "Fullscreen" << " : " << (config.fullscreen ? "yes" : "no") << std::endl;
 }
 
 void Config::setSize(const std::string &size)

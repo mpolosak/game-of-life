@@ -13,6 +13,9 @@ public:
     std::unordered_set<char> survive;
     std::unordered_set<char> birth;
     unsigned int minBlockSize;
+    bool draw = true;
+    std::string inputFilePath = "";
+    std::string outputFilePath = "";
 private:
     std::string rulesString;
 };

@@ -4,6 +4,8 @@
 
 void BoardConfig::setRules(const std::string &rulesString)
 {
+    this->rulesString = rulesString;
+
     std::smatch base_match;
     try{
         base_match = match(rulesString, "([0-9]*)/([0-9]*)");
@@ -33,10 +35,16 @@ void BoardConfig::setSize(const std::string &size)
 
 std::ostream& operator<<(std::ostream& os, const BoardConfig& config)
 {
-    return os << std::boolalpha
+    return os
         << std::setw(20) << "Rules" << " : " << config.getRules() << std::endl
-        << std::setw(20) << "Minimum block size" << " : " 
-            << config.minBlockSize << std::endl
+        << std::setw(20) << "Load from file" << " : "
+            << (config.inputFilePath!="" ? config.inputFilePath : "no") << std::endl
+        << std::setw(20) << "Save to file" << " : "
+            << (config.outputFilePath!="" ? config.outputFilePath : "no") << std::endl
+        << std::setw(20) << "Draw" << " : "
+            << (config.draw ? "yes" : "no") << std::endl
         << std::setw(20) << "Board size" << " : " 
-            << config.width << "x" << config.height<< std::endl;
+            << config.width << "x" << config.height<< std::endl
+        << std::setw(20) << "Minimum block size" << " : " 
+            << config.minBlockSize << std::endl;
 }

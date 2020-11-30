@@ -5,7 +5,7 @@
 #include"config.hpp"
 
 sf::RenderWindow window;
-sf::VideoMode windowVideoMode;
+Config config;
 int style = sf::Style::Default;
 sf::View view;
 Board *board;
@@ -27,15 +27,16 @@ int main(int argc, char *argv[])
 {
     init(argc, argv);    
     run();
+    delete board;
     return 0;
 }
 
 void init(int argc, char *argv[])
 {
-    Config config;
     try
     {
         config = Config::fromCommandLine(argc,argv);
+        board = new Board(&config.board);
     }
     catch(std::string &error)
     {
@@ -46,18 +47,13 @@ void init(int argc, char *argv[])
     {
         std::exit(0);
     }
-
+    
     std::cout<<config;
 
-    board = new Board(config.board);
-    
-    windowVideoMode=sf::VideoMode(config.width, config.height);
     setFullscreen(config.fullscreen);
 
-    if(config.draw)
+    if(config.board.draw)
         drawBoard();
-    else
-        board->fillWithRandomValues();
 }
 
 void run()
@@ -93,7 +89,7 @@ void setViewSize(int width, int height)
     sf::FloatRect rect=sf::FloatRect(sf::Vector2f(0,0),sf::Vector2f(width,height));
     view.reset(rect);
     window.setView(view);
-    board->setBlockSize(std::min(width/board->getWidth(),height/board->getHeight()));
+    board->setBlockSize(std::min(width/config.board.width,height/config.board.height));
 }
 
 void draw()
@@ -153,7 +149,6 @@ void setHoveredBlockValue(bool value)
 void drawBoard()
 {
     inDrawingMode = true;
-    board->clear();
     draw();
     while(window.isOpen()&&inDrawingMode)
     {
@@ -176,7 +171,7 @@ void setFullscreen(bool fullscreen)
     else
     {
         style=sf::Style::Default;
-        newVideoMode = windowVideoMode;
+        newVideoMode = sf::VideoMode(config.width, config.height);
     }
     window.create(newVideoMode,"Game of life",style);
     setViewSize(newVideoMode.width,newVideoMode.height);
