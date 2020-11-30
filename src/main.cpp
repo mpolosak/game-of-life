@@ -36,7 +36,7 @@ void init(int argc, char *argv[])
     {
         config = Config::fromCommandLine(argc,argv);
         std::cout<<config;
-        board = new Board(config.board);
+        board = new Board(&config.board);
     }
     catch(std::string &error)
     {
@@ -87,7 +87,7 @@ void setViewSize(int width, int height)
     sf::FloatRect rect=sf::FloatRect(sf::Vector2f(0,0),sf::Vector2f(width,height));
     view.reset(rect);
     window.setView(view);
-    board->setBlockSize(std::min(width/board->getWidth(),height/board->getHeight()));
+    board->setBlockSize(std::min(width/config.board.width,height/config.board.height));
 }
 
 void draw()
