@@ -17,6 +17,7 @@ public:
     unsigned int minBlockSize;
     BoardMethod method = Random;
     std::string path = "";
+    std::string outputFilePath = "";
 private:
     std::string rulesString;
 };
