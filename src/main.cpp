@@ -35,7 +35,6 @@ void init(int argc, char *argv[])
     try
     {
         config = Config::fromCommandLine(argc,argv);
-        std::cout<<config;
         board = new Board(&config.board);
     }
     catch(std::string &error)
@@ -47,6 +46,8 @@ void init(int argc, char *argv[])
     {
         std::exit(0);
     }
+    
+    std::cout<<config;
     
     setFullscreen(config.fullscreen);
 
