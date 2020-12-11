@@ -27,6 +27,8 @@ private:
     void loadFromFile();
     void saveToFile();
     int countLivingNeighbours(int x, int y);
+    void processCell(int x, int y);
+    void equalizeTables();
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
 };
 

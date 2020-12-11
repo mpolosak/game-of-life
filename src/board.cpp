@@ -70,21 +70,11 @@ void Board::setBlockSize(unsigned int size)
 
 void Board::step()
 {
-    for(int y = 0;y<config->height;y++){
-        for(int x = 0;x<config->width;x++)
-        {
-            if(gameBoard1[x][y])
-                if(!config->survive.count(countLivingNeighbours(x,y)))
-                    gameBoard2[x][y]=false;
-            else
-                if(config->birth.count(countLivingNeighbours(x,y)))
-                    gameBoard2[x][y]=true;
-
-        }
-    }
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            gameBoard1[x][y]=gameBoard2[x][y];
+            processCell(x, y);
+
+    equalizeTables();
 }
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -182,6 +172,23 @@ int Board::countLivingNeighbours(int x, int y)
                     livingNeighbours++;
 
     return livingNeighbours;
+}
+
+void Board::processCell(int x, int y)
+{
+    if(gameBoard1[x][y])
+        if(!config->survive.count(countLivingNeighbours(x,y)))
+            gameBoard2[x][y]=false;
+    else
+        if(config->birth.count(countLivingNeighbours(x,y)))
+            gameBoard2[x][y]=true;
+}
+
+void Board::equalizeTables()
+{
+    for(int y = 0;y<config->height;y++)
+        for(int x = 0;x<config->width;x++)
+            gameBoard1[x][y]=gameBoard2[x][y];
 }
 
 std::fstream& operator<<(std::fstream& os, const Board& board)
