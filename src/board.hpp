@@ -30,6 +30,8 @@ private:
     void processCell(int x, int y);
     void equalizeTables();
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
+    friend void operator>>(std::fstream& fs, Board& board);
 };
 
 std::fstream& operator<<(std::fstream& os, const Board& board);
+void operator>>(std::fstream& fs, Board& board);

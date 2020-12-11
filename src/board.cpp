@@ -110,42 +110,7 @@ void Board::loadFromFile()
     if(!file)
         throw std::string("Failed to open file "+config->inputFilePath);
     
-    std::vector<std::string> lines;
-    std::string line;
-    while(getline(file, line))
-        lines.push_back(line);
-
-    if(lines.empty())
-        throw std::string("The board file is empty");
-    else if(line.empty())
-        throw std::string("The board file contains an empty line");
-
-    config->width = line.length();
-    config->height = lines.size();
-
-    initGameBoardTables();
-
-    for(int y=0; y<config->height; y++)
-    {
-        std::string line = lines[y];
-        if(line.length()!=config->width)
-            throw std::string("All lines in the board file must be the same lenght");
-        for(int x=0; x<config->width; x++)
-        {
-            switch(line[x])
-            {
-                case 'X':
-                    setBlockValue(x, y, true);
-                    break;
-                case ' ':
-                    setBlockValue(x, y, false);
-                    break;
-                default:
-                    throw "The board file should only contain 'X's and spaces";
-                    break;
-            }
-        }
-    }
+    file>>*this;
 
     file.close();
 }
@@ -206,4 +171,44 @@ std::fstream& operator<<(std::fstream& os, const Board& board)
             os<<"\n";
     }
     return os;
+}
+
+void operator>>(std::fstream& fs, Board& board)
+{
+    std::vector<std::string> lines;
+    std::string line;
+    while(getline(fs, line))
+        lines.push_back(line);
+
+    if(lines.empty())
+        throw std::string("The board file is empty");
+    else if(line.empty())
+        throw std::string("The board file contains an empty line");
+
+    board.config->width = line.length();
+    board.config->height = lines.size();
+
+    board.initGameBoardTables();
+
+    for(int y=0; y<board.config->height; y++)
+    {
+        std::string line = lines[y];
+        if(line.length()!=board.config->width)
+            throw std::string("All lines in the board file must be the same lenght");
+        for(int x=0; x<board.config->width; x++)
+        {
+            switch(line[x])
+            {
+                case 'X':
+                    board.setBlockValue(x, y, true);
+                    break;
+                case ' ':
+                    board.setBlockValue(x, y, false);
+                    break;
+                default:
+                    throw "The board file should only contain 'X's and spaces";
+                    break;
+            }
+        }
+    }
 }
