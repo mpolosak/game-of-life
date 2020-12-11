@@ -39,8 +39,8 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     if (vm.count("help")) {
         std::cout << desc << std::endl;
-        std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly";
-        throw 0;
+        std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly"<<std::endl;
+        std::exit(0);
     }
 
     try{

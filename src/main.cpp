@@ -26,10 +26,6 @@ void init(int argc, char *argv[])
         std::cerr<<error<<std::endl;
         std::exit(1);
     }
-    catch(int error)
-    {
-        std::exit(0);
-    }
     
     std::cout<<config;
 
