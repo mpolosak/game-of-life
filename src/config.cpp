@@ -44,7 +44,8 @@ std::ostream& operator<<(std::ostream& os, const Config& config)
         << config.board
         << std::setw(20) << "Window size" << " : " 
             << config.width << "x" << config.height << std::endl
-        << std::setw(20) << "Fullscreen" << " : " << (config.fullscreen ? "yes" : "no") << std::endl;
+        << std::setw(20) << "Fullscreen" << " : "
+            << (config.fullscreen ? "yes" : "no") << std::endl;
 }
 
 void Config::setSize(const std::string &size)
@@ -64,18 +65,23 @@ po::options_description createOptionsDescription(BoardConfig &config,
         ("load,l", po::value<std::string>(&config.inputFilePath), "load a board from file arg")
         ("save,S", po::value<std::string>(&config.outputFilePath), "save the board to file arg")
         ("draw,d", "use mouse to draw a board")
-        ("rules,r", po::value<std::string>(&rulesString)->default_value("23/3"), "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
-        ("size,s", po::value<std::string>(&boardSize)->default_value("50x50"), "set size of board to arg, the size must be written as widthxheight i.e. 192x108")
-        ("block_size,b", po::value<unsigned int>(&config.minBlockSize)->default_value(1), "set minimal size of block to arg")
+        ("rules,r", po::value<std::string>(&rulesString)->default_value("23/3"),
+            "set rules to arg, the rules must be written as survive/birth i.e. 123/45)")
+        ("size,s", po::value<std::string>(&boardSize)->default_value("50x50"),
+            "set size of board to arg, the size must be written as widthxheight i.e. 192x108")
+        ("block_size,b", po::value<unsigned int>(&config.minBlockSize)->default_value(1),
+            "set minimal size of block to arg")
         ("fullscreen,f", "run in fullscreen mode")
-        ("window_size,w", po::value<std::string>(&windowSize)->default_value("500x500"), "set size of window to arg, the size must be written as widthxheight i.e. 800x600")
+        ("window_size,w", po::value<std::string>(&windowSize)->default_value("500x500"),
+            "set size of window to arg, the size must be written as widthxheight i.e. 800x600")
     ;
     return desc;
 }
 
 void printHelpAndExit(const po::options_description &desc)
 {
-    std::cout << desc << std::endl;
-    std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly"<<std::endl;
+    std::cout << desc << std::endl
+        << "If neither '--load' nor '--draw' are present, a board is generated randomly"
+        <<std::endl;
     std::exit(0);
 }
