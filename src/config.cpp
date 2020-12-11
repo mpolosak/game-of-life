@@ -1,9 +1,6 @@
 #include"config.hpp"
 #include"utilities.hpp"
-#include<boost/program_options.hpp>
 #include<iomanip>
-
-namespace po = boost::program_options;
 
 Config Config::fromCommandLine(int argc, char *argv[])
 {
@@ -37,11 +34,8 @@ Config Config::fromCommandLine(int argc, char *argv[])
         throw std::string(error.what())+"\nType in 'game-of-life -h' to get help";
     }
 
-    if (vm.count("help")) {
-        std::cout << desc << std::endl;
-        std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly"<<std::endl;
-        std::exit(0);
-    }
+    if (vm.count("help"))
+        printHelpAndExit(desc);
 
     config.board.setRules(rulesString);
     config.board.setSize(boardSize);
@@ -68,4 +62,11 @@ void Config::setSize(const std::string &size)
     auto sizePair = parseSize(size);
     width=sizePair.first;
     height=sizePair.second;
+}
+
+void printHelpAndExit(const po::options_description &desc)
+{
+    std::cout << desc << std::endl;
+    std::cout << "If neither '--load' nor '--draw' are present, a board is generated randomly"<<std::endl;
+    std::exit(0);
 }

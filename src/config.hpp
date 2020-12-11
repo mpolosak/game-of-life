@@ -1,5 +1,8 @@
 #include<iostream>
 #include"boardconfig.hpp"
+#include<boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 class Config
 {
@@ -13,3 +16,5 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& os, const Config& config);
+
+void printHelpAndExit(const po::options_description &desc);
