@@ -4,14 +4,13 @@ sf::RenderWindow window;
 Config config;
 int style = sf::Style::Default;
 sf::View view;
-Board *board;
+std::unique_ptr<Board> board;
 bool inDrawingMode = false;
 
 int main(int argc, char *argv[])
 {
     init(argc, argv);    
     run();
-    delete board;
     return 0;
 }
 
@@ -20,7 +19,7 @@ void init(int argc, char *argv[])
     try
     {
         config = Config::fromCommandLine(argc,argv);
-        board = new Board(&config.board);
+        board = std::make_unique<Board>(&config.board);
     }
     catch(std::string &error)
     {
