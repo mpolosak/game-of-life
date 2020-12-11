@@ -43,15 +43,9 @@ Config Config::fromCommandLine(int argc, char *argv[])
         std::exit(0);
     }
 
-    try{
-        config.board.setRules(rulesString);
-        config.board.setSize(boardSize);
-        config.setSize(windowSize);
-    }
-    catch(...)
-    {
-        throw;
-    }
+    config.board.setRules(rulesString);
+    config.board.setSize(boardSize);
+    config.setSize(windowSize);
 
     config.board.draw = vm.count("draw");
 
