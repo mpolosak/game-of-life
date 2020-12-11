@@ -1,8 +1,4 @@
-#include<iostream>
-#include<string>
-#include<SFML/System/Clock.hpp>
-#include"board.hpp"
-#include"config.hpp"
+#include"main.hpp"
 
 sf::RenderWindow window;
 Config config;
@@ -10,18 +6,6 @@ int style = sf::Style::Default;
 sf::View view;
 Board *board;
 bool inDrawingMode = false;
-
-void init(int argc, char *argv[]);
-void run();
-void processEvents();
-void setViewSize(int width, int height);
-void draw();
-void handleEvent(sf::Event &event);
-void handleKeyPress(sf::Keyboard::Key key);
-void setHoveredBlockValue(bool value);
-void drawBoard();
-void setFullscreen(bool fullscreen);
-void toggleFullscreen();
 
 int main(int argc, char *argv[])
 {
