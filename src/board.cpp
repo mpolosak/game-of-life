@@ -50,7 +50,7 @@ void Board::fillWithRandomValues()
     srand(time(NULL));
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            setBlockValue(x,y, (std::rand()%30)%2);
+            setBlockValue(x,y, (std::rand()%30)%2==1);
 }
 
 void Board::setBlockValue(int x, int y, bool value)
@@ -156,6 +156,22 @@ void Board::equalizeTables()
             gameBoard1[x][y]=gameBoard2[x][y];
 }
 
+void Board::setBlockValue(int x, int y, char value)
+{
+    switch(value)
+    {
+        case 'X':
+            setBlockValue(x, y, true);
+            break;
+        case ' ':
+            setBlockValue(x, y, false);
+            break;
+        default:
+            throw "The board file should only contain 'X's and spaces";
+            break;
+    }
+}
+
 std::fstream& operator<<(std::fstream& os, const Board& board)
 {
     for(int y = 0;y<board.config->height;y++)
@@ -188,20 +204,7 @@ void operator>>(std::fstream& fs, Board& board)
         if(line.length()!=board.config->width)
             throw std::string("All lines in the board file must be the same lenght");
         for(int x=0; x<board.config->width; x++)
-        {
-            switch(line[x])
-            {
-                case 'X':
-                    board.setBlockValue(x, y, true);
-                    break;
-                case ' ':
-                    board.setBlockValue(x, y, false);
-                    break;
-                default:
-                    throw "The board file should only contain 'X's and spaces";
-                    break;
-            }
-        }
+            board.setBlockValue(x, y, line[x]);
     }
 }
 
