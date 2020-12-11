@@ -175,17 +175,9 @@ std::fstream& operator<<(std::fstream& os, const Board& board)
 
 void operator>>(std::fstream& fs, Board& board)
 {
-    std::vector<std::string> lines;
-    std::string line;
-    while(getline(fs, line))
-        lines.push_back(line);
+    std::vector<std::string> lines = loadNonEmptyLines(fs);
 
-    if(lines.empty())
-        throw std::string("The board file is empty");
-    else if(line.empty())
-        throw std::string("The board file contains an empty line");
-
-    board.config->width = line.length();
+    board.config->width = lines[0].length();
     board.config->height = lines.size();
 
     board.initGameBoardTables();
@@ -211,4 +203,19 @@ void operator>>(std::fstream& fs, Board& board)
             }
         }
     }
+}
+
+std::vector<std::string> loadNonEmptyLines(std::fstream& fs)
+{
+    std::vector<std::string> lines;
+    std::string line;
+    while(getline(fs, line))
+        lines.push_back(line);
+
+    if(lines.empty())
+        throw std::string("The board file is empty");
+    else if(line.empty())
+        throw std::string("The board file contains an empty line");
+
+    return lines;
 }
