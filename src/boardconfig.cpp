@@ -15,8 +15,8 @@ void BoardConfig::setRules(const std::string &rulesString)
         throw std::string("Rules must be written as survive/birth i.e. 123/45");
     }
     
-    std::string survive_string = base_match[0];
-    std::string birth_string = base_match[0];
+    std::string survive_string = base_match[1];
+    std::string birth_string = base_match[2];
 
     for(char num:survive_string)
         survive.insert(std::atoi(&num));
