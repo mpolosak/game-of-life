@@ -50,7 +50,7 @@ void Board::fillWithRandomValues()
     srand(time(NULL));
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            setBlockValue(x,y, (std::rand()%30)%2);
+            setBlockValue(x,y, (std::rand()%30)%2==1);
 }
 
 void Board::setBlockValue(int x, int y, bool value)
@@ -70,21 +70,11 @@ void Board::setBlockSize(unsigned int size)
 
 void Board::step()
 {
-    for(int y = 0;y<config->height;y++){
-        for(int x = 0;x<config->width;x++)
-        {
-            if(gameBoard1[x][y])
-                if(!config->survive.count(countLivingNeighbours(x,y)))
-                    gameBoard2[x][y]=false;
-            else
-                if(config->birth.count(countLivingNeighbours(x,y)))
-                    gameBoard2[x][y]=true;
-
-        }
-    }
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            gameBoard1[x][y]=gameBoard2[x][y];
+            processCell(x, y);
+
+    equalizeTables();
 }
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -120,42 +110,7 @@ void Board::loadFromFile()
     if(!file)
         throw std::string("Failed to open file "+config->inputFilePath);
     
-    std::vector<std::string> lines;
-    std::string line;
-    while(getline(file, line))
-        lines.push_back(line);
-
-    if(lines.empty())
-        throw std::string("The board file is empty");
-    else if(line.empty())
-        throw std::string("The board file contains an empty line");
-
-    config->width = line.length();
-    config->height = lines.size();
-
-    initGameBoardTables();
-
-    for(int y=0; y<config->height; y++)
-    {
-        std::string line = lines[y];
-        if(line.length()!=config->width)
-            throw std::string("All lines in the board file must be the same lenght");
-        for(int x=0; x<config->width; x++)
-        {
-            switch(line[x])
-            {
-                case 'X':
-                    setBlockValue(x, y, true);
-                    break;
-                case ' ':
-                    setBlockValue(x, y, false);
-                    break;
-                default:
-                    throw "The board file should only contain 'X's and spaces";
-                    break;
-            }
-        }
-    }
+    file>>*this;
 
     file.close();
 }
@@ -184,6 +139,39 @@ int Board::countLivingNeighbours(int x, int y)
     return livingNeighbours;
 }
 
+void Board::processCell(int x, int y)
+{
+    if(gameBoard1[x][y])
+        if(!config->survive.count(countLivingNeighbours(x,y)))
+            gameBoard2[x][y]=false;
+    else
+        if(config->birth.count(countLivingNeighbours(x,y)))
+            gameBoard2[x][y]=true;
+}
+
+void Board::equalizeTables()
+{
+    for(int y = 0;y<config->height;y++)
+        for(int x = 0;x<config->width;x++)
+            gameBoard1[x][y]=gameBoard2[x][y];
+}
+
+void Board::setBlockValue(int x, int y, char value)
+{
+    switch(value)
+    {
+        case 'X':
+            setBlockValue(x, y, true);
+            break;
+        case ' ':
+            setBlockValue(x, y, false);
+            break;
+        default:
+            throw "The board file should only contain 'X's and spaces";
+            break;
+    }
+}
+
 std::fstream& operator<<(std::fstream& os, const Board& board)
 {
     for(int y = 0;y<board.config->height;y++)
@@ -199,4 +187,38 @@ std::fstream& operator<<(std::fstream& os, const Board& board)
             os<<"\n";
     }
     return os;
+}
+
+void operator>>(std::fstream& fs, Board& board)
+{
+    std::vector<std::string> lines = loadNonEmptyLines(fs);
+
+    board.config->width = lines[0].length();
+    board.config->height = lines.size();
+
+    board.initGameBoardTables();
+
+    for(int y=0; y<board.config->height; y++)
+    {
+        std::string line = lines[y];
+        if(line.length()!=board.config->width)
+            throw std::string("All lines in the board file must be the same lenght");
+        for(int x=0; x<board.config->width; x++)
+            board.setBlockValue(x, y, line[x]);
+    }
+}
+
+std::vector<std::string> loadNonEmptyLines(std::fstream& fs)
+{
+    std::vector<std::string> lines;
+    std::string line;
+    while(getline(fs, line))
+        lines.push_back(line);
+
+    if(lines.empty())
+        throw std::string("The board file is empty");
+    else if(line.empty())
+        throw std::string("The board file contains an empty line");
+
+    return lines;
 }

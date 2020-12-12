@@ -27,7 +27,14 @@ private:
     void loadFromFile();
     void saveToFile();
     int countLivingNeighbours(int x, int y);
+    void processCell(int x, int y);
+    void equalizeTables();
+    void setBlockValue(int x, int y, char value);
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
+    friend void operator>>(std::fstream& fs, Board& board);
 };
 
 std::fstream& operator<<(std::fstream& os, const Board& board);
+void operator>>(std::fstream& fs, Board& board);
+
+std::vector<std::string> loadNonEmptyLines(std::fstream& fs);
