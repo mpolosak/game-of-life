@@ -142,11 +142,15 @@ int Board::countLivingNeighbours(int x, int y)
 void Board::processCell(int x, int y)
 {
     if(gameBoard1[x][y])
+    {
         if(!config->survive.count(countLivingNeighbours(x,y)))
             gameBoard2[x][y]=false;
+    }
     else
+    {
         if(config->birth.count(countLivingNeighbours(x,y)))
             gameBoard2[x][y]=true;
+    }
 }
 
 void Board::equalizeTables()
