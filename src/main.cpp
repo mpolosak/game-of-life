@@ -110,6 +110,8 @@ void handleKeyPress(sf::Keyboard::Key key)
         case sf::Keyboard::Return:
             inDrawingMode = false;
             break;
+        case sf::Keyboard::Tab:
+            inDrawingMode = !inDrawingMode;
         default:
             break;
     }
