@@ -32,7 +32,7 @@ void init(int argc, char *argv[])
     setFullscreen(config.fullscreen);
 
     if(config.board.draw)
-        drawBoard();
+        inDrawingMode = true;
 }
 
 void run()
@@ -43,14 +43,19 @@ void run()
     {
         processEvents();
 
-        auto miliseconds = clock.getElapsedTime().asMilliseconds();
-        if(miliseconds>=250)
+        if(inDrawingMode)
+            processDrawMode();
+        else
         {
-            clock.restart();
+            auto miliseconds = clock.getElapsedTime().asMilliseconds();
+            if(miliseconds>=250)
+            {
+                clock.restart();
             
-            board->step();
+                board->step();
                 
-            draw();
+                draw();
+            }
         }
     }
 }
@@ -127,18 +132,12 @@ void setHoveredBlockValue(bool value)
     draw();
 }
 
-void drawBoard()
+void processDrawMode()
 {
-    inDrawingMode = true;
-    draw();
-    while(window.isOpen()&&inDrawingMode)
-    {
-        processEvents();
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            setHoveredBlockValue(true);
-        else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-            setHoveredBlockValue(false);
-    }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        setHoveredBlockValue(true);
+    else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        setHoveredBlockValue(false);
 }
 
 void setFullscreen(bool fullscreen)

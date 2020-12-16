@@ -12,6 +12,6 @@ void draw();
 void handleEvent(sf::Event &event);
 void handleKeyPress(sf::Keyboard::Key key);
 void setHoveredBlockValue(bool value);
-void drawBoard();
+void processDrawMode();
 void setFullscreen(bool fullscreen);
 void toggleFullscreen();
