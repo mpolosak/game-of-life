@@ -5,7 +5,6 @@ Config config;
 int style = sf::Style::Default;
 sf::View view;
 std::unique_ptr<Board> board;
-bool inDrawingMode = false;
 
 int main(int argc, char *argv[])
 {
@@ -30,9 +29,6 @@ void init(int argc, char *argv[])
     std::cout<<config;
 
     setFullscreen(config.fullscreen);
-
-    if(config.board.draw)
-        drawBoard();
 }
 
 void run()
@@ -43,14 +39,19 @@ void run()
     {
         processEvents();
 
-        auto miliseconds = clock.getElapsedTime().asMilliseconds();
-        if(miliseconds>=250)
+        if(config.board.draw)
+            processDrawMode();
+        else
         {
-            clock.restart();
+            auto miliseconds = clock.getElapsedTime().asMilliseconds();
+            if(miliseconds>=250)
+            {
+                clock.restart();
             
-            board->step();
+                board->step();
                 
-            draw();
+                draw();
+            }
         }
     }
 }
@@ -108,8 +109,10 @@ void handleKeyPress(sf::Keyboard::Key key)
             toggleFullscreen(); 
             break;
         case sf::Keyboard::Return:
-            inDrawingMode = false;
+            config.board.draw = false;
             break;
+        case sf::Keyboard::Tab:
+            config.board.draw = !config.board.draw;
         default:
             break;
     }
@@ -125,18 +128,12 @@ void setHoveredBlockValue(bool value)
     draw();
 }
 
-void drawBoard()
+void processDrawMode()
 {
-    inDrawingMode = true;
-    draw();
-    while(window.isOpen()&&inDrawingMode)
-    {
-        processEvents();
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            setHoveredBlockValue(true);
-        else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-            setHoveredBlockValue(false);
-    }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        setHoveredBlockValue(true);
+    else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        setHoveredBlockValue(false);
 }
 
 void setFullscreen(bool fullscreen)

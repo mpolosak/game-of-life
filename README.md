@@ -17,5 +17,6 @@ sudo ninja -C build install
 ## Running
 Run by typing *game-of-life* into terminal.  
 Type in *game-of-life* to see allowed options.  
-When drawing a board press Enter to start simulation.  
+Press tab if you want to stop simulation and draw blocks of board using mouse.   
+Press Enter or Tab to start end drawing and start simulation.  
 End simulation by pressing Escape.
