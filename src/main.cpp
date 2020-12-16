@@ -5,7 +5,6 @@ Config config;
 int style = sf::Style::Default;
 sf::View view;
 std::unique_ptr<Board> board;
-bool inDrawingMode = false;
 
 int main(int argc, char *argv[])
 {
@@ -30,9 +29,6 @@ void init(int argc, char *argv[])
     std::cout<<config;
 
     setFullscreen(config.fullscreen);
-
-    if(config.board.draw)
-        inDrawingMode = true;
 }
 
 void run()
@@ -43,7 +39,7 @@ void run()
     {
         processEvents();
 
-        if(inDrawingMode)
+        if(config.board.draw)
             processDrawMode();
         else
         {
@@ -113,10 +109,10 @@ void handleKeyPress(sf::Keyboard::Key key)
             toggleFullscreen(); 
             break;
         case sf::Keyboard::Return:
-            inDrawingMode = false;
+            config.board.draw = false;
             break;
         case sf::Keyboard::Tab:
-            inDrawingMode = !inDrawingMode;
+            config.board.draw = !config.board.draw;
         default:
             break;
     }
