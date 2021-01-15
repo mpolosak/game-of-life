@@ -98,13 +98,26 @@ void Board::loadFromFile()
 {
     if(isPNGImage(config->inputFilePath))
         loadFromPNGImage();
-    else
+    else{
         loadFromTextFile();
+    }
 }
 
 void Board::loadFromPNGImage()
 {
-    png::image<png::rgb_pixel> image(config->inputFilePath);
+    png::image<png::rgb_pixel> image;
+    try
+    {
+        image.read(config->inputFilePath);
+    }
+    catch(png::std_error error)
+    {
+        throw std::string(error.what());
+    }
+    catch(...)
+    {
+        throw std::string("Failed to open file '"+config->inputFilePath+"'");
+    }
     config->width=image.get_width();
     config->height=image.get_height();
     initGameBoardArrays();
@@ -117,7 +130,7 @@ void Board::loadFromTextFile()
 {
     std::fstream file(config->inputFilePath, std::ios::in);
     if(!file)
-        throw std::string("Failed to open file "+config->inputFilePath);
+        throw std::string("Failed to open file '"+config->inputFilePath+"'");
     
     file>>*this;
 
