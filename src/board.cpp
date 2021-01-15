@@ -12,12 +12,12 @@ Board::Board(BoardConfig *config)
         loadFromFile();
     else if(config->draw)
     {
-        initGameBoardTables();
+        initGameBoardArrays();
         clear();
     }
     else
     {
-        initGameBoardTables();
+        initGameBoardArrays();
         fillWithRandomValues();
     }
 
@@ -67,7 +67,7 @@ void Board::step()
         for(int x = 0;x<config->width;x++)
             processCell(x, y);
 
-    equalizeTables();
+    equalizeArrays();
 }
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -86,11 +86,11 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
     }
 }
 
-void Board::initGameBoardTables()
+void Board::initGameBoardArrays()
 {
-    int tableSize = config->width*config->height;
-    gameBoard1 = std::make_unique<bool[]>(tableSize);
-    gameBoard2 = std::make_unique<bool[]>(tableSize);
+    int arraysSize = config->width*config->height;
+    gameBoard1 = std::make_unique<bool[]>(arraysSize);
+    gameBoard2 = std::make_unique<bool[]>(arraysSize);
 }
 
 void Board::loadFromFile()
@@ -142,7 +142,7 @@ void Board::processCell(int x, int y)
     }
 }
 
-void Board::equalizeTables()
+void Board::equalizeArrays()
 {
     int arraysSize = config->height*config->width; 
     for(int i = 0; i<arraysSize; i++)
@@ -189,7 +189,7 @@ void operator>>(std::fstream& fs, Board& board)
     board.config->width = lines[0].length();
     board.config->height = lines.size();
 
-    board.initGameBoardTables();
+    board.initGameBoardArrays();
 
     for(int y=0; y<board.config->height; y++)
     {
