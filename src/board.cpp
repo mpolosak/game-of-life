@@ -123,7 +123,7 @@ void Board::loadFromPNGImage()
     initGameBoardArrays();
     for(int x=0; x<config->width; x++)
         for(int y=0; y<config->height; y++)
-            setBlockValue(x, y, image[x][y]);
+            setBlockValue(x, y, image[y][x]);
 }
 
 void Board::loadFromTextFile()
@@ -149,8 +149,8 @@ void Board::saveToPNGImage()
 {
     png::image<png::rgb_pixel> image(config->width, config->height);
     for(int x=0; x<config->width; x++)
-        for(int y=0; y<config->width; y++)
-            image[x][y] = gameBoard1[x+y*config->width]
+        for(int y=0; y<config->height; y++)
+            image[y][x] = gameBoard1[x+y*config->width]
                 ? png::rgb_pixel(255, 255, 255) : png::rgb_pixel(0, 0, 0);
     try
     {
