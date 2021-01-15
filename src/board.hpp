@@ -18,17 +18,17 @@ protected:
 private:
     BoardConfig *config;
     int blockSize;
-    bool **gameBoard1;
-    bool **gameBoard2;
+    std::unique_ptr<bool[]> gameBoard1;
+    std::unique_ptr<bool[]> gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
-    void initGameBoardTables();
+    void initGameBoardArrays();
     void fillWithRandomValues();
     void loadFromFile();
     void saveToFile();
     int countLivingNeighbours(int x, int y);
     void processCell(int x, int y);
-    void equalizeTables();
+    void equalizeArrays();
     void setBlockValue(int x, int y, char value);
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
     friend void operator>>(std::fstream& fs, Board& board);
