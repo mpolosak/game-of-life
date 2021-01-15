@@ -144,9 +144,9 @@ void Board::processCell(int x, int y)
 
 void Board::equalizeTables()
 {
-    for(int y = 0;y<config->height;y++)
-        for(int x = 0;x<config->width;x++)
-            gameBoard1[x+y*config->width]=gameBoard2[x+y*config->width];
+    int arraysSize = config->height*config->width; 
+    for(int i = 0; i<arraysSize; i++)
+        gameBoard1[i]=gameBoard2[i];
 }
 
 void Board::setBlockValue(int x, int y, char value)
