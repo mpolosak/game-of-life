@@ -43,7 +43,7 @@ void Board::fillWithRandomValues()
     srand(time(NULL));
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            setBlockValue(x,y, (std::rand()%30)%2==1);
+            setBlockValue(x,y, std::rand()%2==1);
 }
 
 void Board::setBlockValue(int x, int y, bool value)
