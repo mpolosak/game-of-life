@@ -35,3 +35,16 @@ std::pair<unsigned int,unsigned int> parseSize(const std::string &size)
     
     return std::make_pair(width,height); 
 }
+
+bool isPNGImage(std::string &path)
+{
+    auto size = path.size();
+    if(size<4) return false;
+    return path.substr(size-4,4)==".png";
+}
+
+bool operator==(png::rgb_pixel pixel1, png::rgb_pixel pixel2)
+{
+    return pixel1.red == pixel2.red && pixel1.green == pixel2.green
+        && pixel1.blue == pixel2.blue;
+}

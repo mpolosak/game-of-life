@@ -1,5 +1,6 @@
 #include<SFML/Graphics.hpp>
 #include<unordered_set>
+#include<png++/png.hpp>
 #include"boardconfig.hpp"
 
 class Board
@@ -25,11 +26,16 @@ private:
     void initGameBoardArrays();
     void fillWithRandomValues();
     void loadFromFile();
+    void loadFromPNGImage();
+    void loadFromTextFile();
     void saveToFile();
+    void saveToPNGImage();
+    void saveToTextFile();
     int countLivingNeighbours(int x, int y);
     void processCell(int x, int y);
     void equalizeArrays();
     void setBlockValue(int x, int y, char value);
+    void setBlockValue(int x, int y, png::rgb_pixel value);
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
     friend void operator>>(std::fstream& fs, Board& board);
 };

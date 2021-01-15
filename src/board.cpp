@@ -1,4 +1,5 @@
 #include"board.hpp"
+#include"utilities.hpp"
 #include<algorithm>
 #include<iostream>
 #include<fstream>
@@ -95,9 +96,41 @@ void Board::initGameBoardArrays()
 
 void Board::loadFromFile()
 {
+    if(isPNGImage(config->inputFilePath))
+        loadFromPNGImage();
+    else{
+        loadFromTextFile();
+    }
+}
+
+void Board::loadFromPNGImage()
+{
+    png::image<png::rgb_pixel> image;
+    try
+    {
+        image.read(config->inputFilePath);
+    }
+    catch(png::std_error error)
+    {
+        throw std::string(error.what());
+    }
+    catch(...)
+    {
+        throw std::string("Failed to open file '"+config->inputFilePath+"'");
+    }
+    config->width=image.get_width();
+    config->height=image.get_height();
+    initGameBoardArrays();
+    for(int x=0; x<config->width; x++)
+        for(int y=0; y<config->height; y++)
+            setBlockValue(x, y, image[x][y]);
+}
+
+void Board::loadFromTextFile()
+{
     std::fstream file(config->inputFilePath, std::ios::in);
     if(!file)
-        throw std::string("Failed to open file "+config->inputFilePath);
+        throw std::string("Failed to open file '"+config->inputFilePath+"'");
     
     file>>*this;
 
@@ -106,9 +139,34 @@ void Board::loadFromFile()
 
 void Board::saveToFile()
 {
+    if(isPNGImage(config->outputFilePath))
+        saveToPNGImage();
+    else
+        saveToTextFile();
+}
+
+void Board::saveToPNGImage()
+{
+    png::image<png::rgb_pixel> image(config->width, config->height);
+    for(int x=0; x<config->width; x++)
+        for(int y=0; y<config->width; y++)
+            image[x][y] = gameBoard1[x+y*config->width]
+                ? png::rgb_pixel(255, 255, 255) : png::rgb_pixel(0, 0, 0);
+    try
+    {
+        image.write(config->outputFilePath);
+    }
+    catch(png::std_error error)
+    {
+        std::cerr << error.what() << std::endl;
+    }
+}
+
+void Board::saveToTextFile()
+{
     std::fstream file(config->outputFilePath, std::ios::out);
     if(!file)
-        std::cerr << "Failed to save to file " << config->outputFilePath << std::endl;
+        std::cerr << "Failed to save to file '" << config->outputFilePath << "'" << std::endl;
     
     file<<*this;
 
@@ -163,6 +221,16 @@ void Board::setBlockValue(int x, int y, char value)
             throw "The board file should only contain 'X's and spaces";
             break;
     }
+}
+
+void Board::setBlockValue(int x, int y, png::rgb_pixel value)
+{
+    if(value==png::rgb_pixel(255, 255, 255))
+        setBlockValue(x, y, true);
+    else if (value==png::rgb_pixel(0, 0, 0))
+        setBlockValue(x, y, false);
+    else
+        throw std::string("The board image should contain only black and white pixels");
 }
 
 std::fstream& operator<<(std::fstream& os, const Board& board)
