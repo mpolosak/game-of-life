@@ -139,6 +139,24 @@ void Board::loadFromTextFile()
 
 void Board::saveToFile()
 {
+    if(isPNGImage(config->outputFilePath))
+        saveToPNGImage();
+    else
+        saveToTextFile();
+}
+
+void Board::saveToPNGImage()
+{
+    png::image<png::rgb_pixel> image(config->width, config->height);
+    for(int x=0; x<config->width; x++)
+        for(int y=0; y<config->width; y++)
+            image[x][y] = gameBoard1[x+y*config->width]
+                ? png::rgb_pixel(255, 255, 255) : png::rgb_pixel(0, 0, 0);
+    image.write(config->outputFilePath);
+}
+
+void Board::saveToTextFile()
+{
     std::fstream file(config->outputFilePath, std::ios::out);
     if(!file)
         std::cerr << "Failed to save to file " << config->outputFilePath << std::endl;

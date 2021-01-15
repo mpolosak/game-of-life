@@ -29,6 +29,8 @@ private:
     void loadFromPNGImage();
     void loadFromTextFile();
     void saveToFile();
+    void saveToPNGImage();
+    void saveToTextFile();
     int countLivingNeighbours(int x, int y);
     void processCell(int x, int y);
     void equalizeArrays();
