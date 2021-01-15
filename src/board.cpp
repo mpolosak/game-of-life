@@ -29,11 +29,6 @@ Board::~Board()
 {
     if(config->outputFilePath!="")
         saveToFile();
-    for(int x = 0;x<config->width;x++)
-    {
-        delete gameBoard1[x];
-        delete gameBoard2[x];
-    }
     delete gameBoard1;
     delete gameBoard2;
 }
@@ -57,8 +52,8 @@ void Board::setBlockValue(int x, int y, bool value)
 {
     if(x<0||y<0||x>=config->width||y>=config->height)
         return;
-    gameBoard1[x][y]=value;
-    gameBoard2[x][y]=value;
+    gameBoard1[x+y*config->width]=value;
+    gameBoard2[x+y*config->width]=value;
 }
 
 void Board::setBlockSize(unsigned int size)
@@ -84,7 +79,7 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
     for(int y = 0;y<config->height;y++){
         for(int x = 0;x<config->width;x++)
         {
-            if(gameBoard1[x][y])
+            if(gameBoard1[x+y*config->width])
             {
                 block.setPosition(x*blockSize,y*blockSize);
                 target.draw(block);
@@ -95,13 +90,9 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Board::initGameBoardTables()
 {
-    gameBoard1 = new bool*[config->width];
-    gameBoard2 = new bool*[config->width];
-    for(int x = 0;x<config->width;x++)
-    {
-        gameBoard1[x] = new bool[config->height];
-        gameBoard2[x] = new bool[config->height];
-    }
+    int tableSize = config->width*config->height;
+    gameBoard1 = new bool[tableSize];
+    gameBoard2 = new bool[tableSize];
 }
 
 void Board::loadFromFile()
@@ -133,7 +124,7 @@ int Board::countLivingNeighbours(int x, int y)
     for(int j=y-1;j<=y+1;j++)
         for(int i=x-1;i<=x+1;i++)
             if(i>=0&&i<config->width&&j>=0&&j<config->height&&!(i==x&&j==y))
-                if(gameBoard1[i][j])
+                if(gameBoard1[i+j*config->width])
                     livingNeighbours++;
 
     return livingNeighbours;
@@ -141,15 +132,15 @@ int Board::countLivingNeighbours(int x, int y)
 
 void Board::processCell(int x, int y)
 {
-    if(gameBoard1[x][y])
+    if(gameBoard1[x+y*config->width])
     {
         if(!config->survive.count(countLivingNeighbours(x,y)))
-            gameBoard2[x][y]=false;
+            gameBoard2[x+y*config->width]=false;
     }
     else
     {
         if(config->birth.count(countLivingNeighbours(x,y)))
-            gameBoard2[x][y]=true;
+            gameBoard2[x+y*config->width]=true;
     }
 }
 
@@ -157,7 +148,7 @@ void Board::equalizeTables()
 {
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            gameBoard1[x][y]=gameBoard2[x][y];
+            gameBoard1[x+y*config->width]=gameBoard2[x+y*config->width];
 }
 
 void Board::setBlockValue(int x, int y, char value)
@@ -182,7 +173,7 @@ std::fstream& operator<<(std::fstream& os, const Board& board)
     {
         for(int x = 0; x<board.config->width; x++)
         {
-            if(board.gameBoard1[x][y])
+            if(board.gameBoard1[x+y*board.config->width])
                 os<<'X';
             else
                 os<<' ';
