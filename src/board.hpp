@@ -25,6 +25,8 @@ private:
     void initGameBoardArrays();
     void fillWithRandomValues();
     void loadFromFile();
+    void loadFromPNGImage();
+    void loadFromTextFile();
     void saveToFile();
     int countLivingNeighbours(int x, int y);
     void processCell(int x, int y);

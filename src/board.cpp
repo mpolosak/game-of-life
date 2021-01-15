@@ -1,4 +1,5 @@
 #include"board.hpp"
+#include"utilities.hpp"
 #include<algorithm>
 #include<iostream>
 #include<fstream>
@@ -94,6 +95,19 @@ void Board::initGameBoardArrays()
 }
 
 void Board::loadFromFile()
+{
+    if(isPNGImage(config->inputFilePath))
+        loadFromPNGImage();
+    else
+        loadFromTextFile();
+}
+
+void Board::loadFromPNGImage()
+{
+
+}
+
+void Board::loadFromTextFile()
 {
     std::fstream file(config->inputFilePath, std::ios::in);
     if(!file)
