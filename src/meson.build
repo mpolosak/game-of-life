@@ -5,4 +5,4 @@ src=[
     'boardconfig.cpp',
     'utilities.cpp'
 ]
-executable('game-of-life',src, dependencies:[sfml_graphics, sfml_system, sfml_window, boost, libpng],install: true)
+executable('game-of-life',src, dependencies:[sfml_graphics, sfml_system, sfml_window, boost, libpng, pngpp],install: true)

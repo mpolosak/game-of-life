@@ -104,7 +104,13 @@ void Board::loadFromFile()
 
 void Board::loadFromPNGImage()
 {
-
+    png::image<png::rgb_pixel> image(config->inputFilePath);
+    config->width=image.get_width();
+    config->height=image.get_height();
+    initGameBoardArrays();
+    for(int x=0; x<config->width; x++)
+        for(int y=0; y<config->height; y++)
+            setBlockValue(x, y, image[x][y]);
 }
 
 void Board::loadFromTextFile()
@@ -177,6 +183,16 @@ void Board::setBlockValue(int x, int y, char value)
             throw "The board file should only contain 'X's and spaces";
             break;
     }
+}
+
+void Board::setBlockValue(int x, int y, png::rgb_pixel value)
+{
+    if(value==png::rgb_pixel(255, 255, 255))
+        setBlockValue(x, y, true);
+    else if (value==png::rgb_pixel(0, 0, 0))
+        setBlockValue(x, y, false);
+    else
+        throw std::string("The board image should contain only black and white pixels");
 }
 
 std::fstream& operator<<(std::fstream& os, const Board& board)
