@@ -18,8 +18,8 @@ protected:
 private:
     BoardConfig *config;
     int blockSize;
-    bool *gameBoard1;
-    bool *gameBoard2;
+    std::unique_ptr<bool[]> gameBoard1;
+    std::unique_ptr<bool[]> gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
     void initGameBoardTables();

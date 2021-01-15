@@ -29,8 +29,6 @@ Board::~Board()
 {
     if(config->outputFilePath!="")
         saveToFile();
-    delete gameBoard1;
-    delete gameBoard2;
 }
 
 void Board::clear()
@@ -91,8 +89,8 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 void Board::initGameBoardTables()
 {
     int tableSize = config->width*config->height;
-    gameBoard1 = new bool[tableSize];
-    gameBoard2 = new bool[tableSize];
+    gameBoard1 = std::make_unique<bool[]>(tableSize);
+    gameBoard2 = std::make_unique<bool[]>(tableSize);
 }
 
 void Board::loadFromFile()
