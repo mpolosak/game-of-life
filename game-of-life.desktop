@@ -2,6 +2,5 @@
 Type=Application
 Exec=game-of-life %u
 Name=Game of life
-Icon=rysunek
+Icon=game-of-life
 Categories=Game
-X-AppImage-Version=4f91777
