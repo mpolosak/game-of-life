@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=game-of-life %u
+Name=Game of life
+Icon=rysunek
+Categories=Game
+X-AppImage-Version=4f91777
