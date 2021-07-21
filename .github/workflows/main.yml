@@ -31,7 +31,8 @@ jobs:
         run: ninja -vC build install
 
       - name: Download linuxdeploy
-        run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage & chmod +x linuxdeploy-x86_64.AppImage
+        run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+        run: chmod +x linuxdeploy-x86_64.AppImage
 
       - name: Create AppDir
         run: ./linuxdeploy-x86_64.AppImage --appdir AppDir
