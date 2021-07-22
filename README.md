@@ -16,6 +16,16 @@ meson build
 ninja -C build
 sudo ninja -C build install
 ```
+## Building AppImage
+```
+meson build -Dprefix=AppDir
+ninja -C build install
+wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+chmod +x linuxdeploy-x86_64.AppImage
+./linuxdeploy-x86_64.AppImage --appdir AppDir
+./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+
+```
 ## Running
 Run by typing *game-of-life* into terminal.  
 Type in *game-of-life -h* to see allowed options.  
