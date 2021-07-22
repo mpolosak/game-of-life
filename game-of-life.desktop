@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Exec=game-of-life
+Name=Game of life
+Icon=game-of-life
+Categories=Game

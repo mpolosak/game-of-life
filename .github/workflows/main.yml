@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: "Build on Ubuntu"
+    name: "Build Appimage on Ubuntu"
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,22 @@ jobs:
         run: sudo apt install libsfml-dev libboost-all-dev libpng++-dev
         
       - name: Configure the project with meson
-        run: meson build
+        run: meson build -Dprefix=$(pwd)/AppDir/usr
         
-      - name: Compile
-        run: ninja -vC build
+      - name: Compile and install to AppDir
+        run: ninja -vC build install
+
+      - name: Download linuxdeploy
+        run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage && chmod +x linuxdeploy-x86_64.AppImage
+
+      - name: Create AppDir
+        run: ./linuxdeploy-x86_64.AppImage --appdir AppDir
+
+      - name: Create AppImage
+        run: ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+
+      - name: Save AppImage
+        uses: actions/upload-artifact@v2
+        with:
+          name: AppImage
+          path: Game_of_life*
