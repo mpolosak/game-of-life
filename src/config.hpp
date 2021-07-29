@@ -1,6 +1,7 @@
 #include<iostream>
 #include"boardconfig.hpp"
 #include<boost/program_options.hpp>
+#include"appearanceconfig.hpp"
 
 namespace po = boost::program_options;
 
