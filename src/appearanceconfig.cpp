@@ -1,5 +1,7 @@
 #include "appearanceconfig.hpp"
 #include "utilities.hpp"
+#include<iomanip>
+
 void AppearanceConfig::setColors(std::string& colorsString)
 {
     std::smatch base_match;
@@ -26,5 +28,11 @@ void AppearanceConfig::setColors(std::string& colorsString)
 
 std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config)
 {
-    // To be implemented
+    return os
+        << std::setw(20) << "Live cell color" << " : "
+            << config.liveCellColor << std::endl
+        << std::setw(20) << "Dead cell color" << " : "
+            << config.deadCellColor << std::endl
+        << std::setw(20) << "Background color" << " : "
+            << config.backgroundColor << std::endl;
 }

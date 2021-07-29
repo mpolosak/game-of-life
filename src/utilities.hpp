@@ -14,3 +14,5 @@ bool isPNGImage(std::string &path);
 bool operator==(png::rgb_pixel pixel1, png::rgb_pixel pixel2);
 
 sf::Color colorFromHex(std::string& color);
+
+std::ostream& operator<<(std::ostream& os, const sf::Color& color);

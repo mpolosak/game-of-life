@@ -45,6 +45,7 @@ std::ostream& operator<<(std::ostream& os, const Config& config)
 {
     return os
         << config.board
+        << config.appearance
         << std::setw(20) << "Window size" << " : " 
             << config.width << "x" << config.height << std::endl
         << std::setw(20) << "Fullscreen" << " : "

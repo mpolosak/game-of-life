@@ -1,4 +1,5 @@
 #include"utilities.hpp"
+#include<iomanip>
 
 std::smatch match(
     const std::string &string, const std::string &regex)
@@ -53,4 +54,12 @@ sf::Color colorFromHex(std::string& hex)
 {   
     sf::Uint32 value = std::stoul(hex, nullptr, 16);
     return sf::Color(value*256+255);
+}
+
+std::ostream& operator<<(std::ostream& os, const sf::Color& color)
+{
+    return os
+        << "#" << std::hex << std::setw(6) << std::setfill('0')
+        << color.toInteger()/256
+        << std::dec << std::setfill(' ');
 }
