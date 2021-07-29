@@ -52,5 +52,5 @@ bool operator==(png::rgb_pixel pixel1, png::rgb_pixel pixel2)
 sf::Color colorFromHex(std::string& hex)
 {   
     sf::Uint32 value = std::stoul(hex, nullptr, 16);
-    return sf::Color(value);
+    return sf::Color(value*256+255);
 }
