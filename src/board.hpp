@@ -2,12 +2,13 @@
 #include<unordered_set>
 #include<png++/png.hpp>
 #include"boardconfig.hpp"
+#include"appearanceconfig.hpp"
 
 class Board
 : public sf::Drawable
 {
 public:
-    Board(BoardConfig *config);
+    Board(BoardConfig *config, AppearanceConfig& appearance);
     ~Board();
     void clear();
     void setBlockValue(int x, int y, bool value);

@@ -5,7 +5,7 @@
 #include<fstream>
 #include<vector>
 
-Board::Board(BoardConfig *config)
+Board::Board(BoardConfig *config, AppearanceConfig& appearance)
 {
     this->config = config;
     
@@ -22,8 +22,8 @@ Board::Board(BoardConfig *config)
         fillWithRandomValues();
     }
 
-    background.setFillColor(sf::Color::Black);
-    block.setFillColor(sf::Color::White);
+    background.setFillColor(appearance.deadCellColor);
+    block.setFillColor(appearance.liveCellColor);
 }
 
 Board::~Board()
