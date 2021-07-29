@@ -58,7 +58,7 @@ void Board::setBlockValue(int x, int y, bool value)
 void Board::setBlockSize(unsigned int size)
 {
     blockSize=std::max(size,config->minBlockSize);
-    block = sf::RectangleShape(sf::Vector2f(blockSize,blockSize));
+    block.setSize(sf::Vector2f(blockSize,blockSize));
     background.setSize(sf::Vector2f(blockSize*config->width,blockSize*config->height));
 }
 
