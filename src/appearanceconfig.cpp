@@ -4,12 +4,12 @@ void AppearanceConfig::setColors(std::string& colorsString)
 {
     std::smatch base_match;
     try{
-        base_match = match(colorsString, "#([0-f]{6})/#([0-f]{6})/#([0-f]{6})");
+        base_match = match(colorsString, "([0-f]{6})/([0-f]{6})/([0-f]{6})");
     }
     catch(...)
     {
         throw std::string(
-            "Colors must be written in hex as live_cell_colour/death_cell_colour/background i.e. #609060/#ffffff/#909090"
+            "Colors must be written in hex as live_cell_colour/death_cell_colour/background i.e. 609060/ffffff/909090"
         );
     }
     
