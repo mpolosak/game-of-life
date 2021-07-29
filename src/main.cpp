@@ -74,7 +74,7 @@ void setViewSize(int width, int height)
 
 void draw()
 {
-    window.clear(sf::Color(150, 150, 150));
+    window.clear(config.appearance.backgroundColor);
     window.draw(*board);
     window.display();
 }
