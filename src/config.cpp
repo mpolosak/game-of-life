@@ -77,7 +77,7 @@ po::options_description createOptionsDescription(BoardConfig &config,
         ("fullscreen,f", "run in fullscreen mode")
         ("window_size,w", po::value<std::string>(&windowSize)->default_value("500x500"),
             "set size of window to arg, the size must be written as widthxheight i.e. 800x600")
-        ("colours,c", po::value<std::string>(&colors)->default_value("#ffffff/#000000/#969696"),
+        ("colors,c", po::value<std::string>(&colors)->default_value("#ffffff/#000000/#969696"),
             "set colors of game to arg, colors must be written in hex\
             as live_cell_color/death_cell_color/background i.e. #609060/#ffffff/#909090");
     
