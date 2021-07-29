@@ -13,6 +13,7 @@ public:
     unsigned int width;
     unsigned int height; 
     BoardConfig board;
+    AppearanceConfig appearance;
 };
 
 std::ostream& operator<<(std::ostream& os, const Config& config);
