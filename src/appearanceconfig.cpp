@@ -11,7 +11,7 @@ void AppearanceConfig::setColors(std::string& colorsString)
     catch(...)
     {
         throw std::string(
-            "Colors must be written in hex as live_cell_colour/death_cell_colour/background i.e. 609060/ffffff/909090"
+            "Colors must be written in hex as live_cell_color/death_cell_color/background i.e. 609060/ffffff/909090"
         );
     }
     
