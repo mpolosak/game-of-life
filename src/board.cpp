@@ -5,7 +5,7 @@
 #include<fstream>
 #include<vector>
 
-Board::Board(BoardConfig *config)
+Board::Board(BoardConfig *config, AppearanceConfig& appearance)
 {
     this->config = config;
     
@@ -22,8 +22,8 @@ Board::Board(BoardConfig *config)
         fillWithRandomValues();
     }
 
-    background.setFillColor(sf::Color::Black);
-    block.setFillColor(sf::Color::White);
+    background.setFillColor(appearance.deadCellColor);
+    block.setFillColor(appearance.liveCellColor);
 }
 
 Board::~Board()
@@ -58,7 +58,7 @@ void Board::setBlockValue(int x, int y, bool value)
 void Board::setBlockSize(unsigned int size)
 {
     blockSize=std::max(size,config->minBlockSize);
-    block = sf::RectangleShape(sf::Vector2f(blockSize,blockSize));
+    block.setSize(sf::Vector2f(blockSize,blockSize));
     background.setSize(sf::Vector2f(blockSize*config->width,blockSize*config->height));
 }
 

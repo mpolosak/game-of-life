@@ -8,9 +8,10 @@ Config Config::fromCommandLine(int argc, char *argv[])
     std::string rulesString;
     std::string boardSize;
     std::string windowSize;
+    std::string colors;
 
     po::options_description desc = createOptionsDescription(
-            config.board, rulesString, boardSize, windowSize);
+            config.board, rulesString, boardSize, windowSize, colors);
 
     po::variables_map vm;
 
@@ -35,6 +36,8 @@ Config Config::fromCommandLine(int argc, char *argv[])
 
     config.fullscreen=vm.count("fullscreen");
 
+    config.appearance.setColors(colors);
+
     return config;
 }
 
@@ -42,6 +45,7 @@ std::ostream& operator<<(std::ostream& os, const Config& config)
 {
     return os
         << config.board
+        << config.appearance
         << std::setw(20) << "Window size" << " : " 
             << config.width << "x" << config.height << std::endl
         << std::setw(20) << "Fullscreen" << " : "
@@ -56,7 +60,7 @@ void Config::setSize(const std::string &size)
 }
 
 po::options_description createOptionsDescription(BoardConfig &config,
-    std::string &rulesString, std::string &boardSize, std::string &windowSize)
+    std::string &rulesString, std::string &boardSize, std::string &windowSize, std::string &colors)
 {
     po::options_description desc("Allowed options");
 
@@ -74,7 +78,10 @@ po::options_description createOptionsDescription(BoardConfig &config,
         ("fullscreen,f", "run in fullscreen mode")
         ("window_size,w", po::value<std::string>(&windowSize)->default_value("500x500"),
             "set size of window to arg, the size must be written as widthxheight i.e. 800x600")
-    ;
+        ("colors,c", po::value<std::string>(&colors)->default_value("ffffff/000000/969696"),
+            "set colors of game to arg, colors must be written in hex as live_cell_color/death_cell_color/background i.e. 609060/ffffff/909090"
+        );
+    
     return desc;
 }
 

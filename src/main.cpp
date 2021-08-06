@@ -18,7 +18,7 @@ void init(int argc, char *argv[])
     try
     {
         config = Config::fromCommandLine(argc,argv);
-        board = std::make_unique<Board>(&config.board);
+        board = std::make_unique<Board>(&config.board, config.appearance);
     }
     catch(std::string &error)
     {
@@ -74,7 +74,7 @@ void setViewSize(int width, int height)
 
 void draw()
 {
-    window.clear(sf::Color(150, 150, 150));
+    window.clear(config.appearance.backgroundColor);
     window.draw(*board);
     window.display();
 }
