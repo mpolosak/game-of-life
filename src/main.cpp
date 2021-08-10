@@ -74,6 +74,7 @@ void setViewSize(int width, int height)
     view.reset(rect);
     window.setView(view);
     board->setBlockSize(std::min(width/config.board.width,height/config.board.height));
+    setBackgroundSize(width, height);
 }
 
 void draw()
@@ -175,4 +176,9 @@ void loadBackground()
             + config.appearance.backgroundUrl + "'\n");
     background = std::make_unique<sf::RectangleShape>();
     background->setTexture(backgroundTexture.get()); 
+}
+
+void setBackgroundSize(int width, int height)
+{
+    background->setSize(sf::Vector2f(width,height));
 }

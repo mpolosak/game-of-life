@@ -16,3 +16,4 @@ void processDrawMode();
 void setFullscreen(bool fullscreen);
 void toggleFullscreen();
 void loadBackground();
+void setBackgroundSize(int width, int height);
