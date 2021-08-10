@@ -5,7 +5,8 @@ Config config;
 int style = sf::Style::Default;
 sf::View view;
 std::unique_ptr<Board> board;
-std::unique_ptr<sf::Sprite> background;
+std::unique_ptr<sf::RectangleShape> background;
+std::unique_ptr<sf::Texture> backgroundTexture;
 
 int main(int argc, char *argv[])
 {
@@ -168,9 +169,10 @@ void toggleFullscreen()
 
 void loadBackground()
 {
-    sf::Texture texture;
-    if (!texture.loadFromFile(config.appearance.backgroundUrl))
+    backgroundTexture = std::make_unique<sf::Texture>();
+    if (!backgroundTexture->loadFromFile(config.appearance.backgroundUrl))
         throw std::string("Cannot load texture from file '"
             + config.appearance.backgroundUrl + "'\n");
-    background = std::make_unique<sf::Sprite>(texture); 
+    background = std::make_unique<sf::RectangleShape>();
+    background->setTexture(backgroundTexture.get()); 
 }
