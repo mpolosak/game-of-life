@@ -11,6 +11,7 @@ public:
     sf::Color liveCellColor;
     sf::Color deadCellColor;
     sf::Color backgroundColor;
+    std::string backgroundUrl;
 private:
     std::string colorsString;
 };
