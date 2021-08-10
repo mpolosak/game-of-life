@@ -11,7 +11,7 @@ Config Config::fromCommandLine(int argc, char *argv[])
     std::string colors;
 
     po::options_description desc = createOptionsDescription(
-            config.board, rulesString, boardSize, windowSize, colors);
+            config, rulesString, boardSize, windowSize, colors);
 
     po::variables_map vm;
 
