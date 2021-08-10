@@ -15,3 +15,4 @@ void setHoveredBlockValue(bool value);
 void processDrawMode();
 void setFullscreen(bool fullscreen);
 void toggleFullscreen();
+void loadBackground();
