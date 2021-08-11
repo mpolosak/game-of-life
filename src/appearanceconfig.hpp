@@ -3,6 +3,14 @@
 #include<string>
 #include<SFML/Graphics.hpp>
 
+enum BackgroundPosition{
+    fill,
+    fit,
+    tile,
+    streatch,
+    center
+};
+
 class AppearanceConfig
 {
 public:
@@ -12,14 +20,10 @@ public:
     sf::Color deadCellColor;
     sf::Color backgroundColor;
     std::string backgroundUrl;
-    enum class BackgroundPosition{
-        fill,
-        fit,
-        tile,
-        streatch,
-    } backgroundPosition;
+    BackgroundPosition backgroundPosition;
 private:
     std::string colorsString;
 };
 
 std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config);
+std::istream& operator>>(std::istream& is, BackgroundPosition& pos); 

@@ -36,3 +36,18 @@ std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config)
         << std::setw(20) << "Background color" << " : "
             << config.backgroundColor << std::endl;
 }
+
+std::istream& operator>>(std::istream& is, BackgroundPosition& pos)
+{
+    std::string value;
+    is >> value;
+
+    if(value=="fill") pos=BackgroundPosition::fill;
+    else if(value=="fit") pos=BackgroundPosition::fit;
+    else if(value=="tile") pos=BackgroundPosition::tile;
+    else if(value=="streatch") pos=BackgroundPosition::streatch;
+    else if(value=="center") pos=BackgroundPosition::center;
+    else throw "'--background' doesn't accept " + value;
+
+    return is;
+}
