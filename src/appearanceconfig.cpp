@@ -1,6 +1,9 @@
 #include "appearanceconfig.hpp"
 #include "utilities.hpp"
 #include<iomanip>
+#include<boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 void AppearanceConfig::setColors(std::string& colorsString)
 {
@@ -47,7 +50,7 @@ std::istream& operator>>(std::istream& is, BackgroundPosition& pos)
     else if(value=="tile") pos=BackgroundPosition::tile;
     else if(value=="streatch") pos=BackgroundPosition::streatch;
     else if(value=="center") pos=BackgroundPosition::center;
-    else throw "'--background' doesn't accept " + value;
+    else throw po::invalid_option_value(value);
 
     return is;
 }
