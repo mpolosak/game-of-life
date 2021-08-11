@@ -12,6 +12,12 @@ public:
     sf::Color deadCellColor;
     sf::Color backgroundColor;
     std::string backgroundUrl;
+    enum class BackgroundPosition{
+        fill,
+        fit,
+        tile,
+        streatch,
+    } backgroundPosition;
 private:
     std::string colorsString;
 };
