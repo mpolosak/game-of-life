@@ -83,7 +83,8 @@ po::options_description createOptionsDescription(Config &config,
         )
         ("background,B", po::value<std::string>(&config.appearance.backgroundUrl)->default_value(""), 
             "set background image to arg")
-        ("background_position,p", po::value<BackgroundPosition>(&config.appearance.backgroundPosition),
+        ("background_position,p", po::value<BackgroundPosition>(&config.appearance.backgroundPosition)
+            ->default_value(BackgroundPosition::fill),
             "set background position to arg, posible values are fill, fit, tile, streatch");
         ;
     
