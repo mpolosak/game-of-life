@@ -5,11 +5,13 @@ class Background
  : public sf::RectangleShape
 {
 public:
-    Background(std::string& imageUrl, BackgroundPosition position);
+    Background(std::string& imageUrl, BackgroundPosition position, sf::Color fillColor);
     void setSize(const sf::Vector2f& size);
-    BackgroundPosition position;
-    sf::Texture texture;
-    sf::Texture image; 
 private:
     void drawTileTexture();
+    void drawCenterTexture(const sf::Vector2f& size);
+    BackgroundPosition position;
+    sf::Texture texture;
+    sf::Texture image;
+    sf::Color fillColor; 
 };

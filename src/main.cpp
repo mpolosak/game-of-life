@@ -21,7 +21,11 @@ void init(int argc, char *argv[])
         config = Config::fromCommandLine(argc,argv);
         board = std::make_unique<Board>(&config.board, config.appearance);
         if(config.appearance.backgroundUrl!="")
-            background = std::make_unique<Background>(config.appearance.backgroundUrl, config.appearance.backgroundPosition);
+            background = std::make_unique<Background>(
+                config.appearance.backgroundUrl,
+                config.appearance.backgroundPosition,
+                config.appearance.backgroundColor
+            );
     }
     catch(std::string &error)
     {
