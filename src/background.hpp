@@ -9,6 +9,7 @@ public:
     void setSize(const sf::Vector2f& size);
     BackgroundPosition position;
     sf::Texture texture;
+    sf::Texture image; 
 private:
     void drawTileTexture();
 };

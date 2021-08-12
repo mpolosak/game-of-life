@@ -4,13 +4,18 @@
 Background::Background(std::string& imageUrl, BackgroundPosition position)
 : position(position)
 {
-    if (!texture.loadFromFile(imageUrl))
+    if (!image.loadFromFile(imageUrl))
         throw std::string("Cannot load texture from file '"
             + imageUrl + "'\n");
 
-    if(position == BackgroundPosition::tile)
-        drawTileTexture();
-    
+    switch(position)
+    {
+        case BackgroundPosition::tile:
+            drawTileTexture();
+            break;
+        case BackgroundPosition::streatch:
+            texture = image;
+    }
     setTexture(&texture); 
 }
 
@@ -33,7 +38,7 @@ void Background::drawTileTexture()
 
     sf::RenderTexture renderTexture;
     renderTexture.create(screenRes.width, screenRes.height);
-    sf::Sprite sprite = sf::Sprite(texture);
+    sf::Sprite sprite = sf::Sprite(image);
 
     for(int x = 0; x<horizontalRatio; x++)
     {
