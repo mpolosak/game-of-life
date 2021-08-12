@@ -176,6 +176,8 @@ void loadBackground()
             + config.appearance.backgroundUrl + "'\n");
     background = std::make_unique<sf::RectangleShape>();
     background->setTexture(backgroundTexture.get()); 
+    if(config.appearance.backgroundPosition==BackgroundPosition::tile)
+        backgroundTexture->setRepeated(true);
 }
 
 void setBackgroundSize(int width, int height)
