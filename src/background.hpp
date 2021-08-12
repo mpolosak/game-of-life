@@ -7,4 +7,6 @@ class Background
 public:
     Background(std::string& imageUrl, BackgroundPosition pos);
     sf::Texture texture;
+private:
+    void drawTileTexture();
 };
