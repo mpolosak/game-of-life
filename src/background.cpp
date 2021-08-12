@@ -1,16 +1,27 @@
 #include"background.hpp"
 #include<cmath>
 
-Background::Background(std::string& imageUrl, BackgroundPosition pos)
+Background::Background(std::string& imageUrl, BackgroundPosition position)
+: position(position)
 {
     if (!texture.loadFromFile(imageUrl))
         throw std::string("Cannot load texture from file '"
             + imageUrl + "'\n");
 
-    if(pos == BackgroundPosition::tile)
+    if(position == BackgroundPosition::tile)
         drawTileTexture();
     
     setTexture(&texture); 
+}
+
+void Background::setSize(const sf::Vector2f& size)
+{
+    sf::RectangleShape::setSize(size);
+    if(position == BackgroundPosition::tile)
+    {
+        sf::IntRect rect = sf::IntRect(0, 0, size.x, size.y);
+        setTextureRect(rect);
+    }
 }
 
 void Background::drawTileTexture()
