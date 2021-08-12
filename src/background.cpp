@@ -15,6 +15,7 @@ Background::Background(std::string& imageUrl, BackgroundPosition position)
             break;
         case BackgroundPosition::streatch:
             texture = image;
+            break;
     }
     setTexture(&texture); 
 }
@@ -32,7 +33,7 @@ void Background::setSize(const sf::Vector2f& size)
 void Background::drawTileTexture()
 {
     auto screenRes = sf::VideoMode::getDesktopMode();
-    auto textureRes = texture.getSize();
+    auto textureRes = image.getSize();
     int horizontalRatio = std::ceil((float)screenRes.width/textureRes.x);
     int verticalRatio = std::ceil((float)screenRes.height/textureRes.y);
 
