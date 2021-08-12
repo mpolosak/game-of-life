@@ -5,8 +5,7 @@ Config config;
 int style = sf::Style::Default;
 sf::View view;
 std::unique_ptr<Board> board;
-std::unique_ptr<sf::RectangleShape> background;
-std::unique_ptr<sf::Texture> backgroundTexture;
+std::unique_ptr<Background> background;
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +21,7 @@ void init(int argc, char *argv[])
         config = Config::fromCommandLine(argc,argv);
         board = std::make_unique<Board>(&config.board, config.appearance);
         if(config.appearance.backgroundUrl!="")
-            loadBackground();
+            background = std::make_unique<Background>(config.appearance.backgroundUrl, config.appearance.backgroundPosition);
     }
     catch(std::string &error)
     {
@@ -166,18 +165,6 @@ void toggleFullscreen()
         setFullscreen(true);
     else
         setFullscreen(false);
-}
-
-void loadBackground()
-{
-    backgroundTexture = std::make_unique<sf::Texture>();
-    if (!backgroundTexture->loadFromFile(config.appearance.backgroundUrl))
-        throw std::string("Cannot load texture from file '"
-            + config.appearance.backgroundUrl + "'\n");
-    background = std::make_unique<sf::RectangleShape>();
-    background->setTexture(backgroundTexture.get()); 
-    if(config.appearance.backgroundPosition==BackgroundPosition::tile)
-        backgroundTexture->setRepeated(true);
 }
 
 void setBackgroundSize(int width, int height)

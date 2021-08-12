@@ -3,6 +3,7 @@
 #include<string>
 #include"board.hpp"
 #include"config.hpp"
+#include"background.hpp"
 
 void init(int argc, char *argv[]);
 void run();
