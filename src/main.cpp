@@ -77,7 +77,8 @@ void setViewSize(int width, int height)
     view.reset(rect);
     window.setView(view);
     board->setBlockSize(std::min(width/config.board.width,height/config.board.height));
-    setBackgroundSize(width, height);
+    if(background)
+        background->setSize(sf::Vector2f(width,height));
 }
 
 void draw()
@@ -169,9 +170,4 @@ void toggleFullscreen()
         setFullscreen(true);
     else
         setFullscreen(false);
-}
-
-void setBackgroundSize(int width, int height)
-{
-    background->setSize(sf::Vector2f(width,height));
 }
