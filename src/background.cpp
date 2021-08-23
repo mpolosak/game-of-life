@@ -17,6 +17,9 @@ Background::Background(std::string& imageUrl, BackgroundPosition position,
         case BackgroundPosition::streatch:
             texture = image;
             break;
+        case BackgroundPosition::center:
+            drawCenterTexture();
+            break;
     }
     setTexture(&texture); 
 }
@@ -33,7 +36,12 @@ void Background::setSize(const sf::Vector2f& size)
             break;
         }
         case BackgroundPosition::center:
-            drawCenterTexture(size);
+            auto screenRes = sf::VideoMode::getDesktopMode();
+            int x = (screenRes.width-size.x)/2;
+            int y = (screenRes.height-size.y)/2;
+
+            sf::IntRect rect = sf::IntRect(x, y, size.x, size.y);
+            setTextureRect(rect);
             break;
     }
 }
@@ -62,15 +70,17 @@ void Background::drawTileTexture()
     texture = renderTexture.getTexture();
 }
 
-void Background::drawCenterTexture(const sf::Vector2f& size)
+void Background::drawCenterTexture()
 {
+    auto screenRes = sf::VideoMode::getDesktopMode();
     auto imageRes = image.getSize();
-    float x = (size.x - imageRes.x) / 2;
-    float y = (size.y - imageRes.y) / 2;
 
     sf::RenderTexture renderTexture;
-    renderTexture.create(size.x, size.y);
-    renderTexture.clear(fillColor);
+    renderTexture.create(screenRes.width, screenRes.height);
+    
+    int x = (screenRes.width-imageRes.x)/2;
+    int y = (screenRes.height-imageRes.y)/2;
+
     sf::Sprite sprite = sf::Sprite(image);
     sprite.setPosition(x, y);
     renderTexture.draw(sprite);
