@@ -38,9 +38,9 @@ std::ostream& operator<<(std::ostream& os, const BoardConfig& config)
     return os
         << std::setw(20) << "Rules" << " : " << config.getRules() << std::endl
         << std::setw(20) << "Load from file" << " : "
-            << (config.inputFilePath!="" ? config.inputFilePath : "no") << std::endl
+            << (config.inputFilePath!="" ? '"' + config.inputFilePath + '"' : "no") << std::endl
         << std::setw(20) << "Save to file" << " : "
-            << (config.outputFilePath!="" ? config.outputFilePath : "no") << std::endl
+            << (config.outputFilePath!="" ? '"' + config.outputFilePath + '"' : "no") << std::endl
         << std::setw(20) << "Draw" << " : "
             << (config.draw ? "yes" : "no") << std::endl
         << std::setw(20) << "Board size" << " : " 
