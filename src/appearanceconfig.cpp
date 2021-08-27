@@ -37,7 +37,12 @@ std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config)
         << std::setw(20) << "Dead cell color" << " : "
             << config.deadCellColor << std::endl
         << std::setw(20) << "Background color" << " : "
-            << config.backgroundColor << std::endl;
+            << config.backgroundColor << std::endl
+        << std::setw(20) << "Background" << " : "
+            << (config.backgroundUrl!="" ? '"' + config.backgroundUrl + '"' : "no")
+            << std::endl
+        << std::setw(20) << "Background position" << " : "
+            << config.backgroundPosition << std::endl;
 }
 
 std::istream& operator>>(std::istream& is, BackgroundPosition& pos)
