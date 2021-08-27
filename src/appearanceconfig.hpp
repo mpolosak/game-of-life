@@ -27,3 +27,4 @@ private:
 
 std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config);
 std::istream& operator>>(std::istream& is, BackgroundPosition& pos); 
+std::ostream& operator<<(std::ostream& os, const BackgroundPosition& pos);

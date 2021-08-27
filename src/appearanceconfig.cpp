@@ -54,3 +54,20 @@ std::istream& operator>>(std::istream& is, BackgroundPosition& pos)
 
     return is;
 }
+
+std::ostream& operator<<(std::ostream& os, const BackgroundPosition& pos)
+{
+    switch(pos)
+    {
+        case BackgroundPosition::fill:
+            return os << "fill";
+        case BackgroundPosition::fit:
+            return os << "fit";
+        case BackgroundPosition::tile:
+            return os << "tile";
+        case BackgroundPosition::streatch:
+            return os << "streatch";
+        case BackgroundPosition::center:
+            return os << "center";
+    }
+}
