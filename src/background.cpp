@@ -15,6 +15,7 @@ Background::Background(std::string& imageUrl, BackgroundPosition position,
             drawTileTexture();
             break;
         case BackgroundPosition::streatch:
+        case BackgroundPosition::fill:
             texture = image;
             break;
         case BackgroundPosition::center:
@@ -36,6 +37,7 @@ void Background::setSize(const sf::Vector2f& size)
             break;
         }
         case BackgroundPosition::center:
+        {
             auto screenRes = sf::VideoMode::getDesktopMode();
             int x = (screenRes.width-size.x)/2;
             int y = (screenRes.height-size.y)/2;
@@ -43,6 +45,23 @@ void Background::setSize(const sf::Vector2f& size)
             sf::IntRect rect = sf::IntRect(x, y, size.x, size.y);
             setTextureRect(rect);
             break;
+        }
+        case BackgroundPosition::fill:
+        {
+            auto texRes = texture.getSize();
+            int x1 = texRes.x;
+            int y1 = size.y/size.x*x1;
+            if(y1>texRes.y)
+            {
+                y1 = texRes.y;
+                x1 = size.x/size.y*y1;
+            }
+            int x0 = (texRes.x-x1)/2;
+            int y0 = (texRes.y-y1)/2;
+            sf::IntRect rect = sf::IntRect(x0, y0, x1, y1);
+            setTextureRect(rect);
+            break;
+        }
     }
 }
 
