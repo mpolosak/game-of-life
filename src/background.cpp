@@ -62,6 +62,9 @@ void Background::setSize(const sf::Vector2f& size)
             setTextureRect(rect);
             break;
         }
+        case BackgroundPosition::fit:
+            drawFitTexture(size);
+            break;
     }
 }
 
@@ -106,4 +109,36 @@ void Background::drawCenterTexture()
 
     renderTexture.display();
     texture = renderTexture.getTexture();
+}
+
+void Background::drawFitTexture(const sf::Vector2f& size)
+{
+    auto imageRes = image.getSize();
+
+    int x0 = size.x;
+    int y0 = (float)imageRes.y/imageRes.x*x0;
+    if(y0>size.y)
+    {
+        y0 = size.y;
+        x0 = (float)imageRes.x/imageRes.y*y0;
+    }
+
+    int x1 = (size.x-x0)/2;
+    int y1 = (size.y-y0)/2;
+
+    sf::RenderTexture renderTexture;
+    renderTexture.create(size.x, size.y);
+
+    renderTexture.clear(fillColor);
+
+    sf::RectangleShape shape;
+    shape.setTexture(&image);
+    shape.setSize(sf::Vector2f(x0, y0));
+    shape.setPosition(x1, y1);
+    renderTexture.draw(shape);
+
+    renderTexture.display();
+    texture = renderTexture.getTexture();
+
+    setTexture(&texture, true);
 }
