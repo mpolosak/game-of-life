@@ -19,7 +19,7 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Config& config);
 
-po::options_description createOptionsDescription(BoardConfig &config,
+po::options_description createOptionsDescription(Config &config,
     std::string &rulesString, std::string &boardSize, std::string &windowSize,
     std::string &colours);
 void printHelpAndExit(const po::options_description &desc);

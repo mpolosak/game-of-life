@@ -5,6 +5,7 @@ Config config;
 int style = sf::Style::Default;
 sf::View view;
 std::unique_ptr<Board> board;
+std::unique_ptr<Background> background;
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,12 @@ void init(int argc, char *argv[])
     {
         config = Config::fromCommandLine(argc,argv);
         board = std::make_unique<Board>(&config.board, config.appearance);
+        if(config.appearance.backgroundUrl!="")
+            background = std::make_unique<Background>(
+                config.appearance.backgroundUrl,
+                config.appearance.backgroundPosition,
+                config.appearance.backgroundColor
+            );
     }
     catch(std::string &error)
     {
@@ -70,11 +77,15 @@ void setViewSize(int width, int height)
     view.reset(rect);
     window.setView(view);
     board->setBlockSize(std::min(width/config.board.width,height/config.board.height));
+    if(background)
+        background->setSize(sf::Vector2f(width,height));
 }
 
 void draw()
 {
     window.clear(config.appearance.backgroundColor);
+    if(background)
+        window.draw(*background);
     window.draw(*board);
     window.display();
 }

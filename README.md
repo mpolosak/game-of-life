@@ -6,6 +6,7 @@ Allows:
 * saving a board to a text file or a PNG image
 * loading a board from a text file or a PNG image
 * changing colors of the game  
+* setting a background of the game
 ## Dependencies
 * [sfml](https://www.sfml-dev.org/)
 * [boost](https://www.boost.org/)

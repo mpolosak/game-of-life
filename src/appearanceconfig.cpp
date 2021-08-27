@@ -1,6 +1,9 @@
 #include "appearanceconfig.hpp"
 #include "utilities.hpp"
 #include<iomanip>
+#include<boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 void AppearanceConfig::setColors(std::string& colorsString)
 {
@@ -34,5 +37,42 @@ std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config)
         << std::setw(20) << "Dead cell color" << " : "
             << config.deadCellColor << std::endl
         << std::setw(20) << "Background color" << " : "
-            << config.backgroundColor << std::endl;
+            << config.backgroundColor << std::endl
+        << std::setw(20) << "Background" << " : "
+            << (config.backgroundUrl!="" ? '"' + config.backgroundUrl + '"' : "no")
+            << std::endl
+        << std::setw(20) << "Background position" << " : "
+            << config.backgroundPosition << std::endl;
+}
+
+std::istream& operator>>(std::istream& is, BackgroundPosition& pos)
+{
+    std::string value;
+    is >> value;
+
+    if(value=="fill") pos=BackgroundPosition::fill;
+    else if(value=="fit") pos=BackgroundPosition::fit;
+    else if(value=="tile") pos=BackgroundPosition::tile;
+    else if(value=="streatch") pos=BackgroundPosition::streatch;
+    else if(value=="center") pos=BackgroundPosition::center;
+    else throw po::invalid_option_value(value);
+
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const BackgroundPosition& pos)
+{
+    switch(pos)
+    {
+        case BackgroundPosition::fill:
+            return os << "fill";
+        case BackgroundPosition::fit:
+            return os << "fit";
+        case BackgroundPosition::tile:
+            return os << "tile";
+        case BackgroundPosition::streatch:
+            return os << "streatch";
+        case BackgroundPosition::center:
+            return os << "center";
+    }
 }
