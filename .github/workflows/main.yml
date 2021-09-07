@@ -62,4 +62,4 @@ jobs:
         run: meson build
       
       - name: Compile
-        name: ninja -C build
+        run: ninja -C build
