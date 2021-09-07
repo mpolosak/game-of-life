@@ -68,7 +68,7 @@ jobs:
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
 
       - name: Configure the project with meson
-        run: meson build
+        run: meson build -DSFML_DIR=c:\SFML-2.5.1
       
       - name: Compile
         run: ninja -C build
