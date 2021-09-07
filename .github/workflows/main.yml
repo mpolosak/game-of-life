@@ -58,6 +58,15 @@ jobs:
       - name: Install ninja
         run: choco install ninja
 
+      - name: Install SFML
+        run: |
+            $url = "https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip"
+            $archive = "c:\sfml.zip"
+            $dir = "c:\"
+
+            Invoke-WebRequest -Uri $url -OutFile $archive
+            Expand-Archive -LiteralPath $archive -DestinationPath $dir
+
       - name: Configure the project with meson
         run: meson build
       
