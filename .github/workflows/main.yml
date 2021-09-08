@@ -52,23 +52,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install meson
-        run: pip install meson
-      
-      - name: Install ninja
-        run: choco install ninja
-
       - name: Install SFML
         run: |
             $url = "https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip"
-            $archive = "c:\sfml.zip"
-            $dir = "c:\"
+            $archive = "sfml.zip"
+            $dir = "."
 
             Invoke-WebRequest -Uri $url -OutFile $archive
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
 
       - name: Configure the project with meson
-        run: meson build -DSFML_DIR=c:\SFML-2.5.1
+        run: cmake
       
       - name: Compile
         run: ninja -C build
