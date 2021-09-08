@@ -62,7 +62,7 @@ jobs:
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
 
       - name: Configure the project with cmake
-        run: cmake .
+        run: cmake . -G "MinGW Makefiles"
       
       - name: Compile
-        run: make
+        run: mingw32-make
