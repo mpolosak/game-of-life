@@ -61,8 +61,8 @@ jobs:
             Invoke-WebRequest -Uri $url -OutFile $archive
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
 
-      - name: Configure the project with meson
-        run: cmake
+      - name: Configure the project with cmake
+        run: cmake .
       
       - name: Compile
-        run: ninja -C build
+        run: make
