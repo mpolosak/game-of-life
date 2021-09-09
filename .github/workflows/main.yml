@@ -63,7 +63,7 @@ jobs:
 
       - name: Download and build Boost
         run: |
-            $url = "https://boostorg.jfrog.io/ui/native/main/release/1.77.0/source/boost_1_77_0.zip"
+            $url = "https://deac-ams.dl.sourceforge.net/project/boost/boost/1.77.0/boost_1_77_0.zip"
             $archive = "boost.zip"
             $dir = "."
 
@@ -73,7 +73,8 @@ jobs:
             cd boost_1_77_0
             bootstrap.bat gcc
             b2 --build-dir=build cxxflags="-std=c++11" -j5 --with-program_options toolset=gcc stage
-            
+            cd ..
+      
       - name: Configure the project with cmake
         run: cmake . -G "MinGW Makefiles"
       
