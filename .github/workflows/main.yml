@@ -72,7 +72,7 @@ jobs:
             
             cd boost_1_77_0
             .\bootstrap.bat gcc
-            b2 --build-dir=build cxxflags="-std=c++11" -j5 --with-program_options toolset=gcc stage
+            .\b2 --build-dir=build cxxflags="-std=c++11" -j5 --with-program_options toolset=gcc stage
             cd ..
       
       - name: Configure the project with cmake
