@@ -6,8 +6,9 @@ IF (WIN32)
     set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML")
     # Link sfml statically
     set(SFML_STATIC_LIBRARIES TRUE)
+    
+    set(BOOST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}\boost_1_61_0")
 ENDIF()
-
 find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
 include(FindPNG)
 find_package(Boost COMPONENTS program_options REQUIRED)
