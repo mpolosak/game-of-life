@@ -71,7 +71,7 @@ jobs:
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
             
             cd boost_1_77_0
-            bootstrap.bat gcc
+            .\bootstrap.bat gcc
             b2 --build-dir=build cxxflags="-std=c++11" -j5 --with-program_options toolset=gcc stage
             cd ..
       
