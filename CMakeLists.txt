@@ -7,7 +7,7 @@ IF (WIN32)
     # Link sfml statically
     set(SFML_STATIC_LIBRARIES TRUE)
     
-    set(BOOST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}\boost_1_61_0")
+    set(BOOST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/boost_1_77_0")
 ENDIF()
 find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
 include(FindPNG)
