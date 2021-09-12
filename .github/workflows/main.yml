@@ -67,7 +67,7 @@ jobs:
             $archive = "boost.7z"
 
             Invoke-WebRequest -Uri $url -OutFile $archive
-            7z e $archive
+            7z e $archive -y
             
             cd boost_1_77_0
             .\bootstrap.bat gcc
