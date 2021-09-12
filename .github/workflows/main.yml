@@ -63,7 +63,7 @@ jobs:
 
       - name: Download and build Boost
         run: |
-            $url = "https://deac-ams.dl.sourceforge.net/project/boost/boost/1.77.0/boost_1_77_0.7Z"
+            $url = "https://deac-ams.dl.sourceforge.net/project/boost/boost/1.77.0/boost_1_77_0.7z"
             $archive = "boost.7z"
 
             Invoke-WebRequest -Uri $url -OutFile $archive
