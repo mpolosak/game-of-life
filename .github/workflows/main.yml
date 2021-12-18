@@ -61,18 +61,16 @@ jobs:
             Invoke-WebRequest -Uri $url -OutFile $archive
             Expand-Archive -LiteralPath $archive -DestinationPath $dir
 
-      - name: Download and build Boost
-        run: |
-            $url = "https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.7z"
-            $archive = "boost.7z"
-
-            Invoke-WebRequest -Uri $url -OutFile $archive
-            7z e $archive -y
-            
-            cd boost_1_78_0
-            bootstrap.bat
-            b2 --build-dir=build -j5 --with-program_options toolset=gcc stage
-            cd ..
+      - name: Build Boost
+        id: boost
+        uses: egor-tensin/build-boost@v1
+        with:
+          version: 1.78.0
+          libraries: program_options
+          platform: x64
+          configuration: Release
+          toolset: gcc
+          static: 1
       
       - name: Configure the project with cmake
         run: cmake . -G "MinGW Makefiles"
