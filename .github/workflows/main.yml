@@ -78,6 +78,15 @@ jobs:
           toolset: gcc
           static: 1
       
+      - name: Get png++
+          $url = "http://download.savannah.nongnu.org/releases/pngpp/png++-0.2.9.tar.gz"
+          $archive = "png++.tar.gz"
+          $dir = "."
+
+          Invoke-WebRequest -Uri $url -OutFile $archive
+          tar -xvzf $archive
+          Rename-Item png++-0.2.9 png++
+
       - name: Configure the project with cmake
         run: |
           cmake . -G "MinGW Makefiles" -D "BOOST_ROOT=${{ steps.boost.outputs.root }}" -D "BOOST_LIBRARYDIR=${{ steps.boost.outputs.librarydir }}" -D "BOOST_INCLUDEDIR=${{ steps.boost.outputs.root }}"
