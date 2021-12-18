@@ -79,7 +79,9 @@ jobs:
           static: 1
       
       - name: Configure the project with cmake
-        run: cmake . -G "MinGW Makefiles"
+        run: |
+          cmake . -G "MinGW Makefiles" -D "BOOST_ROOT=${{ steps.boost.outputs.root }}" \
+            -D "BOOST_LIBRARYDIR=${{ steps.boost.outputs.librarydir }}"
       
       - name: Compile
         run: mingw32-make
