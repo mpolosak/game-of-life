@@ -79,6 +79,7 @@ jobs:
           static: 1
       
       - name: Get png++
+        run: |
           $url = "http://download.savannah.nongnu.org/releases/pngpp/png++-0.2.9.tar.gz"
           $archive = "png++.tar.gz"
           $dir = "."
