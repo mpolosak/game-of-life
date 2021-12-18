@@ -70,8 +70,8 @@ jobs:
             7z e $archive -y
             
             cd boost_1_78_0
-            .\bootstrap.bat gcc
-            .\b2 --build-dir=build cxxflags="-std=c++11" -j5 --with-program_options toolset=gcc stage
+            bootstrap.bat
+            b2 --build-dir=build -j5 --with-program_options toolset=gcc stage
             cd ..
       
       - name: Configure the project with cmake
