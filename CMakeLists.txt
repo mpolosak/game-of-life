@@ -8,6 +8,10 @@ IF (WIN32)
     set(SFML_STATIC_LIBRARIES TRUE)
     
     add_compile_definitions(__STDC_LIB_EXT1__)
+    if(MINGW)
+        message(STATUS "Use -static-libgcc -static-libstdc++")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+    endif()
 ENDIF()
 
 # PNG++_DIR is a path do dir with png++ dir
@@ -15,9 +19,6 @@ ENDIF()
 # Change it if you have your png++ in other dir
 # If you have it in /usr/include you don't need to do anything since cmake
 # includes all of /usr/include
-if(NOT PNG++_DIR)
-    message(STATUS "Set PNG++_DIR")
-endif()
 message(STATUS "PNG++_DIR set to ${PNG++_DIR}")
 
 find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
