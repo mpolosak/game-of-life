@@ -10,7 +10,7 @@ IF (WIN32)
     add_compile_definitions(__STDC_LIB_EXT1__)
     if(MINGW)
         message(STATUS "Use -static-libgcc -static-libstdc++")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -static")
     endif()
 ENDIF()
 
