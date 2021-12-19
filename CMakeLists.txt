@@ -7,7 +7,7 @@ IF (WIN32)
     # Link sfml statically
     set(SFML_STATIC_LIBRARIES TRUE)
     
-    set(BOOST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/boost_1_77_0")
+    add_compile_definitions(__STDC_LIB_EXT1__)
 ENDIF()
 
 # PNG++_DIR is a path do dir with png++ dir
