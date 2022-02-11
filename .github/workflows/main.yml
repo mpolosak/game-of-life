@@ -96,7 +96,7 @@ jobs:
         run: mingw32-make
 
       - name: Create packages
-        run: migw32-make package
+        run: mingw32-make package
 
       - name: Save executable
         uses: actions/upload-artifact@v2
