@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(game_of_life)
 
 IF (WIN32)
+    cmake_minimum_required(VERSION 3.21)
     # Include local sfml cmake config
     set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML")
     # Link sfml statically
@@ -32,8 +33,13 @@ target_link_libraries(game_of_life sfml-graphics sfml-system sfml-window PNG::PN
 target_include_directories(game_of_life PUBLIC "${PNG++_DIR}")
 
 include(CPack)
-install(TARGETS game_of_life)
-install(IMPORTED_RUNTIME_ARTIFACTS game_of_life RUNTIME)
+
+IF(WIN32)
+    install(TARGETS game_of_life RUNTIME_DEPENDENCY_SET "game-of-life-deps")
+    install(RUNTIME_DEPENDENCY_SET "game-of-life-deps")
+ELSE()
+    install(TARGETS game_of_life)
+ENDIF()
 IF (UNIX AND NOT APPLE)
     install(FILES "game-of-life.desktop" DESTINATION "share/applications")
     install(DIRECTORY "icons/" DESTINATION "share/icons/hicolor")
