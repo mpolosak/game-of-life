@@ -28,7 +28,7 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 add_executable(game_of_life src/main.cpp src/board.cpp src/config.cpp src/boardconfig.cpp
     src/utilities.cpp src/appearanceconfig.cpp src/background.cpp)
 
-target_link_libraries(game_of_life sfml-graphics sfml-system sfml-window ${PNG_LIBRARIES Boost::program_options)
+target_link_libraries(game_of_life sfml-graphics sfml-system sfml-window ${PNG_LIBRARIES} Boost::program_options)
 target_include_directories(game_of_life PUBLIC "${PNG++_DIR}")
 
 include(CPack)
@@ -37,6 +37,4 @@ install(IMPORTED_RUNTIME_ARTIFACTS game_of_life RUNTIME)
 IF (UNIX AND NOT APPLE)
     install(FILES "game-of-life.desktop" DESTINATION "share/applications")
     install(DIRECTORY "icons/" DESTINATION "share/icons/hicolor")
-ELSEIF(WIN32)
-    install(FILES ${PNG_LIBRARIES} DESTINATION "bin")
 ENDIF()
