@@ -29,7 +29,7 @@ add_executable(game_of_life src/main.cpp src/board.cpp src/config.cpp src/boardc
     src/utilities.cpp src/appearanceconfig.cpp src/background.cpp)
 
 target_link_libraries(game_of_life sfml-graphics sfml-system sfml-window ${PNG_LIBRARIES} Boost::program_options)
-target_include_directories(game_of_life PUBLIC "${PNG++_DIR}")
+target_include_directories(game_of_life PUBLIC ${PNG_INCLUDE_DIRS} "${PNG++_DIR}")
 
 include(CPack)
 install(TARGETS game_of_life)
