@@ -76,3 +76,46 @@ std::ostream& operator<<(std::ostream& os, const BackgroundPosition& pos)
             return os << "center";
     }
 }
+std::istream& operator>>(std::istream& is, BoardPosition& pos)
+{
+    std::string value;
+    is >> value;
+
+    if(value=="top-left") pos=BoardPosition::topleft;
+    else if(value=="top") pos=BoardPosition::top;
+    else if(value=="top-right") pos=BoardPosition::topright;
+    else if(value=="right") pos=BoardPosition::right;
+    else if(value=="bottom-right") pos=BoardPosition::bottomright;
+    else if(value=="bottom") pos=BoardPosition::bottom;
+    else if(value=="bottom-left") pos=BoardPosition::bottomleft;
+    else if(value=="left") pos=BoardPosition::left;
+    else if(value=="center") pos=BoardPosition::center;
+    else throw po::invalid_option_value(value);
+
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const BoardPosition& pos)
+{
+    switch(pos)
+    {
+        case BoardPosition::topleft:
+            return os << "top-left";
+        case BoardPosition::top:
+            return os << "top";
+        case BoardPosition::topright:
+            return os << "topright";
+        case BoardPosition::right:
+            return os << "right";
+        case BoardPosition::bottomright:
+            return os << "bottom-right";
+        case BoardPosition::bottom:
+            return os << "bottom";
+        case BoardPosition::bottomleft:
+            return os << "bottom-left";
+        case BoardPosition::left:
+            return os << "left";
+        case BoardPosition::center:
+            return os << "center";
+    }
+}
