@@ -77,16 +77,6 @@ jobs:
           configuration: Release
           toolset: gcc
           static: 1
-      
-      - name: Get png++
-        run: |
-          $url = "http://download.savannah.nongnu.org/releases/pngpp/png++-0.2.9.tar.gz"
-          $archive = "png++.tar.gz"
-          $dir = "."
-
-          Invoke-WebRequest -Uri $url -OutFile $archive
-          tar -xvzf $archive
-          Rename-Item png++-0.2.9 png++
 
       - name: Configure the project with cmake
         run: |
