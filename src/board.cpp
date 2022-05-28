@@ -139,11 +139,11 @@ void Board::saveToFile()
 void Board::saveToPNGImage()
 {
     sf::Image image;
-    image.create(config->width, config->height, sf::Color::White);
+    image.create(config->width, config->height, sf::Color::Black);
     for(int x=0; x<config->width; x++)
         for(int y=0; y<config->height; y++)
             if(gameBoard1[x+y*config->width])
-                image.setPixel(x, y, sf::Color::Black);
+                image.setPixel(x, y, sf::Color::White);
     
     if(!image.saveToFile(config->outputFilePath))
         std::cerr << "Failed to save to file '"
@@ -213,9 +213,9 @@ void Board::setBlockValue(int x, int y, char value)
 
 void Board::setBlockValue(int x, int y, sf::Color value)
 {
-    if(value==sf::Color::Black)
+    if(value==sf::Color::White)
         setBlockValue(x, y, true);
-    else if (value==sf::Color::White)
+    else if (value==sf::Color::Black)
         setBlockValue(x, y, false);
     else
         throw std::string("The board image should contain only black and white pixels");
