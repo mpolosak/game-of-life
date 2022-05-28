@@ -105,25 +105,16 @@ void Board::loadFromFile()
 
 void Board::loadFromPNGImage()
 {
-    png::image<png::rgb_pixel> image;
-    try
-    {
-        image.read(config->inputFilePath);
-    }
-    catch(png::std_error error)
-    {
-        throw std::string(error.what());
-    }
-    catch(...)
-    {
+    sf::Image image;
+    if(!image.loadFromFile(config->inputFilePath)) 
         throw std::string("Failed to open file '"+config->inputFilePath+"'");
-    }
-    config->width=image.get_width();
-    config->height=image.get_height();
+    const auto size = image.getSize();
+    config->width = size.x;
+    config->height = size.y;
     initGameBoardArrays();
     for(int x=0; x<config->width; x++)
         for(int y=0; y<config->height; y++)
-            setBlockValue(x, y, image[y][x]);
+            setBlockValue(x, y, image.getPixel(x,y));
 }
 
 void Board::loadFromTextFile()
@@ -147,19 +138,16 @@ void Board::saveToFile()
 
 void Board::saveToPNGImage()
 {
-    png::image<png::rgb_pixel> image(config->width, config->height);
+    sf::Image image;
+    image.create(config->width, config->height, sf::Color::White);
     for(int x=0; x<config->width; x++)
         for(int y=0; y<config->height; y++)
-            image[y][x] = gameBoard1[x+y*config->width]
-                ? png::rgb_pixel(255, 255, 255) : png::rgb_pixel(0, 0, 0);
-    try
-    {
-        image.write(config->outputFilePath);
-    }
-    catch(png::std_error error)
-    {
-        std::cerr << error.what() << std::endl;
-    }
+            if(gameBoard1[x+y*config->width])
+                image.setPixel(x, y, sf::Color::Black);
+    
+    if(!image.saveToFile(config->outputFilePath))
+        std::cerr << "Failed to save to file '"
+            << config->outputFilePath << "'."<< std::endl;
 }
 
 void Board::saveToTextFile()
@@ -223,11 +211,11 @@ void Board::setBlockValue(int x, int y, char value)
     }
 }
 
-void Board::setBlockValue(int x, int y, png::rgb_pixel value)
+void Board::setBlockValue(int x, int y, sf::Color value)
 {
-    if(value==png::rgb_pixel(255, 255, 255))
+    if(value==sf::Color::Black)
         setBlockValue(x, y, true);
-    else if (value==png::rgb_pixel(0, 0, 0))
+    else if (value==sf::Color::White)
         setBlockValue(x, y, false);
     else
         throw std::string("The board image should contain only black and white pixels");

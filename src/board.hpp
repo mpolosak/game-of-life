@@ -1,8 +1,8 @@
 #include<SFML/Graphics.hpp>
 #include<unordered_set>
-#include<png++/png.hpp>
 #include"boardconfig.hpp"
 #include"appearanceconfig.hpp"
+#include<memory>
 
 class Board
 : public sf::Drawable
@@ -36,7 +36,7 @@ private:
     void processCell(int x, int y);
     void equalizeArrays();
     void setBlockValue(int x, int y, char value);
-    void setBlockValue(int x, int y, png::rgb_pixel value);
+    void setBlockValue(int x, int y, sf::Color value);
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
     friend void operator>>(std::fstream& fs, Board& board);
 };
