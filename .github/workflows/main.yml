@@ -85,11 +85,8 @@ jobs:
       - name: Compile
         run: mingw32-make
 
-      - name: Create packages
-        run: mingw32-make package
-
-      - name: Save installer
+      - name: Save executable
         uses: actions/upload-artifact@v2
         with:
-          name: Windows installer
-          path: game_of_life-*-win64.exe
+          name: Windows executable
+          path: game_of_life.exe
