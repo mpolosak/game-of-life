@@ -3,15 +3,13 @@ Conway's Game of Life in C++.
 Allows:
 * setting custom rules
 * drawing a board using a mouse
-* saving a board to a text file or a PNG image
-* loading a board from a text file or a PNG image
+* saving a board to a text file or an image (PNG, BMP, TGA)
+* loading a board from a text file or an image (PNG, BMP, TGA)
 * changing colors of the game  
 * setting a background of the game
 ## Dependencies
 * [sfml](https://www.sfml-dev.org/)
 * [boost](https://www.boost.org/)
-* [libpng](http://www.libpng.org/pub/png/libpng.html)
-* [png++](https://www.nongnu.org/pngpp/)
 ## Building and installation
 ```
 meson build

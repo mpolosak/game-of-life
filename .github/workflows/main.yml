@@ -22,7 +22,7 @@ jobs:
         run: sudo apt install meson
         
       - name: Install dependencies
-        run: sudo apt install libsfml-dev libboost-all-dev libpng++-dev
+        run: sudo apt install libsfml-dev libboost-program-options-dev
         
       - name: Configure the project with meson
         run: meson build -Dprefix=$(pwd)/AppDir/usr
