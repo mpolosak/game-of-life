@@ -44,12 +44,6 @@ bool isPNGImage(std::string &path)
     return path.substr(size-4,4)==".png";
 }
 
-bool operator==(png::rgb_pixel pixel1, png::rgb_pixel pixel2)
-{
-    return pixel1.red == pixel2.red && pixel1.green == pixel2.green
-        && pixel1.blue == pixel2.blue;
-}
-
 sf::Color colorFromHex(std::string& hex)
 {   
     sf::Uint32 value = std::stoul(hex, nullptr, 16);
