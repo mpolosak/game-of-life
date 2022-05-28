@@ -10,8 +10,6 @@ Allows:
 ## Dependencies
 * [sfml](https://www.sfml-dev.org/)
 * [boost](https://www.boost.org/)
-* [libpng](http://www.libpng.org/pub/png/libpng.html)
-* [png++](https://www.nongnu.org/pngpp/)
 ## Building and installation
 ```
 meson build
