@@ -13,9 +13,9 @@ Allows:
 * [boost](https://www.boost.org/)
 ## Building on Linux
 ### Required software
-* meson
-* ninja
-* C++ compiler (gcc or clang)
+* [meson](https://mesonbuild.com/)
+* [ninja](https://ninja-build.org/)
+* C++ compiler ([gcc](https://gcc.gnu.org/) or clang)
 ### Building and installation
 ```
 meson build
@@ -34,8 +34,8 @@ chmod +x linuxdeploy-x86_64.AppImage
 ```
 ## Building on Windows
 ### Required software
-* cmake
-* mingw
+* [cmake](https://cmake.org/)
+* [mingw-w64](https://www.mingw-w64.org/)
 ### Building
 ```
 cmake . -G "MinGW Makefiles" -D "BOOST_ROOT=boost_root" -D "BOOST_LIBRARYDIR=boost_librarydir" -D "BOOST_INCLUDEDIR=boost_includedir"
