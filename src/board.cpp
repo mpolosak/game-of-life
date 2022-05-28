@@ -107,7 +107,7 @@ void Board::loadFromPNGImage()
 {
     sf::Image image;
     if(!image.loadFromFile(config->inputFilePath)) 
-        throw std::string("Failed to open file '"+config->inputFilePath+"'");
+        std::exit(1);
     const auto size = image.getSize();
     config->width = size.x;
     config->height = size.y;
@@ -145,9 +145,7 @@ void Board::saveToPNGImage()
             if(gameBoard1[x+y*config->width])
                 image.setPixel(x, y, sf::Color::White);
     
-    if(!image.saveToFile(config->outputFilePath))
-        std::cerr << "Failed to save to file '"
-            << config->outputFilePath << "'."<< std::endl;
+    image.saveToFile(config->outputFilePath);
 }
 
 void Board::saveToTextFile()
