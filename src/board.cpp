@@ -96,14 +96,14 @@ void Board::initGameBoardArrays()
 
 void Board::loadFromFile()
 {
-    if(isPNGImage(config->inputFilePath))
-        loadFromPNGImage();
+    if(isImage(config->inputFilePath))
+        loadFromImage();
     else{
         loadFromTextFile();
     }
 }
 
-void Board::loadFromPNGImage()
+void Board::loadFromImage()
 {
     sf::Image image;
     if(!image.loadFromFile(config->inputFilePath)) 
@@ -130,13 +130,13 @@ void Board::loadFromTextFile()
 
 void Board::saveToFile()
 {
-    if(isPNGImage(config->outputFilePath))
-        saveToPNGImage();
+    if(isImage(config->outputFilePath))
+        saveToImage();
     else
         saveToTextFile();
 }
 
-void Board::saveToPNGImage()
+void Board::saveToImage()
 {
     sf::Image image;
     image.create(config->width, config->height, sf::Color::Black);

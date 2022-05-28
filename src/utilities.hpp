@@ -9,7 +9,7 @@ std::smatch match(
 
 std::pair<unsigned int,unsigned int> parseSize(const std::string &size);
 
-bool isPNGImage(std::string &path);
+bool isImage(const std::string &path);
 
 sf::Color colorFromHex(std::string& color);
 
