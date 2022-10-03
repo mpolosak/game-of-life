@@ -33,3 +33,7 @@
 
 # Build directories
 build*
+
+*.AppImage
+AppDir
+*.zip
