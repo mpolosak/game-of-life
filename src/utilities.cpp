@@ -1,5 +1,7 @@
 #include"utilities.hpp"
 #include<iomanip>
+#include<set>
+#include<algorithm>
 
 std::smatch match(
     const std::string &string, const std::string &regex)
@@ -37,17 +39,16 @@ std::pair<unsigned int,unsigned int> parseSize(const std::string &size)
     return std::make_pair(width,height); 
 }
 
-bool isPNGImage(std::string &path)
+bool isImage(const std::string &path)
 {
+    const std::set<std::string> supportedImageFormats = {
+        ".bmp", ".png", ".tga", //".jpg"
+    };
     auto size = path.size();
     if(size<4) return false;
-    return path.substr(size-4,4)==".png";
-}
-
-bool operator==(png::rgb_pixel pixel1, png::rgb_pixel pixel2)
-{
-    return pixel1.red == pixel2.red && pixel1.green == pixel2.green
-        && pixel1.blue == pixel2.blue;
+    std::string extension = path.substr(size-4,4);
+    std::for_each(extension.begin(), extension.end(), [](char &ch){ch = std::tolower(ch);});
+    return supportedImageFormats.count(extension);
 }
 
 sf::Color colorFromHex(std::string& hex)

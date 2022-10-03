@@ -1,8 +1,8 @@
 #include<SFML/Graphics.hpp>
 #include<unordered_set>
-#include<png++/png.hpp>
 #include"boardconfig.hpp"
 #include"appearanceconfig.hpp"
+#include<memory>
 
 class Board
 : public sf::Drawable
@@ -27,10 +27,10 @@ private:
     void initGameBoardArrays();
     void fillWithRandomValues();
     void loadFromFile();
-    void loadFromPNGImage();
+    void loadFromImage();
     void loadFromTextFile();
     void saveToFile();
-    void saveToPNGImage();
+    void saveToImage();
     void saveToTextFile();
     int countLivingNeighbours(int x, int y);
     void processCell(int x, int y);
