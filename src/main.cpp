@@ -76,7 +76,7 @@ void setViewSize(int width, int height)
     sf::FloatRect rect=sf::FloatRect(sf::Vector2f(0,0),sf::Vector2f(width,height));
     view.reset(rect);
     window.setView(view);
-    board->setBlockSize(std::min(width/config.board.width,height/config.board.height));
+    board->handleNewViewSize(width, height);
     if(background)
         background->setSize(sf::Vector2f(width,height));
 }

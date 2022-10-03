@@ -55,13 +55,6 @@ void Board::setBlockValue(int x, int y, bool value)
     gameBoard2[x+y*config->width]=value;
 }
 
-void Board::setBlockSize(unsigned int size)
-{
-    blockSize=std::max(size,config->minBlockSize);
-    block.setSize(sf::Vector2f(blockSize,blockSize));
-    background.setSize(sf::Vector2f(blockSize*config->width,blockSize*config->height));
-}
-
 void Board::step()
 {
     for(int y = 0;y<config->height;y++)
@@ -70,6 +63,12 @@ void Board::step()
 
     equalizeArrays();
 }
+
+void Board::handleNewViewSize(int width, int height)
+{
+    setBlockSize(std::min(width/config->width,height/config->height));
+}
+
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
@@ -231,6 +230,13 @@ void Board::setBlockValue(int x, int y, png::rgb_pixel value)
         setBlockValue(x, y, false);
     else
         throw std::string("The board image should contain only black and white pixels");
+}
+
+void Board::setBlockSize(unsigned int size)
+{
+    blockSize=std::max(size,config->minBlockSize);
+    block.setSize(sf::Vector2f(blockSize,blockSize));
+    background.setSize(sf::Vector2f(blockSize*config->width,blockSize*config->height));
 }
 
 std::fstream& operator<<(std::fstream& os, const Board& board)

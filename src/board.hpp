@@ -12,9 +12,9 @@ public:
     ~Board();
     void clear();
     void setBlockValue(int x, int y, bool value);
-    void setBlockSize(unsigned int size);
     void step();
     unsigned int getBlockSize(){return blockSize;};
+    void handleNewViewSize(int width, int height);
 protected:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 private:
@@ -37,6 +37,7 @@ private:
     void equalizeArrays();
     void setBlockValue(int x, int y, char value);
     void setBlockValue(int x, int y, png::rgb_pixel value);
+    void setBlockSize(unsigned int size);
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
     friend void operator>>(std::fstream& fs, Board& board);
 };
