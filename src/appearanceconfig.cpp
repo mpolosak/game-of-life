@@ -42,7 +42,9 @@ std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config)
             << (config.backgroundUrl!="" ? '"' + config.backgroundUrl + '"' : "no")
             << std::endl
         << std::setw(20) << "Background position" << " : "
-            << config.backgroundPosition << std::endl;
+            << config.backgroundPosition << std::endl
+        << std::setw(20) << "Board position" << " : "
+            << config.boardPosition << std::endl;
 }
 
 std::istream& operator>>(std::istream& is, BackgroundPosition& pos)
@@ -104,7 +106,7 @@ std::ostream& operator<<(std::ostream& os, const BoardPosition& pos)
         case BoardPosition::top:
             return os << "top";
         case BoardPosition::topright:
-            return os << "topright";
+            return os << "top-right";
         case BoardPosition::right:
             return os << "right";
         case BoardPosition::bottomright:
