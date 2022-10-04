@@ -11,6 +11,18 @@ enum BackgroundPosition{
     center
 };
 
+enum class BoardPosition{
+    topleft,
+    top,
+    topright,
+    right,
+    bottomright,
+    bottom,
+    bottomleft,
+    left,
+    center
+};
+
 class AppearanceConfig
 {
 public:
@@ -21,6 +33,7 @@ public:
     sf::Color backgroundColor;
     std::string backgroundUrl;
     BackgroundPosition backgroundPosition;
+    BoardPosition boardPosition;
 private:
     std::string colorsString;
 };
@@ -28,3 +41,5 @@ private:
 std::ostream& operator<<(std::ostream& os, const AppearanceConfig& config);
 std::istream& operator>>(std::istream& is, BackgroundPosition& pos); 
 std::ostream& operator<<(std::ostream& os, const BackgroundPosition& pos);
+std::istream& operator>>(std::istream& is, BoardPosition& pos); 
+std::ostream& operator<<(std::ostream& os, const BoardPosition& pos);

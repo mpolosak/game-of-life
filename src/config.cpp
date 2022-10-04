@@ -85,8 +85,10 @@ po::options_description createOptionsDescription(Config &config,
             "set background image to arg")
         ("background_position,p", po::value<BackgroundPosition>(&config.appearance.backgroundPosition)
             ->default_value(BackgroundPosition::fill),
-            "set background position to arg, posible values are fill, fit, tile, streatch, center");
-        ;
+            "set background position to arg, posible values are fill, fit, tile, streatch, center")
+        ("board_position,P", po::value<BoardPosition>(&config.appearance.boardPosition)
+            ->default_value(BoardPosition::topleft),
+            "set board position to arg, posible values are top-left, top, top-right, right, bottom-right, bottom, bottom-left, left, center");
     
     return desc;
 }

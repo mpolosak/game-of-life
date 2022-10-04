@@ -11,19 +11,20 @@ public:
     Board(BoardConfig *config, AppearanceConfig& appearance);
     ~Board();
     void clear();
-    void setBlockValue(int x, int y, bool value);
-    void setBlockSize(unsigned int size);
     void step();
-    unsigned int getBlockSize(){return blockSize;};
+    void setBlockOnPos(sf::Vector2i position, bool value);
+    void handleNewViewSize(int width, int height);
 protected:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 private:
     BoardConfig *config;
+    BoardPosition position;
     int blockSize;
     std::unique_ptr<bool[]> gameBoard1;
     std::unique_ptr<bool[]> gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
+    sf::Vector2f offset={0,0};
     void initGameBoardArrays();
     void fillWithRandomValues();
     void loadFromFile();
@@ -35,8 +36,10 @@ private:
     int countLivingNeighbours(int x, int y);
     void processCell(int x, int y);
     void equalizeArrays();
-    void setBlockValue(int x, int y, char value);
-    void setBlockValue(int x, int y, sf::Color value);
+    void setBlockValue(sf::Vector2i cords, bool value);
+    void setBlockValue(sf::Vector2i cords, char value);
+    void setBlockValue(sf::Vector2i cords, sf::Color value);
+    void setBlockSize(unsigned int size);
     friend std::fstream& operator<<(std::fstream& os, const Board& board);
     friend void operator>>(std::fstream& fs, Board& board);
 };
