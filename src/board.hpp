@@ -19,6 +19,7 @@ protected:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 private:
     BoardConfig *config;
+    BoardPosition position;
     int blockSize;
     std::unique_ptr<bool[]> gameBoard1;
     std::unique_ptr<bool[]> gameBoard2;

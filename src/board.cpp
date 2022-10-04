@@ -24,6 +24,7 @@ Board::Board(BoardConfig *config, AppearanceConfig& appearance)
 
     background.setFillColor(appearance.deadCellColor);
     block.setFillColor(appearance.liveCellColor);
+    position = appearance.boardPosition;
 }
 
 Board::~Board()
@@ -67,6 +68,34 @@ void Board::step()
 void Board::handleNewViewSize(int width, int height)
 {
     setBlockSize(std::min(width/config->width,height/config->height));
+    switch(position){
+        case BoardPosition::topleft:
+            break;
+        case BoardPosition::top:
+            offset = {(width-config->width*blockSize)/2, 0};
+            break;
+        case BoardPosition::topright:
+            offset = {width-config->width*blockSize, 0};
+            break;
+        case BoardPosition::right:
+            offset = {width-config->width*blockSize, (height-config->height*blockSize)/2};
+            break;
+        case BoardPosition::bottomright:
+            offset = {width-config->width*blockSize, height-config->height*blockSize};
+            break;
+        case BoardPosition::bottom:
+            offset = {(width-config->width*blockSize)/2, height-config->height*blockSize};
+            break;
+        case BoardPosition::bottomleft:
+            offset = {0, height-config->height*blockSize};
+            break;
+        case BoardPosition::left:
+            offset = {0, (height-config->height*blockSize)/2};
+            break;
+        case BoardPosition::center:
+            offset = {(width-config->width*blockSize)/2, (height-config->height*blockSize)/2};
+            break;
+    }
 }
 
 
