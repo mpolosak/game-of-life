@@ -37,7 +37,7 @@ void Board::clear()
 {
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            setBlockValue(x, y, false);
+            setBlockValue({x, y}, false);
 }
 
 void Board::fillWithRandomValues()
@@ -45,15 +45,7 @@ void Board::fillWithRandomValues()
     srand(time(NULL));
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            setBlockValue(x,y, std::rand()%2==1);
-}
-
-void Board::setBlockValue(int x, int y, bool value)
-{
-    if(x<0||y<0||x>=config->width||y>=config->height)
-        return;
-    gameBoard1[x+y*config->width]=value;
-    gameBoard2[x+y*config->width]=value;
+            setBlockValue({x,y}, std::rand()%2==1);
 }
 
 void Board::step()
@@ -63,6 +55,12 @@ void Board::step()
             processCell(x, y);
 
     equalizeArrays();
+}
+
+void Board::setBlockOnPos(sf::Vector2i position, bool value)
+{
+    auto cords = (position-sf::Vector2i(offset))/blockSize;
+    setBlockValue(cords, value);
 }
 
 void Board::handleNewViewSize(int width, int height)
@@ -147,7 +145,7 @@ void Board::loadFromImage()
     initGameBoardArrays();
     for(int x=0; x<config->width; x++)
         for(int y=0; y<config->height; y++)
-            setBlockValue(x, y, image.getPixel(x,y));
+            setBlockValue({x, y}, image.getPixel(x,y));
 }
 
 void Board::loadFromTextFile()
@@ -226,15 +224,24 @@ void Board::equalizeArrays()
         gameBoard1[i]=gameBoard2[i];
 }
 
-void Board::setBlockValue(int x, int y, char value)
+void Board::setBlockValue(sf::Vector2i cords, bool value)
+{
+    auto [x, y] = cords;
+    if(x<0||y<0||x>=config->width||y>=config->height)
+        return;
+    gameBoard1[x+y*config->width]=value;
+    gameBoard2[x+y*config->width]=value;
+}
+
+void Board::setBlockValue(sf::Vector2i cords, char value)
 {
     switch(value)
     {
         case 'X':
-            setBlockValue(x, y, true);
+            setBlockValue(cords, true);
             break;
         case ' ':
-            setBlockValue(x, y, false);
+            setBlockValue(cords, false);
             break;
         default:
             throw "The board file should only contain 'X's and spaces";
@@ -242,12 +249,12 @@ void Board::setBlockValue(int x, int y, char value)
     }
 }
 
-void Board::setBlockValue(int x, int y, sf::Color value)
+void Board::setBlockValue(sf::Vector2i cords, sf::Color value)
 {
     if(value==sf::Color::White)
-        setBlockValue(x, y, true);
+        setBlockValue(cords, true);
     else if (value==sf::Color::Black)
-        setBlockValue(x, y, false);
+        setBlockValue(cords, false);
     else
         throw std::string("The board image should contain only black and white pixels");
 }
@@ -291,7 +298,7 @@ void operator>>(std::fstream& fs, Board& board)
         if(line.length()!=board.config->width)
             throw std::string("All lines in the board file must be the same lenght");
         for(int x=0; x<board.config->width; x++)
-            board.setBlockValue(x, y, line[x]);
+            board.setBlockValue({x, y}, line[x]);
     }
 }
 
