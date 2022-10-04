@@ -96,6 +96,7 @@ void Board::handleNewViewSize(int width, int height)
             offset = {(width-config->width*blockSize)/2, (height-config->height*blockSize)/2};
             break;
     }
+    background.setPosition(offset);
 }
 
 
