@@ -74,15 +74,19 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::RectangleShape block = this->block;
     target.draw(background);
+    auto pos = offset;
     for(int y = 0;y<config->height;y++){
         for(int x = 0;x<config->width;x++)
         {
             if(gameBoard1[x+y*config->width])
             {
-                block.setPosition(x*blockSize,y*blockSize);
+                block.setPosition(pos);
                 target.draw(block);
             }
+            pos.x+=blockSize;
         }
+        pos.y+=blockSize;
+        pos.x=offset.x;
     }
 }
 
