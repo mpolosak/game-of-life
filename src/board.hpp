@@ -19,7 +19,7 @@ protected:
 private:
     BoardConfig *config;
     BoardPosition position;
-    uint blockSize;
+    unsigned blockSize;
     std::unique_ptr<bool[]> gameBoard1;
     std::unique_ptr<bool[]> gameBoard2;
     sf::RectangleShape background;
@@ -33,7 +33,7 @@ private:
     void saveToFile();
     void saveToImage();
     void saveToTextFile();
-    int countLivingNeighbours(uint x, uint y);
+    int countLivingNeighbours(unsigned x, unsigned y);
     void processCell(int x, int y);
     void equalizeArrays();
     void setBlockValue(sf::Vector2u cords, bool value);

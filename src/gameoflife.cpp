@@ -141,6 +141,6 @@ void GameOfLife::setHoveredBlockValue(bool value)
 {
     auto [x, y] = sf::Mouse::getPosition(window);
     if(x<0||y<0) return;
-    board->setBlockOnPos({(uint)x, (uint)y}, value);
+    board->setBlockOnPos({(unsigned)x, (unsigned)y}, value);
     draw();
 }
