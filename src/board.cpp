@@ -4,6 +4,7 @@
 #include<iostream>
 #include<fstream>
 #include<vector>
+#include<random>
 
 Board::Board(BoardConfig *config, AppearanceConfig& appearance)
 {
@@ -42,10 +43,12 @@ void Board::clear()
 
 void Board::fillWithRandomValues()
 {
-    srand(time(NULL));
+    std::random_device r;
+    std::default_random_engine e1(r());
+    std::uniform_int_distribution<int> uniform_dist(0, 1);
     for(int y = 0;y<config->height;y++)
         for(int x = 0;x<config->width;x++)
-            setBlockValue({x,y}, std::rand()%2==1);
+            setBlockValue({x,y}, (bool) uniform_dist(e1));
 }
 
 void Board::step()
