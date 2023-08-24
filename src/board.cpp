@@ -97,7 +97,7 @@ void Board::handleNewViewSize(int width, int height)
             offset = {(width-config->width*blockSize)/2, (height-config->height*blockSize)/2};
             break;
     }
-    background.setPosition(offset);
+    background.setPosition(sf::Vector2f(offset));
 }
 
 
@@ -105,7 +105,7 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::RectangleShape block = this->block;
     target.draw(background);
-    auto pos = offset;
+    auto pos = sf::Vector2f(offset);
     for(uint y = 0;y<config->height;y++){
         for(uint x = 0;x<config->width;x++)
         {

@@ -3,7 +3,7 @@
 int main(int argc, char *argv[])
 {
     try{
-        auto game_of_life = GameOfLife(argc, argv);   
+        GameOfLife game_of_life(argc, argv);   
         game_of_life.run();
     }
     catch(std::string &error)

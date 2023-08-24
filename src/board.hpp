@@ -24,7 +24,7 @@ private:
     std::unique_ptr<bool[]> gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
-    sf::Vector2f offset={0,0};
+    sf::Vector2u offset={0,0};
     void initGameBoardArrays();
     void fillWithRandomValues();
     void loadFromFile();
