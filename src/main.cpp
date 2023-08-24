@@ -131,8 +131,9 @@ void handleKeyPress(sf::Keyboard::Key key)
 
 void setHoveredBlockValue(bool value)
 {
-    sf::Vector2i position = sf::Mouse::getPosition(window);
-    board->setBlockOnPos(position, value);
+    auto [x, y] = sf::Mouse::getPosition(window);
+    if(x<0||y<0) return;
+    board->setBlockOnPos({(uint)x, (uint)y}, value);
     draw();
 }
 

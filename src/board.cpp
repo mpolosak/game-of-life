@@ -36,8 +36,8 @@ Board::~Board()
 
 void Board::clear()
 {
-    for(int y = 0;y<config->height;y++)
-        for(int x = 0;x<config->width;x++)
+    for(uint y = 0;y<config->height;y++)
+        for(uint x = 0;x<config->width;x++)
             setBlockValue({x, y}, false);
 }
 
@@ -46,23 +46,23 @@ void Board::fillWithRandomValues()
     std::random_device r;
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_dist(0, 1);
-    for(int y = 0;y<config->height;y++)
-        for(int x = 0;x<config->width;x++)
+    for(uint y = 0;y<config->height;y++)
+        for(uint x = 0;x<config->width;x++)
             setBlockValue({x,y}, (bool) uniform_dist(e1));
 }
 
 void Board::step()
 {
-    for(int y = 0;y<config->height;y++)
-        for(int x = 0;x<config->width;x++)
+    for(uint y = 0;y<config->height;y++)
+        for(uint x = 0;x<config->width;x++)
             processCell(x, y);
 
     equalizeArrays();
 }
 
-void Board::setBlockOnPos(sf::Vector2i position, bool value)
+void Board::setBlockOnPos(sf::Vector2u position, bool value)
 {
-    auto cords = (position-sf::Vector2i(offset))/blockSize;
+    auto cords = (position-sf::Vector2u(offset))/blockSize;
     setBlockValue(cords, value);
 }
 
@@ -106,8 +106,8 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
     sf::RectangleShape block = this->block;
     target.draw(background);
     auto pos = offset;
-    for(int y = 0;y<config->height;y++){
-        for(int x = 0;x<config->width;x++)
+    for(uint y = 0;y<config->height;y++){
+        for(uint x = 0;x<config->width;x++)
         {
             if(gameBoard1[x+y*config->width])
             {
@@ -146,8 +146,8 @@ void Board::loadFromImage()
     config->width = size.x;
     config->height = size.y;
     initGameBoardArrays();
-    for(int x=0; x<config->width; x++)
-        for(int y=0; y<config->height; y++)
+    for(uint x=0; x<config->width; x++)
+        for(uint y=0; y<config->height; y++)
             setBlockValue({x, y}, image.getPixel(x,y));
 }
 
@@ -174,8 +174,8 @@ void Board::saveToImage()
 {
     sf::Image image;
     image.create(config->width, config->height, sf::Color::Black);
-    for(int x=0; x<config->width; x++)
-        for(int y=0; y<config->height; y++)
+    for(uint x=0; x<config->width; x++)
+        for(uint y=0; y<config->height; y++)
             if(gameBoard1[x+y*config->width])
                 image.setPixel(x, y, sf::Color::White);
     
@@ -193,12 +193,12 @@ void Board::saveToTextFile()
     file.close();
 }
 
-int Board::countLivingNeighbours(int x, int y)
+int Board::countLivingNeighbours(uint x, uint y)
 {
     int livingNeighbours=0;
 
-    for(int j=y-1;j<=y+1;j++)
-        for(int i=x-1;i<=x+1;i++)
+    for(uint j=y-1;j<=y+1;j++)
+        for(uint i=x-1;i<=x+1;i++)
             if(i>=0&&i<config->width&&j>=0&&j<config->height&&!(i==x&&j==y))
                 if(gameBoard1[i+j*config->width])
                     livingNeighbours++;
@@ -222,21 +222,21 @@ void Board::processCell(int x, int y)
 
 void Board::equalizeArrays()
 {
-    int arraysSize = config->height*config->width; 
-    for(int i = 0; i<arraysSize; i++)
+    uint arraysSize = config->height*config->width; 
+    for(uint i = 0; i<arraysSize; i++)
         gameBoard1[i]=gameBoard2[i];
 }
 
-void Board::setBlockValue(sf::Vector2i cords, bool value)
+void Board::setBlockValue(sf::Vector2u cords, bool value)
 {
     auto [x, y] = cords;
-    if(x<0||y<0||x>=config->width||y>=config->height)
+    if(x>=config->width||y>=config->height)
         return;
     gameBoard1[x+y*config->width]=value;
     gameBoard2[x+y*config->width]=value;
 }
 
-void Board::setBlockValue(sf::Vector2i cords, char value)
+void Board::setBlockValue(sf::Vector2u cords, char value)
 {
     switch(value)
     {
@@ -252,7 +252,7 @@ void Board::setBlockValue(sf::Vector2i cords, char value)
     }
 }
 
-void Board::setBlockValue(sf::Vector2i cords, sf::Color value)
+void Board::setBlockValue(sf::Vector2u cords, sf::Color value)
 {
     if(value==sf::Color::White)
         setBlockValue(cords, true);
@@ -271,9 +271,9 @@ void Board::setBlockSize(unsigned int size)
 
 std::fstream& operator<<(std::fstream& os, const Board& board)
 {
-    for(int y = 0;y<board.config->height;y++)
+    for(uint y = 0;y<board.config->height;y++)
     {
-        for(int x = 0; x<board.config->width; x++)
+        for(uint x = 0; x<board.config->width; x++)
         {
             if(board.gameBoard1[x+y*board.config->width])
                 os<<'X';
@@ -295,12 +295,12 @@ void operator>>(std::fstream& fs, Board& board)
 
     board.initGameBoardArrays();
 
-    for(int y=0; y<board.config->height; y++)
+    for(uint y=0; y<board.config->height; y++)
     {
         std::string line = lines[y];
         if(line.length()!=board.config->width)
             throw std::string("All lines in the board file must be the same lenght");
-        for(int x=0; x<board.config->width; x++)
+        for(uint x=0; x<board.config->width; x++)
             board.setBlockValue({x, y}, line[x]);
     }
 }

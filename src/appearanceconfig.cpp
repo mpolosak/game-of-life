@@ -76,6 +76,8 @@ std::ostream& operator<<(std::ostream& os, const BackgroundPosition& pos)
             return os << "streatch";
         case BackgroundPosition::center:
             return os << "center";
+        default:
+            return os;
     }
 }
 std::istream& operator>>(std::istream& is, BoardPosition& pos)
@@ -119,5 +121,7 @@ std::ostream& operator<<(std::ostream& os, const BoardPosition& pos)
             return os << "left";
         case BoardPosition::center:
             return os << "center";
+        default: 
+            return os;
     }
 }
