@@ -17,7 +17,7 @@ ENDIF()
 find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 
-add_executable(game_of_life src/main.cpp src/board.cpp src/config.cpp src/boardconfig.cpp
+add_executable(game_of_life src/main.cpp src/gameoflife.cpp src/board.cpp src/config.cpp src/boardconfig.cpp
     src/utilities.cpp src/appearanceconfig.cpp src/background.cpp)
 
 target_link_libraries(game_of_life sfml-graphics sfml-system sfml-window Boost::program_options)

@@ -37,3 +37,6 @@ build*
 *.AppImage
 AppDir
 *.zip
+
+CMakeFiles
+.vscode

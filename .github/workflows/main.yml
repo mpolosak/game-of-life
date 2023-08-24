@@ -39,6 +39,9 @@ jobs:
       - name: Download linuxdeploy
         run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage && chmod +x linuxdeploy-x86_64.AppImage
 
+      - name: Add linuxdeploy dependency
+        run: sudo add-apt-repository universe; sudo apt install libfuse2
+
       - name: Create AppDir
         run: ./linuxdeploy-x86_64.AppImage --appdir AppDir
 

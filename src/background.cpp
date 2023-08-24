@@ -49,8 +49,8 @@ void Background::setSize(const sf::Vector2f& size)
         case BackgroundPosition::fill:
         {
             auto texRes = texture.getSize();
-            int x1 = texRes.x;
-            int y1 = size.y/size.x*x1;
+            unsigned x1 = texRes.x;
+            unsigned y1 = size.y/size.x*x1;
             if(y1>texRes.y)
             {
                 y1 = texRes.y;
