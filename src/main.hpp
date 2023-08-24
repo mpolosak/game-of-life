@@ -5,7 +5,6 @@
 #include"config.hpp"
 #include"background.hpp"
 
-void init(int argc, char *argv[]);
 void run();
 void processEvents();
 void setViewSize(int width, int height);

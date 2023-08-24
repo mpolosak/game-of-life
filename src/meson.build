@@ -1,5 +1,6 @@
 src=[
     'main.cpp',
+    'gameoflife.cpp',
     'board.cpp',
     'config.cpp',
     'boardconfig.cpp',
