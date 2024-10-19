@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - run: sudo apt update
-      - run: sudo apt install libopengl-dev libopenal-dev libxrandr2 libgl-dev libflac8 libudev-dev libvorbis0a libvorbisenc2 libvorbisfile3
+      - run: sudo apt install libopengl-dev libopenal-dev libxrandr2 libgl-dev libflac8 libudev-dev libvorbis0a libvorbisenc2 libvorbisfile3 libogg-vorbis-decoder-perl
         
       - name: Configure the project with CMake
         run: cmake -B build -DCMAKE_INSTALL_PREFIX=AppDir/usr
