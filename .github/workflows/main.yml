@@ -49,7 +49,7 @@ jobs:
         run: ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
 
       - name: Save AppImage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AppImage
           path: Game_of_life*
@@ -86,7 +86,7 @@ jobs:
         run: mingw32-make
 
       - name: Save executable
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Windows executable
           path: game_of_life.exe
