@@ -61,27 +61,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Cache Boost
-        uses: actions/cache@v2
-        with:
-          path: '${{ runner.workspace }}/boost_*.tar.gz'
-          key: 'boost-1.78.0'
-
-      - name: Build Boost
-        id: boost
-        uses: egor-tensin/build-boost@v1
-        with:
-          version: 1.78.0
-          libraries: program_options
-          platform: x64
-          configuration: Release
-          toolset: gcc
-          static: 1
-
       - name: Configure the project with cmake
-        run: |
-          cmake . -G "MinGW Makefiles" -D "BOOST_ROOT=${{ steps.boost.outputs.root }}" -D "BOOST_LIBRARYDIR=${{ steps.boost.outputs.librarydir }}" -D "BOOST_INCLUDEDIR=${{ steps.boost.outputs.root }}"
-      
+        run: cmake . -G "MinGW Makefiles" 
+
       - name: Compile
         run: mingw32-make
 

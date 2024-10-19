@@ -16,7 +16,16 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
-find_package(Boost COMPONENTS program_options REQUIRED)
+set(BOOST_INCLUDE_LIBRARIES program_options)
+set(BOOST_ENABLE_CMAKE ON)
+include(FetchContent)
+FetchContent_Declare(
+    Boost
+    GIT_REPOSITORY https://github.com/boostorg/boost.git
+    GIT_TAG boost-1.86.0
+    EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(Boost)
 
 add_executable(game-of-life src/main.cpp src/gameoflife.cpp src/board.cpp src/config.cpp src/boardconfig.cpp
     src/utilities.cpp src/appearanceconfig.cpp src/background.cpp)
