@@ -1,30 +1,29 @@
 cmake_minimum_required(VERSION 3.13)
-project(game_of_life)
+project(game-of-life)
 
-IF (WIN32)
-    # Include local sfml cmake config
-    set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML")
-    # Link sfml statically
-    set(SFML_STATIC_LIBRARIES TRUE)
-    
-    add_compile_definitions(__STDC_LIB_EXT1__)
-    if(MINGW)
-        message(STATUS "Use -static-libgcc -static-libstdc++")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -static")
-    endif()
-ENDIF()
+set(CMAKE_CXX_STANDARD 20)
 
-find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
+set(BUILD_SHARED_LIBS FALSE)
+
+include(FetchContent)
+
+FetchContent_Declare(
+    SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML
+    GIT_TAG 2.6.1
+    EXCLUDE_FROM_ALL
+)
+
+FetchContent_MakeAvailable(SFML)
+
 find_package(Boost COMPONENTS program_options REQUIRED)
 
-add_executable(game_of_life src/main.cpp src/gameoflife.cpp src/board.cpp src/config.cpp src/boardconfig.cpp
+add_executable(game-of-life src/main.cpp src/gameoflife.cpp src/board.cpp src/config.cpp src/boardconfig.cpp
     src/utilities.cpp src/appearanceconfig.cpp src/background.cpp)
 
-target_link_libraries(game_of_life sfml-graphics sfml-system sfml-window Boost::program_options)
+target_link_libraries(game-of-life sfml-graphics sfml-system sfml-window Boost::program_options)
 
-include(CPack)
-install(TARGETS game_of_life)
-install(IMPORTED_RUNTIME_ARTIFACTS game_of_life RUNTIME)
+install(TARGETS game-of-life)
 IF (UNIX AND NOT APPLE)
     install(FILES "game-of-life.desktop" DESTINATION "share/applications")
     install(DIRECTORY "icons/" DESTINATION "share/icons/hicolor")

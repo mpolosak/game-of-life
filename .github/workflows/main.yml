@@ -61,15 +61,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install SFML
-        run: |
-            $url = "https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip"
-            $archive = "sfml.zip"
-            $dir = "."
-
-            Invoke-WebRequest -Uri $url -OutFile $archive
-            Expand-Archive -LiteralPath $archive -DestinationPath $dir
-
       - name: Cache Boost
         uses: actions/cache@v2
         with:
