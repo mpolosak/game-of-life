@@ -24,12 +24,8 @@ sudo make -C build install
 ```
 ### Building AppImage
 ```
-cmake -B build -DCMAKE_INSTALL_PREFIX=AppDir/usr
-make -C build install
-wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-chmod +x linuxdeploy-x86_64.AppImage
-./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
-
+cmake -B build
+make -C build AppImage
 ```
 ## Building on Windows
 ### Required software
