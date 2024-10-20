@@ -2,11 +2,7 @@ name: CI
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
+  workflow_call:
   pull_request:
     branches: [ master ]
     paths-ignore:
