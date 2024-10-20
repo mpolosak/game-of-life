@@ -40,3 +40,5 @@ AppDir
 
 CMakeFiles
 .vscode
+.cache
+_deps

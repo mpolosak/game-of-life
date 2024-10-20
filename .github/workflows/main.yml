@@ -2,16 +2,13 @@ name: CI
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
+  workflow_call:
   pull_request:
     branches: [ master ]
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+      - '.github/workflows/release.yml'
 
 jobs:
   build-Ubuntu:
@@ -23,36 +20,19 @@ jobs:
       - uses: actions/checkout@v2
 
       - run: sudo apt update
-
-      - name: Install meson
-        run: sudo apt install meson
+      - run: sudo apt install libopengl-dev libopenal-dev xorg-dev libgl-dev libflac++-dev libudev-dev libvorbis-dev libfuse2
         
-      - name: Install dependencies
-        run: sudo apt install libsfml-dev libboost-program-options-dev
+      - name: Configure the project with CMake
+        run: cmake -B build
         
-      - name: Configure the project with meson
-        run: meson build -Dprefix=$(pwd)/AppDir/usr
-        
-      - name: Compile and install to AppDir
-        run: ninja -vC build install
-
-      - name: Download linuxdeploy
-        run: wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage && chmod +x linuxdeploy-x86_64.AppImage
-
-      - name: Add linuxdeploy dependency
-        run: sudo add-apt-repository universe; sudo apt install libfuse2
-
-      - name: Create AppDir
-        run: ./linuxdeploy-x86_64.AppImage --appdir AppDir
-
-      - name: Create AppImage
-        run: ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+      - name: Compile and build AppImage
+        run: make -C build AppImage
 
       - name: Save AppImage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AppImage
-          path: Game_of_life*
+          path: build/Game_of_life*
   build-Windows:
     name: "Build on Windows"
     runs-on: windows-latest
@@ -61,41 +41,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install SFML
-        run: |
-            $url = "https://www.sfml-dev.org/files/SFML-2.5.1-windows-gcc-7.3.0-mingw-64-bit.zip"
-            $archive = "sfml.zip"
-            $dir = "."
-
-            Invoke-WebRequest -Uri $url -OutFile $archive
-            Expand-Archive -LiteralPath $archive -DestinationPath $dir
-
-      - name: Cache Boost
-        uses: actions/cache@v2
-        with:
-          path: '${{ runner.workspace }}/boost_*.tar.gz'
-          key: 'boost-1.78.0'
-
-      - name: Build Boost
-        id: boost
-        uses: egor-tensin/build-boost@v1
-        with:
-          version: 1.78.0
-          libraries: program_options
-          platform: x64
-          configuration: Release
-          toolset: gcc
-          static: 1
-
       - name: Configure the project with cmake
-        run: |
-          cmake . -G "MinGW Makefiles" -D "BOOST_ROOT=${{ steps.boost.outputs.root }}" -D "BOOST_LIBRARYDIR=${{ steps.boost.outputs.librarydir }}" -D "BOOST_INCLUDEDIR=${{ steps.boost.outputs.root }}"
-      
+        run: cmake . -G "MinGW Makefiles" 
+
       - name: Compile
         run: mingw32-make
 
       - name: Save executable
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Windows executable
-          path: game_of_life.exe
+          path: game-of-life.exe

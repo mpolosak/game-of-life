@@ -13,24 +13,19 @@ Allows:
 * [boost](https://www.boost.org/)
 ## Building on Linux
 ### Required software
-* [meson](https://mesonbuild.com/)
-* [ninja](https://ninja-build.org/)
+* [cmake](https://cmake.org/)
+* [make](https://www.gnu.org/software/make/)
 * C++ compiler ([gcc](https://gcc.gnu.org/) or clang)
 ### Building and installation
 ```
-meson build
-ninja -C build
-sudo ninja -C build install
+cmake -B build
+make -C build
+sudo make -C build install
 ```
 ### Building AppImage
 ```
-meson build -Dprefix=AppDir
-ninja -C build install
-wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-chmod +x linuxdeploy-x86_64.AppImage
-./linuxdeploy-x86_64.AppImage --appdir AppDir
-./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
-
+cmake -B build
+make -C build AppImage
 ```
 ## Building on Windows
 ### Required software
@@ -38,7 +33,7 @@ chmod +x linuxdeploy-x86_64.AppImage
 * [mingw-w64](https://www.mingw-w64.org/)
 ### Building
 ```
-cmake . -G "MinGW Makefiles" -D "BOOST_ROOT=boost_root" -D "BOOST_LIBRARYDIR=boost_librarydir" -D "BOOST_INCLUDEDIR=boost_includedir"
+cmake . -G "MinGW Makefiles"
 mingw32-make
 ```
 ## Running
