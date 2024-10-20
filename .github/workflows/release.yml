@@ -1,4 +1,4 @@
-name: Release on push to main
+name: Build and release on push to main
 
 on:
   workflow_dispatch:
