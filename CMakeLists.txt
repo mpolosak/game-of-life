@@ -5,6 +5,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(BUILD_SHARED_LIBS FALSE)
 
+if (MINGW)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+endif()
+
 include(FetchContent)
 
 FetchContent_Declare(
