@@ -51,4 +51,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows executable
-          path: Release/game-of-life.exe
+          path: game-of-life.exe
