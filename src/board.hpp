@@ -8,7 +8,7 @@ class Board
     : public sf::Drawable
 {
 public:
-    Board(BoardConfig *config, AppearanceConfig &appearance);
+    Board(BoardConfig &config, AppearanceConfig &appearance);
     ~Board();
     void clear();
     void step();
@@ -19,7 +19,7 @@ protected:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 private:
-    BoardConfig *config;
+    BoardConfig &config;
     BoardPosition position;
     unsigned blockSize;
     std::unique_ptr<bool[]> gameBoard1;

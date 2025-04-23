@@ -1,16 +1,15 @@
-#include"gameoflife.h"
+#include "gameoflife.h"
 
 GameOfLife::GameOfLife(int argc, char *argv[])
 {
-    config = Config::fromCommandLine(argc,argv);
-    board = std::make_unique<Board>(&config.board, config.appearance);
-    if(config.appearance.backgroundUrl!="")
+    config = Config::fromCommandLine(argc, argv);
+    board = std::make_unique<Board>(config.board, config.appearance);
+    if (config.appearance.backgroundUrl != "")
         background = std::make_unique<Background>(
             config.appearance.backgroundUrl,
             config.appearance.backgroundPosition,
-            config.appearance.backgroundColor
-        );
-    std::cout<<config;
+            config.appearance.backgroundColor);
+    std::cout << config;
     setFullscreen(config.fullscreen);
 }
 
@@ -22,17 +21,17 @@ void GameOfLife::run()
     {
         processEvents();
 
-        if(config.board.draw)
+        if (config.board.draw)
             processDrawMode();
         else
         {
             auto miliseconds = clock.getElapsedTime().asMilliseconds();
-            if(miliseconds>=250)
+            if (miliseconds >= 250)
             {
                 clock.restart();
-            
+
                 board->step();
-                
+
                 draw();
             }
         }
@@ -42,18 +41,18 @@ void GameOfLife::run()
 void GameOfLife::setFullscreen(bool fullscreen)
 {
     sf::VideoMode newVideoMode;
-    if(fullscreen)
+    if (fullscreen)
     {
         style = sf::Style::Fullscreen;
         newVideoMode = sf::VideoMode::getDesktopMode();
     }
     else
     {
-        style=sf::Style::Default;
+        style = sf::Style::Default;
         newVideoMode = sf::VideoMode(config.width, config.height);
     }
-    window.create(newVideoMode,"Game of life",style);
-    setViewSize(newVideoMode.width,newVideoMode.height);
+    window.create(newVideoMode, "Game of life", style);
+    setViewSize(newVideoMode.width, newVideoMode.height);
 }
 
 void GameOfLife::processEvents()
@@ -65,27 +64,27 @@ void GameOfLife::processEvents()
 
 void GameOfLife::handleEvent(sf::Event &event)
 {
-    switch(event.type)
+    switch (event.type)
     {
-        case sf::Event::Closed:
-            window.close();
-            break;
-        case sf::Event::KeyPressed:
-            handleKeyPress(event.key.code);
-            break;
-        case sf::Event::Resized:
-            setViewSize(event.size.width,event.size.height);
-            break;
-        default:
-            break;
-    } 
+    case sf::Event::Closed:
+        window.close();
+        break;
+    case sf::Event::KeyPressed:
+        handleKeyPress(event.key.code);
+        break;
+    case sf::Event::Resized:
+        setViewSize(event.size.width, event.size.height);
+        break;
+    default:
+        break;
+    }
     draw();
 }
 
 void GameOfLife::draw()
 {
     window.clear(config.appearance.backgroundColor);
-    if(background)
+    if (background)
         window.draw(*background);
     window.draw(*board);
     window.display();
@@ -93,37 +92,37 @@ void GameOfLife::draw()
 
 void GameOfLife::setViewSize(int width, int height)
 {
-    sf::FloatRect rect=sf::FloatRect(sf::Vector2f(0,0),sf::Vector2f(width,height));
+    sf::FloatRect rect = sf::FloatRect(sf::Vector2f(0, 0), sf::Vector2f(width, height));
     view.reset(rect);
     window.setView(view);
     board->handleNewViewSize(width, height);
-    if(background)
-        background->setSize(sf::Vector2f(width,height));
+    if (background)
+        background->setSize(sf::Vector2f(width, height));
 }
 
 void GameOfLife::handleKeyPress(sf::Keyboard::Key key)
 {
-    switch(key)
+    switch (key)
     {
-        case sf::Keyboard::Escape:
-            window.close();
-            break;
-        case  sf::Keyboard::F11:
-            toggleFullscreen(); 
-            break;
-        case sf::Keyboard::Return:
-            config.board.draw = false;
-            break;
-        case sf::Keyboard::Tab:
-            config.board.draw = !config.board.draw;
-        default:
-            break;
+    case sf::Keyboard::Escape:
+        window.close();
+        break;
+    case sf::Keyboard::F11:
+        toggleFullscreen();
+        break;
+    case sf::Keyboard::Return:
+        config.board.draw = false;
+        break;
+    case sf::Keyboard::Tab:
+        config.board.draw = !config.board.draw;
+    default:
+        break;
     }
 }
 
 void GameOfLife::toggleFullscreen()
 {
-    if(style==sf::Style::Default)
+    if (style == sf::Style::Default)
         setFullscreen(true);
     else
         setFullscreen(false);
@@ -140,7 +139,8 @@ void GameOfLife::processDrawMode()
 void GameOfLife::setHoveredBlockValue(bool value)
 {
     auto [x, y] = sf::Mouse::getPosition(window);
-    if(x<0||y<0) return;
+    if (x < 0 || y < 0)
+        return;
     board->setBlockOnPos({(unsigned)x, (unsigned)y}, value);
     draw();
 }
