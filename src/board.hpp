@@ -3,6 +3,7 @@
 #include "boardconfig.hpp"
 #include "appearanceconfig.hpp"
 #include <memory>
+#include "matrix.hpp"
 
 class Board
     : public sf::Drawable
@@ -22,8 +23,8 @@ private:
     BoardConfig &config;
     BoardPosition position;
     unsigned blockSize;
-    std::unique_ptr<bool[]> gameBoard1;
-    std::unique_ptr<bool[]> gameBoard2;
+    Matrix gameBoard1;
+    Matrix gameBoard2;
     sf::RectangleShape background;
     sf::RectangleShape block;
     sf::Vector2u offset = {0, 0};

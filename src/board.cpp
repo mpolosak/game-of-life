@@ -109,7 +109,7 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         for (unsigned x = 0; x < config.width; x++)
         {
-            if (gameBoard1[x + y * config.width])
+            if (gameBoard1[x][y])
             {
                 block.setPosition(pos);
                 target.draw(block);
@@ -123,9 +123,8 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Board::initGameBoardArrays()
 {
-    int arraysSize = config.width * config.height;
-    gameBoard1 = std::make_unique<bool[]>(arraysSize);
-    gameBoard2 = std::make_unique<bool[]>(arraysSize);
+    gameBoard1 = Matrix(config.width, config.height);
+    gameBoard2 = Matrix(config.width, config.height);
 }
 
 void Board::loadFromFile()
@@ -177,7 +176,7 @@ void Board::saveToImage()
     image.create(config.width, config.height, sf::Color::Black);
     for (unsigned x = 0; x < config.width; x++)
         for (unsigned y = 0; y < config.height; y++)
-            if (gameBoard1[x + y * config.width])
+            if (gameBoard1[x][y])
                 image.setPixel(x, y, sf::Color::White);
 
     image.saveToFile(config.outputFilePath);
@@ -200,28 +199,27 @@ int Board::countLivingNeighbours(unsigned x, unsigned y)
 
     for (unsigned j = y - 1; j <= y + 1; j++)
         for (unsigned i = x - 1; i <= x + 1; i++)
-            if (i >= 0 && i < config.width && j >= 0 && j < config.height && !(i == x && j == y))
-                if (gameBoard1[i + j * config.width])
-                    livingNeighbours++;
+            if (i >= 0 && i < config.width && j >= 0 && j < config.height && !(i == x && j == y) && gameBoard1[i][j])
+                livingNeighbours++;
 
     return livingNeighbours;
 }
 
 void Board::processCell(int x, int y)
 {
-    if (gameBoard1[x + y * config.width])
+    if (gameBoard1[x][y])
     {
         if (config.survive.count(countLivingNeighbours(x, y)))
-            gameBoard2[x + y * config.width] = true;
+            gameBoard2[x][y] = true;
         else
-            gameBoard2[x + y * config.width] = false;
+            gameBoard2[x][y] = false;
     }
     else
     {
         if (config.birth.count(countLivingNeighbours(x, y)))
-            gameBoard2[x + y * config.width] = true;
+            gameBoard2[x][y] = true;
         else
-            gameBoard2[x + y * config.width] = false;
+            gameBoard2[x][y] = false;
     }
 }
 
@@ -235,7 +233,7 @@ void Board::setBlockValue(sf::Vector2u cords, bool value)
     auto [x, y] = cords;
     if (x >= config.width || y >= config.height)
         return;
-    gameBoard1[x + y * config.width] = value;
+    gameBoard1[x][y] = value;
 }
 
 void Board::setBlockValue(sf::Vector2u cords, char value)
@@ -277,7 +275,7 @@ std::fstream &operator<<(std::fstream &os, const Board &board)
     {
         for (unsigned x = 0; x < board.config.width; x++)
         {
-            if (board.gameBoard1[x + y * board.config.width])
+            if (board.gameBoard1[x][y])
                 os << 'X';
             else
                 os << ' ';
